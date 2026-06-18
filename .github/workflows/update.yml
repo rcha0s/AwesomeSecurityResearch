@@ -1,0 +1,46 @@
+name: Update security research
+
+# Keeps the tracker current: pulls fresh research from credible source feeds,
+# filters to the trailing six months, regenerates the README, and commits any
+# changes. Runs weekly and on demand.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday at 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Discover newly published research
+        run: python scripts/aggregate.py
+
+      - name: Regenerate README
+        run: python scripts/generate_readme.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add data/research.json README.md
+            git commit -m "chore: weekly research refresh ($(date -u +%Y-%m-%d))"
+            git push
+          else
+            echo "No changes to commit."
+          fi

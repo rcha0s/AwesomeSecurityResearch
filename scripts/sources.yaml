@@ -1,0 +1,160 @@
+# ---------------------------------------------------------------------------
+# Curated, credible source feeds for AwesomeSecurityResearch.
+#
+# Only first-party security researchers, vendors with dedicated research teams,
+# standards bodies, and peer-reviewed venues are included. News aggregators are
+# intentionally excluded to keep signal high and provenance clear.
+#
+# Each feed is tagged with the domain(s) it most often covers. The aggregator
+# still classifies every item independently by keyword, so a feed tagged
+# "AI Security" can still contribute a Web or Mobile item.
+# ---------------------------------------------------------------------------
+
+# Number of days an item may be old before it is dropped (last 6 months).
+max_age_days: 183
+
+feeds:
+  # ---- AI / LLM Security -------------------------------------------------
+  - name: "OWASP GenAI Security Project"
+    url: "https://genai.owasp.org/feed/"
+    type: "Standards body / consortium"
+    domains: ["AI Security"]
+    trust: "high"
+
+  - name: "Google Project Zero"
+    url: "https://googleprojectzero.blogspot.com/feeds/posts/default"
+    type: "Vendor research"
+    domains: ["AI Security", "Mobile Security", "Web Application Security"]
+    trust: "high"
+
+  - name: "Palo Alto Networks Unit 42"
+    url: "https://unit42.paloaltonetworks.com/feed/"
+    type: "Vendor research"
+    domains: ["AI Security", "Mobile Security", "Web Application Security"]
+    trust: "high"
+
+  - name: "Microsoft Security Blog"
+    url: "https://www.microsoft.com/en-us/security/blog/feed/"
+    type: "Vendor research"
+    domains: ["AI Security", "Web Application Security"]
+    trust: "high"
+
+  - name: "arXiv cs.CR (Cryptography and Security)"
+    url: "http://export.arxiv.org/rss/cs.CR"
+    type: "Academic preprints"
+    domains: ["AI Security", "Web Application Security", "Mobile Security"]
+    trust: "medium"
+
+  # ---- Web Application Security ------------------------------------------
+  - name: "PortSwigger Research"
+    url: "https://portswigger.net/research/rss"
+    type: "Vendor research"
+    domains: ["Web Application Security"]
+    trust: "high"
+
+  - name: "GitHub Security Lab"
+    url: "https://github.blog/tag/github-security-lab/feed/"
+    type: "Vendor research"
+    domains: ["Web Application Security"]
+    trust: "high"
+
+  - name: "Google Online Security Blog"
+    url: "https://security.googleblog.com/feeds/posts/default"
+    type: "Vendor research"
+    domains: ["Web Application Security", "Mobile Security", "AI Security"]
+    trust: "high"
+
+  - name: "OWASP Foundation Blog"
+    url: "https://owasp.org/blog/feed.xml"
+    type: "Standards body"
+    domains: ["Web Application Security"]
+    trust: "high"
+
+  # ---- Mobile Security ---------------------------------------------------
+  - name: "The Citizen Lab"
+    url: "https://citizenlab.ca/feed/"
+    type: "Academic / research lab"
+    domains: ["Mobile Security"]
+    trust: "high"
+
+  - name: "Quokka Research"
+    url: "https://www.quokka.io/blog/rss.xml"
+    type: "Vendor research"
+    domains: ["Mobile Security"]
+    trust: "medium"
+
+  - name: "Zimperium zLabs"
+    url: "https://www.zimperium.com/blog/feed/"
+    type: "Vendor research"
+    domains: ["Mobile Security"]
+    trust: "medium"
+
+# Keyword rules used to classify each item into a domain and a subtype.
+# First matching domain wins; subtype is the first subtype whose keywords match.
+classification:
+  domains:
+    "AI Security":
+      - "llm"
+      - "prompt injection"
+      - "genai"
+      - "generative ai"
+      - "ai agent"
+      - "agentic"
+      - "mcp"
+      - "model context protocol"
+      - "rag"
+      - "jailbreak"
+      - "machine learning"
+      - "neural"
+      - "model poisoning"
+    "Mobile Security":
+      - "android"
+      - "ios"
+      - "samsung"
+      - "galaxy"
+      - "iphone"
+      - "mobile app"
+      - "apk"
+      - "spyware"
+      - "pegasus"
+      - "qualcomm"
+      - "baseband"
+      - "play store"
+      - "app store"
+    "Web Application Security":
+      - "web app"
+      - "web application"
+      - "http"
+      - "request smuggling"
+      - "desync"
+      - "xss"
+      - "sql injection"
+      - "ssrf"
+      - "csrf"
+      - "deserialization"
+      - "owasp top 10"
+      - "npm"
+      - "supply chain"
+      - "waf"
+      - "cors"
+
+  subtypes:
+    "AI Security":
+      "Prompt Injection": ["prompt injection", "jailbreak", "system prompt", "indirect injection"]
+      "Agentic AI / MCP": ["mcp", "model context protocol", "agent", "agentic", "tool poisoning"]
+      "RAG / Data Poisoning": ["rag", "retrieval", "data poisoning", "training data"]
+      "Model Theft / Extraction": ["model extraction", "model theft", "membership inference", "model stealing"]
+      "Information Disclosure": ["leak", "exfiltration", "disclosure", "secret"]
+    "Web Application Security":
+      "Access Control": ["access control", "authorization", "idor", "ssrf", "privilege"]
+      "Supply Chain": ["supply chain", "npm", "package", "dependency", "typosquat"]
+      "Request Smuggling / Desync": ["request smuggling", "desync", "cl.0", "http/2", "http/1.1"]
+      "Injection": ["sql injection", "xss", "command injection", "deserialization", "template injection"]
+      "WAF Bypass": ["waf", "firewall bypass", "parsing discrepancy"]
+      "AI-Generated Code Risk": ["ai-generated code", "ai coding", "copilot", "vibe coding"]
+    "Mobile Security":
+      "Spyware / Zero-Day": ["spyware", "zero-day", "0-day", "zero click", "exploit chain", "pegasus", "landfall"]
+      "Insecure Storage / Cryptography": ["hardcoded", "cryptographic key", "secrets", "keystore", "insecure storage"]
+      "Legacy CVE Exposure": ["outdated", "legacy", "unpatched", "old cve", "sdk"]
+      "Platform / OS": ["android security bulletin", "ios update", "kernel", "baseband", "qualcomm"]
+      "Malware": ["malware", "trojan", "banking trojan", "dropper"]
