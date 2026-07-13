@@ -4,9 +4,10 @@
 
 ## AI Security
 
-### ▪️ agent-security  ·  4 findings (0 recent) · 4 sources · momentum 4.0
-_First seen 2026-02 · latest 2026-05-14._
+### 🔺 agent-security  ·  5 findings (1 recent) · 5 sources · momentum 6.0
+_First seen 2026-02 · latest 2026-06-23._
 
+- [OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/) (2026-06-23) · _latest_
 - [MemoryTrap: persistent memory poisoning in AI coding agents (OWASP ASI06)](https://genai.owasp.org/2026/05/13/memory-is-a-feature-it-is-also-an-attack-surface/) (2026-05-14)
 - [Prompt injection in the wild: Google on the current state](http://security.googleblog.com/2026/04/ai-threats-in-wild-current-state-of.html) (2026-04)
 - [Prismor: a runtime firewall that blocks rogue AI-agent tool calls](https://github.com/PrismorSec/prismor) (2026-02)
@@ -35,10 +36,24 @@ _First seen 2026-04 · latest 2026-05._
 
 ## AI Research
 
-### 🔺 agents  ·  2 findings (1 recent) · 2 sources · momentum 3.0
-_First seen 2026-05 · latest 2026-06._
+### 🔺 agents  ·  4 findings (3 recent) · 3 sources · momentum 7.0
+_First seen 2026-05 · latest 2026-07-09._
 
+- [GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims](https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything) (2026-07-09) · _latest_
+- [Better Models, Worse Tools: SOTA models regress on non-native tool schemas](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything) (2026-07-04) · _latest_
 - [Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](https://github.com/omnigent-ai/omnigent) (2026-06) · _latest_
+- [PawBench: benchmarking LLM x harness performance](https://github.com/agentscope-ai/PawBench) (2026-05)
+
+### 🔺 claude-code  ·  2 findings (2 recent) · 2 sources · momentum 4.0
+_First seen 2026-06 · latest 2026-07-04._
+
+- [Better Models, Worse Tools: SOTA models regress on non-native tool schemas](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything) (2026-07-04) · _latest_
+- [Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](https://github.com/omnigent-ai/omnigent) (2026-06) · _latest_
+
+### 🔺 harness  ·  2 findings (1 recent) · 2 sources · momentum 3.0
+_First seen 2026-05 · latest 2026-07-04._
+
+- [Better Models, Worse Tools: SOTA models regress on non-native tool schemas](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything) (2026-07-04) · _latest_
 - [PawBench: benchmarking LLM x harness performance](https://github.com/agentscope-ai/PawBench) (2026-05)
 
 ---

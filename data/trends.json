@@ -3,13 +3,19 @@
     {
       "topic": "ai-security",
       "tag": "agent-security",
-      "count": 4,
-      "recent": 0,
-      "sources": 4,
-      "momentum": 4.0,
+      "count": 5,
+      "recent": 1,
+      "sources": 5,
+      "momentum": 6.0,
       "first_seen": "2026-02",
-      "last_seen": "2026-05-14",
+      "last_seen": "2026-06-23",
       "members": [
+        {
+          "title": "OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface",
+          "url": "https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/",
+          "date": "2026-06-23",
+          "fresh": true
+        },
         {
           "title": "MemoryTrap: persistent memory poisoning in AI coding agents (OWASP ASI06)",
           "url": "https://genai.owasp.org/2026/05/13/memory-is-a-feature-it-is-also-an-attack-surface/",
@@ -121,17 +127,77 @@
     {
       "topic": "ai-research",
       "tag": "agents",
+      "count": 4,
+      "recent": 3,
+      "sources": 3,
+      "momentum": 7.0,
+      "first_seen": "2026-05",
+      "last_seen": "2026-07-09",
+      "members": [
+        {
+          "title": "GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims",
+          "url": "https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything",
+          "date": "2026-07-09",
+          "fresh": true
+        },
+        {
+          "title": "Better Models, Worse Tools: SOTA models regress on non-native tool schemas",
+          "url": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
+          "date": "2026-07-04",
+          "fresh": true
+        },
+        {
+          "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "date": "2026-06",
+          "fresh": true
+        },
+        {
+          "title": "PawBench: benchmarking LLM x harness performance",
+          "url": "https://github.com/agentscope-ai/PawBench",
+          "date": "2026-05",
+          "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "ai-research",
+      "tag": "claude-code",
+      "count": 2,
+      "recent": 2,
+      "sources": 2,
+      "momentum": 4.0,
+      "first_seen": "2026-06",
+      "last_seen": "2026-07-04",
+      "members": [
+        {
+          "title": "Better Models, Worse Tools: SOTA models regress on non-native tool schemas",
+          "url": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
+          "date": "2026-07-04",
+          "fresh": true
+        },
+        {
+          "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "date": "2026-06",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-research",
+      "tag": "harness",
       "count": 2,
       "recent": 1,
       "sources": 2,
       "momentum": 3.0,
       "first_seen": "2026-05",
-      "last_seen": "2026-06",
+      "last_seen": "2026-07-04",
       "members": [
         {
-          "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
-          "url": "https://github.com/omnigent-ai/omnigent",
-          "date": "2026-06",
+          "title": "Better Models, Worse Tools: SOTA models regress on non-native tool schemas",
+          "url": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
+          "date": "2026-07-04",
           "fresh": true
         },
         {
