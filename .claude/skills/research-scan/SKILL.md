@@ -1,0 +1,79 @@
+---
+name: research-scan
+description: Scan the X/Twitter feed + RSS for AI and security material, extract teachable lessons, score newness/novelty/relevance, derive actionable leverage, and grow the security/ and ai/ knowledge pools. Use for a full batch refresh (self-pace with /loop).
+---
+
+# research-scan
+
+Batch pipeline that turns fresh security/AI material into scored, source-cited,
+actionable pool entries. You (the model) are the analysis engine — the Python
+scripts handle deterministic ingestion, merging, ranking, and rendering.
+
+Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
+
+## Steps
+
+1. **Ingest → stage candidates** (writes `data/candidates.json`, gitignored).
+   Twitter ingest MUST run inside WSL2 (that's where `twitter`/`agent-reach` live) with
+   the burner env sourced and the WSL venv:
+   ```bash
+   wsl bash -lc 'source ~/.agent-reach/twitter.env
+     cd /mnt/c/Users/rohan/Desktop/AwesomeSecurityResearch
+     ~/.venvs/asr/bin/python scripts/ingest_twitter.py --max 20
+     ~/.venvs/asr/bin/python scripts/aggregate.py'
+   ```
+   RSS-only (`aggregate.py`) also runs fine on Windows Python. If ingest reports Agent
+   Reach unhealthy, the cookies likely expired — refresh the burner's `auth_token`+`ct0`
+   into `~/.agent-reach/twitter.env` — and continue with RSS only.
+   Note: the burner's **home feed is often low-signal** (algorithmic timeline); the
+   high-signal material comes from the curated `twitter.accounts` in `sources.yaml`.
+
+2. **Read the candidates.** Load `data/candidates.json`. For each candidate, read its
+   `raw_path` file under `data/_raw/` for the full article text. If `raw_path` is null
+   but `article_url` is set, fetch clean text yourself: `curl -s https://r.jina.ai/<url>`.
+
+3. **Analyze each candidate** grounded in the source text (never invent facts):
+   - **track/domain/subtype** — valid values are in `scripts/common.py` `TRACK_DOMAINS`
+     (security: AI Security, Web Application Security, Mobile Security; ai: Agents &
+     Harnesses, Prompting & Context, Models & Capabilities, Tooling & Infrastructure,
+     Evaluation & Safety). `security` = threats/defenses; `ai` = capabilities/how-to.
+   - **summary** — 2-3 sentence teachable summary.
+   - **lessons** — the concrete, transferable takeaways. Each: `{point, excerpt,
+     confidence}` where `excerpt` is a short quote/anchor from the source and
+     `confidence` ∈ [0,1] reflects how well the source supports the point. Be honest —
+     low confidence auto-flags the entry for review instead of publishing it as fact.
+   - **takeaway** — one-line "so what."
+   - **tags** — cross-cutting topics (e.g. `prompt-injection`, `mcp`, `rag`, `evals`).
+   - **actionable** — `{type, title, detail, skill_slug?}`. `type` ∈ takeaway | skill |
+     harness | tool | other. Choose whatever genuinely fits: a reusable **skill** (set a
+     kebab `skill_slug`), a **harness** improvement, a **tool** idea, or just a
+     **takeaway**. `detail` should be concrete enough to act on.
+   - **scores** — `{novelty, relevance}` each 0-100 (newness is computed deterministically):
+     - **novelty**: how new the *idea* is vs. what is already in the pools. Skim the
+       existing titles/summaries in `data/security.json` + `data/ai.json` first; near-
+       duplicates score low.
+     - **relevance**: usefulness to the track's audience — Security = a defender/researcher;
+       AI = an agent/harness builder. Directly-applicable, generalizable findings score high.
+   - Security findings may also include `threat`/`conditions`/`mitigations`.
+
+4. **Emit** `data/analysis_out.json` — a JSON list of the analyzed entries (each a full
+   schema-v2 entry: at minimum `track, domain, subtype, title, source_url`, plus the fields
+   above; carry over `article_url, tweet_url, author, date, discovered_via` from the candidate).
+
+5. **Merge + rerank + render:**
+   ```bash
+   python scripts/merge_analysis.py     # validate, dedup, route, flag low-confidence, rerank
+   python scripts/generate_site.py      # rebuild README.md + security/ + ai/
+   python scripts/generate_skills.py    # skills/<slug>/SKILL.md + LEARNINGS.md
+   ```
+
+6. **Commit (direct-PR mode).** Create a branch, commit the regenerated pools + site
+   (never commit `data/candidates.json`, `data/_raw/`, `data/analysis_out.json`, or
+   cookies), and open a PR. Then print a **run summary**: candidates ingested, entries
+   merged per track, how many flagged needs_review, and the top movers by composite.
+
+## Backfill mode
+
+If asked to backfill, treat the existing pool entries that lack `lessons`/`scores` as
+candidates: read their `source_url`, analyze with the same rubric, and re-emit them
+through `analysis_out.json` (merge updates them in place by URL).

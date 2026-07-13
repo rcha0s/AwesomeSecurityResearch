@@ -1,19 +1,29 @@
-name: Update security research
+name: Render research site
 
-# Keeps the tracker current: pulls fresh research from credible source feeds,
-# filters to the trailing six months, regenerates the README, and commits any
-# changes. Runs weekly and on demand.
+# Keeps the rendered knowledge base in sync with the data pools. This job does
+# NOT do LLM analysis or Twitter ingestion (those run locally via the
+# /research-scan + /add-resource skills — datacenter IPs risk the X account).
+# It re-ranks the committed pools (time-decayed newness re-sorts them as findings
+# age) and regenerates README.md, the security/ and ai/ trees, skills, and
+# LEARNINGS.md, committing any drift.
 
 on:
   schedule:
-    - cron: "0 6 * * 1" # every Monday at 06:00 UTC
+    - cron: "0 6 * * 1" # every Monday at 06:00 UTC (refreshes decayed ranking)
+  push:
+    branches: [main]
+    paths:
+      - "data/security.json"
+      - "data/ai.json"
+      - "scripts/**"
+      - "config.yaml"
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 jobs:
-  update:
+  render:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,19 +37,21 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Discover newly published research
-        run: python scripts/aggregate.py
+      - name: Re-rank pools
+        run: python scripts/rerank.py
 
-      - name: Regenerate README
-        run: python scripts/generate_readme.py
+      - name: Regenerate site + skills
+        run: |
+          python scripts/generate_site.py
+          python scripts/generate_skills.py
 
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add data/research.json README.md
-            git commit -m "chore: weekly research refresh ($(date -u +%Y-%m-%d))"
+            git add data/security.json data/ai.json README.md LEARNINGS.md security ai skills
+            git commit -m "chore: render refresh ($(date -u +%Y-%m-%d))"
             git push
           else
             echo "No changes to commit."

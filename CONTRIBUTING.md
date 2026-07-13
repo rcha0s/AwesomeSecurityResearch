@@ -1,46 +1,71 @@
 # Contributing
 
-Thanks for helping keep this tracker credible and current. The bar for inclusion is deliberately high.
+Thanks for helping keep this pool credible, current, and teachable. The bar for
+inclusion is deliberately high, and every finding must cite a real source.
+
+## Two tracks
+
+Findings live in one of two growing pools (the source of truth):
+
+- **Security** (`data/security.json`) — domains: `AI Security`, `Web Application
+  Security`, `Mobile Security`. Threats and defenses.
+- **AI** (`data/ai.json`) — domains: `Agents & Harnesses`, `Prompting & Context`,
+  `Models & Capabilities`, `Tooling & Infrastructure`, `Evaluation & Safety`.
+  Capabilities, how-tos, and harness learnings.
+
+The rendered `README.md`, `security/`, `ai/`, `skills/`, and `LEARNINGS.md` are
+**generated** — never hand-edit them. Edit the pools and regenerate.
 
 ## What belongs here
 
-A finding qualifies if **all** of the following are true:
+1. **Credible, first-party source** — a recognized research team, vendor lab,
+   standards body, CERT advisory, peer-reviewed/preprint venue, or a substantive
+   practitioner post. No marketing or unattributed claims.
+2. **New** — prefer material from the last six months; newness decays in ranking.
+3. **In scope** — one of the two tracks above.
+4. **Teachable & actionable** — you can state the lessons and a concrete action.
 
-1. **Credible, first-party source.** A recognized security research team, vendor research lab, standards body (e.g. OWASP), national CERT/CISA advisory, or peer-reviewed/preprint venue. No news aggregators, marketing posts, or unattributed claims.
-2. **New.** Disclosed within the **last six months**. Older items age out automatically.
-3. **In scope.** One of: AI Security, Web Application Security, Mobile Security.
-4. **Actionable.** You can articulate the threat, the conditions under which it applies, and at least one practical mitigation.
+## The easy way: let the skills do it
 
-## How to add an entry
+- One resource: `python scripts/add.py "<url>"` then run the **`/add-resource`** skill.
+  (LinkedIn/auth-walled? paste it: `add.py "<url>" --text "<body>"`.)
+- A batch from your X feed + RSS: run the **`/research-scan`** skill.
 
-1. Edit [`data/research.json`](data/research.json) — this is the single source of truth. The README is generated and should never be hand-edited.
-2. Add an object to `entries` with these fields:
+Both extract lessons, score novelty/relevance, derive an actionable leverage, merge
+into the right pool, re-rank, and regenerate the site.
 
-   | Field | Notes |
-   | --- | --- |
-   | `id` | Unique kebab-case slug. |
-   | `domain` | `AI Security` \| `Web Application Security` \| `Mobile Security`. |
-   | `subtype` | A sub-category within the domain (see existing values). |
-   | `title` | Concise, specific finding title. |
-   | `date` | `YYYY-MM` of disclosure. |
-   | `severity` | `Critical` \| `High` \| `Medium` \| `Low`. |
-   | `threat` | What the attack/weakness is. |
-   | `conditions` | Who/what is affected and when. |
-   | `mitigations` | Concrete defensive actions. |
-   | `source_name` / `source_type` / `source_url` | Attribution + link. |
-   | `needs_review` | `false` for curated entries. |
+## The manual way: add an entry directly
 
-3. Regenerate and open a PR:
+Add an object to `entries` in the right pool file (schema v2). Key fields:
 
-   ```bash
-   pip install -r requirements.txt
-   python scripts/generate_readme.py
-   ```
+| Field | Notes |
+| --- | --- |
+| `track` | `security` \| `ai`. |
+| `domain` / `subtype` | Valid domain for the track (see `scripts/common.py`). |
+| `title` | Concise, specific. |
+| `date` | `YYYY-MM` of disclosure. |
+| `summary` | Teachable 2-3 sentences. |
+| `lessons` | List of `{point, excerpt, confidence}` (excerpt anchors to the source). |
+| `takeaway` | One-line "so what". |
+| `actionable` | `{type, title, detail, skill_slug?}`, type ∈ takeaway/skill/harness/tool/other. |
+| `tags` | Cross-cutting topics. |
+| `scores` | `{novelty, relevance}` 0-100 (newness + composite are computed). |
+| `source_name` / `source_type` / `source_url` | Attribution + link. |
+| `needs_review` | `false` for verified entries. |
 
-## Adding a source feed
+Security entries may also carry `threat` / `conditions` / `mitigations`. Then:
 
-Propose new feeds in [`scripts/sources.yaml`](scripts/sources.yaml). Include a short justification for why the source meets the credibility bar. Single-domain feeds classify more accurately than broad ones.
+```bash
+pip install -r requirements.txt
+python scripts/rerank.py
+python scripts/generate_site.py
+python scripts/generate_skills.py
+```
 
-## Reviewing auto-discovered items
+Open a PR (direct-PR mode — see [AGENTS.md](AGENTS.md)). Keep lint + tests green.
 
-Items added by the aggregator carry `needs_review: true` and placeholder text. To promote one: write the threat/conditions/mitigations, set a severity, set `needs_review` to `false`, then regenerate the README.
+## Adding a source feed / account
+
+Propose feeds in [`scripts/sources.yaml`](scripts/sources.yaml) with a short
+credibility justification. X accounts go under `twitter.accounts` (use a **burner**
+account — never your main). Single-domain feeds classify more accurately.

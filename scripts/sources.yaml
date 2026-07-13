@@ -13,6 +13,62 @@
 # Number of days an item may be old before it is dropped (last 6 months).
 max_age_days: 183
 
+# ---------------------------------------------------------------------------
+# Twitter / X ingestion (via Agent Reach -> twitter-cli). Runs LOCALLY only —
+# never in CI (datacenter-IP ban risk). Use a DEDICATED BURNER account and
+# follow the AI/security accounts you want tracked on it.
+# ---------------------------------------------------------------------------
+twitter:
+  home_feed: true          # scan the burner's home timeline
+  accounts:                # curated high-signal accounts (twitter user-posts @handle)
+    - "kunchenguid"
+    - "simonw"
+    - "PortSwigger"
+    - "Unit42_Intel"
+    - "GoogleVRP"
+  # Per-run caps live in config.yaml (limits.twitter_feed / twitter_user_posts).
+
+# LinkedIn is auth-walled; ad-hoc adds fall back to pasted text/file. Handled
+# by scripts/add.py, not the batch aggregator.
+linkedin:
+  note: "Use `python scripts/add.py <url>`; if the fetch is blocked, paste with --text/--file."
+
+# ---------------------------------------------------------------------------
+# GitHub trending/novel repo discovery (via `gh search repos`). Surfaces new
+# security research, tools, vulns, and patterns. Runs on Windows (gh is authed).
+# Novelty is judged at analysis time; well-known/old repos score low and are
+# held as needs_review by the curation gate.
+# ---------------------------------------------------------------------------
+github:
+  min_stars: 40          # ignore repos below this (noise floor)
+  per_query: 8           # top-N per query by stars
+  max_age_days: 200      # only repos created within this window (bias to novel)
+  queries:
+    - query: "prompt injection LLM"
+      track: security
+      domain: "AI Security"
+    - query: "MCP server security scanner"
+      track: security
+      domain: "AI Security"
+    - query: "AI agent security guardrails"
+      track: security
+      domain: "AI Security"
+    - query: "web application security research exploit"
+      track: security
+      domain: "Web Application Security"
+    - query: "mobile android security research tool"
+      track: security
+      domain: "Mobile Security"
+    - query: "agent harness framework llm"
+      track: ai
+      domain: "Agents & Harnesses"
+    - query: "llm evaluation harness benchmark"
+      track: ai
+      domain: "Evaluation & Safety"
+    - query: "context engineering retrieval llm"
+      track: ai
+      domain: "Tooling & Infrastructure"
+
 feeds:
   # ---- AI / LLM Security -------------------------------------------------
   - name: "OWASP GenAI Security Project"
@@ -89,6 +145,31 @@ feeds:
     domains: ["Mobile Security"]
     trust: "medium"
 
+  # ---- AI Research (non-security: agents, harnesses, models, tooling) -----
+  - name: "arXiv cs.AI (Artificial Intelligence)"
+    url: "http://export.arxiv.org/rss/cs.AI"
+    type: "Academic preprints"
+    domains: ["Models & Capabilities"]
+    trust: "medium"
+
+  - name: "arXiv cs.LG (Machine Learning)"
+    url: "http://export.arxiv.org/rss/cs.LG"
+    type: "Academic preprints"
+    domains: ["Models & Capabilities"]
+    trust: "medium"
+
+  - name: "Simon Willison's Weblog"
+    url: "https://simonwillison.net/atom/everything/"
+    type: "Practitioner blog"
+    domains: ["Tooling & Infrastructure"]
+    trust: "medium"
+
+  - name: "Anthropic News"
+    url: "https://www.anthropic.com/rss.xml"
+    type: "Model lab"
+    domains: ["Models & Capabilities"]
+    trust: "high"
+
 # Keyword rules used to classify each item into a domain and a subtype.
 # First matching domain wins; subtype is the first subtype whose keywords match.
 classification:
@@ -137,6 +218,44 @@ classification:
       - "supply chain"
       - "waf"
       - "cors"
+    # ---- AI Research track (capability-oriented, non-security) -----------
+    "Agents & Harnesses":
+      - "agent harness"
+      - "coding agent"
+      - "multi-agent"
+      - "orchestration"
+      - "tool use"
+      - "claude code"
+      - "autonomous agent"
+    "Prompting & Context":
+      - "prompt engineering"
+      - "context window"
+      - "context engineering"
+      - "system prompt design"
+      - "few-shot"
+      - "chain of thought"
+    "Models & Capabilities":
+      - "benchmark"
+      - "reasoning model"
+      - "fine-tuning"
+      - "pretraining"
+      - "model release"
+      - "capabilities"
+      - "inference"
+    "Tooling & Infrastructure":
+      - "mcp server"
+      - "vector database"
+      - "embedding"
+      - "retrieval pipeline"
+      - "llm framework"
+      - "serving"
+    "Evaluation & Safety":
+      - "eval"
+      - "evaluation harness"
+      - "alignment"
+      - "red team"
+      - "guardrail"
+      - "hallucination"
 
   subtypes:
     "AI Security":
@@ -158,3 +277,21 @@ classification:
       "Legacy CVE Exposure": ["outdated", "legacy", "unpatched", "old cve", "sdk"]
       "Platform / OS": ["android security bulletin", "ios update", "kernel", "baseband", "qualcomm"]
       "Malware": ["malware", "trojan", "banking trojan", "dropper"]
+    "Agents & Harnesses":
+      "Orchestration": ["multi-agent", "orchestration", "supervisor", "crew"]
+      "Tool Use": ["tool use", "function calling", "tool call"]
+      "Autonomy": ["autonomous", "self-directed", "loop", "background task"]
+    "Prompting & Context":
+      "Prompt Design": ["prompt engineering", "system prompt", "few-shot"]
+      "Context Management": ["context window", "context engineering", "compaction", "retrieval"]
+    "Models & Capabilities":
+      "Reasoning": ["reasoning", "chain of thought", "planning"]
+      "Training": ["fine-tuning", "pretraining", "rlhf", "distillation"]
+      "Releases & Benchmarks": ["model release", "benchmark", "sota", "capabilities"]
+    "Tooling & Infrastructure":
+      "MCP & Integrations": ["mcp", "integration", "connector"]
+      "Retrieval & Data": ["vector database", "embedding", "rag", "retrieval"]
+      "Serving & Ops": ["serving", "inference", "deployment", "latency"]
+    "Evaluation & Safety":
+      "Evals": ["eval", "evaluation", "benchmark harness"]
+      "Alignment & Guardrails": ["alignment", "guardrail", "red team", "safety"]

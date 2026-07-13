@@ -1,0 +1,6 @@
+# firstmate backlog configuration.
+# Markdown backend (tasks-axi) — the crew reads/writes data/backlog.md.
+backend = "tasks-axi"
+file = "data/backlog.md"
+done_keep = 10
+archive = "data/done-archive.md"

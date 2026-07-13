@@ -15,3 +15,19 @@ Thumbs.db
 # Local scratch
 *.log
 .cache/
+.coverage
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+
+# Pipeline staging — transient, regenerated each run
+data/candidates.json
+data/analysis_out.json
+data/_raw/
+
+# Secrets / auth — NEVER commit (Agent Reach cookies, env)
+*cookies*.json
+.agent-reach/
+.env
+.env.*
+!.env.example

@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""
+generate_skills.py — Turn high-value findings into actionable outputs.
+
+For every finding whose actionable leverage is skill-shaped and scores at or
+above config's skill_composite_threshold, generate/refresh a skills/<slug>/
+SKILL.md stub (multiple findings for one slug are merged into a single stub).
+Always (re)writes LEARNINGS.md — a global, composite-ranked digest of takeaways,
+actions, and generated skills across both tracks.
+
+Human-edited SKILL.md files (those lacking the auto-generated marker) are left
+untouched. Run after generate_site.py.
+
+Usage:
+    python scripts/generate_skills.py
+"""
+
+from __future__ import annotations
+
+from collections import defaultdict
+from datetime import UTC, datetime
+
+import common as c
+
+AUTO_MARKER = "<!-- auto-generated:research-analyzer -->"
+
+
+def skills_dir() -> c.Path:
+    return c.ROOT / "skills"
+
+
+def learnings_path() -> c.Path:
+    return c.ROOT / "LEARNINGS.md"
+
+
+def composite_of(entry: dict, conf: c.Config) -> float:
+    scores = entry.get("scores") or {}
+    if "composite" in scores:
+        return float(scores["composite"])
+    live = dict(scores)
+    live["newness"] = c.newness_score(entry.get("date") or "", conf.half_life_days)
+    return c.composite_score(live, conf.weights)
+
+
+def skill_slug(entry: dict) -> str | None:
+    act = entry.get("actionable")
+    if not isinstance(act, dict) or act.get("type") != "skill":
+        return None
+    return act.get("skill_slug") or c.slugify(act.get("title", entry.get("title", "")))
+
+
+def render_skill(slug: str, findings: list[dict]) -> str:
+    top = findings[0]
+    act = top.get("actionable", {})
+    out = [
+        "---",
+        f"name: {slug}",
+        f"description: {act.get('title', top.get('title',''))} — derived from security/AI research.",
+        "---",
+        "",
+        AUTO_MARKER,
+        f"# {act.get('title', slug)}",
+        "",
+        f"> {act.get('detail', top.get('takeaway',''))}",
+        "",
+        "## Why this exists",
+        "",
+        "Distilled from these findings:",
+        "",
+    ]
+    for f in findings:
+        out.append(
+            f"- **[{f.get('title','')}]({f.get('source_url','')})** "
+            f"({f.get('source_name','source')}, {f.get('date','')})"
+        )
+    out += ["", "## What to apply", ""]
+    seen: set[str] = set()
+    for f in findings:
+        for les in f.get("lessons") or []:
+            point = les.get("point") if isinstance(les, dict) else str(les)
+            if point and point not in seen:
+                seen.add(point)
+                out.append(f"- {point}")
+    out += [
+        "",
+        "## Draft",
+        "",
+        act.get("detail", "(Refine this stub into a usable skill.)"),
+        "",
+        "_Auto-generated from research findings — review and refine before relying on it._",
+        "",
+    ]
+    return "\n".join(out)
+
+
+def write_skills(pools_entries: list[dict], conf: c.Config) -> list[str]:
+    by_slug: dict[str, list[dict]] = defaultdict(list)
+    for e in pools_entries:
+        slug = skill_slug(e)
+        if slug and composite_of(e, conf) >= conf.skill_composite_threshold:
+            by_slug[slug].append(e)
+
+    written: list[str] = []
+    for slug, findings in by_slug.items():
+        findings.sort(key=lambda e: -composite_of(e, conf))
+        path = skills_dir() / slug / "SKILL.md"
+        if path.exists() and AUTO_MARKER not in path.read_text(encoding="utf-8"):
+            print(f"  skip (human-edited): {slug}")
+            continue
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(render_skill(slug, findings), encoding="utf-8")
+        written.append(slug)
+    return written
+
+
+def render_learnings(entries: list[dict], conf: c.Config, skills: list[str], now: str) -> str:
+    ranked = sorted(entries, key=lambda e: -composite_of(e, conf))
+    out = [
+        "# Learnings digest",
+        "",
+        f"> Ranked, source-cited takeaways across Security and AI. Updated {now}.",
+        "",
+    ]
+    if skills:
+        out += ["## 🛠️ Generated skills", ""]
+        out += [f"- [`{s}`](skills/{s}/SKILL.md)" for s in sorted(skills)]
+        out.append("")
+    out += ["## 📈 Ranked findings", ""]
+    if not ranked:
+        out.append("_Empty — run the `/research-scan` skill to populate._")
+    for e in ranked:
+        take = e.get("takeaway") or e.get("summary") or e.get("threat") or ""
+        act = e.get("actionable") if isinstance(e.get("actionable"), dict) else None
+        line = (
+            f"### {e.get('title','')} · `{composite_of(e, conf)}`\n"
+            f"- **Track:** {e.get('track','')} / {e.get('domain','')}\n"
+            f"- **Takeaway:** {c.clean_summary(take, 240)}\n"
+        )
+        if act:
+            line += f"- **Action ({act.get('type','')}):** {act.get('title','')} — {act.get('detail','')}\n"
+        line += f"- **Source:** [{e.get('source_name','source')}]({e.get('source_url','')})\n"
+        out.append(line)
+    out += ["", "---", "", f"<sub>Generated by scripts/generate_skills.py on {now}.</sub>", ""]
+    return "\n".join(out)
+
+
+def main() -> int:
+    conf = c.load_config()
+    now = datetime.now(UTC).strftime("%Y-%m-%d")
+    entries = c.all_pool_entries()
+    skills = write_skills(entries, conf)
+    learnings_path().write_text(render_learnings(entries, conf, skills, now), encoding="utf-8")
+    print(f"Wrote {len(skills)} skill stub(s) and LEARNINGS.md ({len(entries)} findings).")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

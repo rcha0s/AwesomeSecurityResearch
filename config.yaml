@@ -1,0 +1,37 @@
+# ---------------------------------------------------------------------------
+# Tunable configuration for the research analyzer. All magic numbers live here
+# so scoring/behaviour can be tuned without touching code.
+# ---------------------------------------------------------------------------
+
+# Ranking weights — must sum to 1.0. Applied to the three 0-100 score axes to
+# produce each entry's composite score.
+weights:
+  newness: 0.30    # how recently the finding was published (time-decayed)
+  novelty: 0.35    # how new the idea is versus what is already in the pool
+  relevance: 0.35  # how useful/teachable it is for the track's audience
+
+# Newness decay: newness = 100 * exp(-age_days / half_life_days).
+# A finding loses half its newness score every `half_life_days` days.
+half_life_days: 45
+
+# Entries whose skill-shaped actionable scores at least this composite get a
+# generated skills/<slug>/SKILL.md stub.
+skill_composite_threshold: 70
+
+# Lessons/entries below this confidence (0-1) are flagged needs_review instead
+# of being published to the public pool.
+confidence_min: 0.55
+
+# Curation gate — this pool is newsletter/education material for expert readers,
+# so only genuinely NOVEL and RELEVANT findings publish as curated. Anything
+# below these bars is kept but flagged needs_review (held from the vetted set),
+# not dropped — a human can still promote it.
+curation:
+  min_novelty: 60      # derivative / well-known material scores below this
+  min_relevance: 55    # must be directly useful to the track's expert audience
+
+# Per-run ingestion caps (bound cost/ban-risk of a single scan).
+limits:
+  twitter_feed: 40      # home-timeline items per run
+  twitter_user_posts: 20  # posts per curated account per run
+  article_chars: 20000  # truncate fetched article text to this many chars
