@@ -15,7 +15,7 @@ _Nothing awaiting review._
 
 ## AI Research (1)
 
-- **[GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims](https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything)** · composite 60.8 · _flagged needs_review (low confidence / novelty / relevance)_
+- **[GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims](https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything)** · composite 60.5 · _flagged needs_review (low confidence / novelty / relevance)_
   Evaluate the tiers on your own agentic task — per-token price means less now that reasoning-token counts dominate cost.
 
 ---

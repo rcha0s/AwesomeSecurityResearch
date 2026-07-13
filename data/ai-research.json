@@ -30,12 +30,14 @@
         {
           "point": "A SOTA model can be WORSE at a custom tool schema than its older siblings if it was RL-trained on a different harness's tools",
           "excerpt": "the SOTA models of the family are worse at this specific tool schema than their older siblings",
-          "confidence": 0.9
+          "confidence": 0.9,
+          "grounded": true
         },
         {
           "point": "Align tool formats to the model — Claude is trained on str-replace edits, OpenAI on apply_patch",
-          "excerpt": "Claude's edit tool uses search and replace... OpenAI's Codex uses an apply_patch mechanism instead",
-          "confidence": 0.85
+          "excerpt": "trained (presumably via Reinforcement Learning) to better use the edit tools that are baked into Claude Code",
+          "confidence": 0.85,
+          "grounded": true
         }
       ],
       "tags": [
@@ -53,13 +55,14 @@
       "scores": {
         "novelty": 80,
         "relevance": 90,
-        "newness": 51,
-        "composite": 74.8,
-        "scored_at": "2026-07-13T04:19:32+00:00"
+        "newness": 50,
+        "composite": 74.5,
+        "scored_at": "2026-07-13T07:16:20+00:00"
       },
       "id": "better-models-worse-tools-sota-models-regress-on-23a5b69b6f",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
-      "needs_review": false
+      "needs_review": false,
+      "grounding_score": 1.0
     },
     {
       "source_url": "https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything",
@@ -80,7 +83,8 @@
         {
           "point": "Price-per-token is a weak comparison when reasoning-token usage varies wildly per model/task",
           "excerpt": "price-per-million tokens doesn't tell us much now that the number of reasoning tokens can differ so much",
-          "confidence": 0.85
+          "confidence": 0.85,
+          "grounded": true
         }
       ],
       "tags": [
@@ -97,13 +101,14 @@
       "scores": {
         "novelty": 55,
         "relevance": 75,
-        "newness": 51,
-        "composite": 60.8,
-        "scored_at": "2026-07-13T04:19:32+00:00"
+        "newness": 50,
+        "composite": 60.5,
+        "scored_at": "2026-07-13T07:16:20+00:00"
       },
       "id": "gpt-5-6-luna-terra-sol-three-tiers-1m-context-ag-c37d1d22d0",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
-      "needs_review": true
+      "needs_review": true,
+      "grounding_score": 1.0
     },
     {
       "source_url": "https://github.com/omnigent-ai/omnigent",
@@ -147,13 +152,14 @@
         "relevance": 84,
         "newness": 10,
         "composite": 59.7,
-        "scored_at": "2026-07-13T04:19:32+00:00"
+        "scored_at": "2026-07-13T07:16:20+00:00"
       },
       "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
       "retrieved_at": "2026-07-13T00:46:09+00:00",
       "needs_review": false,
       "published": "2026-06",
-      "topic": "ai-research"
+      "topic": "ai-research",
+      "grounding_score": null
     }
   ]
 }

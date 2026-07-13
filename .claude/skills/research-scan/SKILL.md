@@ -69,7 +69,8 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
 
 5. **Merge + rerank + render:**
    ```bash
-   python scripts/merge_analysis.py       # validate, dedup, route by topic, flag, rerank
+   python scripts/merge_analysis.py       # validate, dedup, route by topic, GROUND excerpts, flag, rerank
+   python scripts/verify_citations.py     # re-verify every lesson excerpt vs its source (persist grounding)
    python scripts/generate_site.py        # README.md + ai-security/ product-security/ ai-research/
    python scripts/trends.py               # data/trends.json + TRENDS.md (emerging themes)
    python scripts/generate_newsletter.py  # NEWSLETTER.md (rolling, 3 topic sections)

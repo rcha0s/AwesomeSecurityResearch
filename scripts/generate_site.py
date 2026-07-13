@@ -121,6 +121,15 @@ def _entry_meta(entry: dict, scores: dict) -> list[str]:
     return meta
 
 
+def _grounding_mark(les: dict) -> str:
+    grounded = les.get("grounded")
+    if grounded is True:
+        return " ✅"
+    if grounded is False:
+        return " ⚠️ _(excerpt not found in source)_"
+    return ""
+
+
 def _entry_lessons_md(entry: dict) -> list[str]:
     lessons = entry.get("lessons") or []
     if not lessons:
@@ -130,7 +139,7 @@ def _entry_lessons_md(entry: dict) -> list[str]:
         if isinstance(les, dict):
             line = f"- {les.get('point','')}"
             if les.get("excerpt"):
-                line += f' — _"{les["excerpt"]}"_'
+                line += f' — _"{les["excerpt"]}"_{_grounding_mark(les)}'
             out.append(line)
         else:
             out.append(f"- {les}")

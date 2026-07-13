@@ -21,6 +21,9 @@ def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(common, "ARCHIVE_FILE", data / "archive.json")
     monkeypatch.setattr(common, "RAW_DIR", data / "_raw")
     monkeypatch.setattr(sources_registry, "REGISTRY_FILE", data / "sources.json")
+    # Keep grounding offline: kill the network re-fetch (raw_path reading still works).
+    # Tests that need a fetched source override source_text_for themselves.
+    monkeypatch.setattr(common, "fetch_readable", lambda *a, **k: None)
     for topic in common.TOPICS:
         common.save_pool(topic, common.empty_pool(topic))
     return tmp_path

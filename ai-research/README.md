@@ -11,7 +11,7 @@ _2 vetted findings · updated 2026-07-13 · ranked by composite · latest 31 day
 
 ## Tooling & Infrastructure
 
-- **[Better Models, Worse Tools: SOTA models regress on non-native tool schemas](tooling-infrastructure/2026-07-better-models-worse-tools-sota-models-regress-on-non-native.md)** · composite **74.8** · Jul 4, 2026  
+- **[Better Models, Worse Tools: SOTA models regress on non-native tool schemas](tooling-infrastructure/2026-07-better-models-worse-tools-sota-models-regress-on-non-native.md)** · composite **74.5** · Jul 4, 2026  
   Newer ≠ better for YOUR tools: match your harness's tool schemas to what the target model was trained on.  
   _[Simon Willison's Weblog](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything)_
 

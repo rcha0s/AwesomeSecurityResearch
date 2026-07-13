@@ -19,6 +19,16 @@ def test_is_curated_gate():
     assert not c.is_curated(low, conf)
 
 
+def test_is_curated_rejects_ungrounded():
+    conf = c.load_config()
+    good = make_entry(scores={"novelty": 80, "relevance": 80}, grounding_score=1.0)
+    bad = make_entry(scores={"novelty": 80, "relevance": 80}, grounding_score=0.5)
+    unverifiable = make_entry(scores={"novelty": 80, "relevance": 80}, grounding_score=None)
+    assert c.is_curated(good, conf)
+    assert not c.is_curated(bad, conf)  # a bad quote drops it to review
+    assert c.is_curated(unverifiable, conf)  # unverifiable != ungrounded
+
+
 def test_is_curated_rejects_unscored_even_if_fresh():
     """An unscored but recent entry must NOT be curated on newness alone."""
     conf = c.load_config()

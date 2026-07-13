@@ -20,6 +20,7 @@ import sys
 import common as c
 import rerank
 import sources_registry as sr
+import verify_citations as vc
 
 
 def update_source_hit_rate(new_entries: list[dict]) -> None:
@@ -109,6 +110,10 @@ def merge(
             errors.append(f"{raw.get('title', '?')[:50]}: {'; '.join(problems)}")
             continue
         entry = normalize_entry(raw, conf)
+        # Ground each cited excerpt against the source; unverified quotes → review.
+        vc.ground_entry(entry)
+        if conf.curation.get("require_grounding", True) and not vc.fully_grounded(entry):
+            entry["needs_review"] = True
         entries = pools[entry["topic"]]["entries"]
         idx = match_index(entries, entry)
         if idx is None:

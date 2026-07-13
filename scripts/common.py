@@ -254,6 +254,47 @@ def clean_summary(raw: str, limit: int = 320) -> str:
     return text
 
 
+# Fold typographic unicode so a verbatim quote isn't rejected over a dash/curly quote.
+_PUNCT_FOLD = str.maketrans(
+    {
+        "–": "-",
+        "—": "-",
+        "−": "-",  # en/em dash, minus
+        "‘": "'",
+        "’": "'",
+        "‚": "'",
+        "′": "'",  # curly singles / prime
+        "“": '"',
+        "”": '"',
+        "„": '"',
+        "″": '"',  # curly doubles
+        " ": " ",
+        "​": "",
+        " ": " ",  # nbsp, zero/thin spaces
+    }
+)
+
+
+def normalize_text(s: str) -> str:
+    """Lowercase, fold typographic punctuation, and collapse whitespace — so a
+    verbatim quote grounds even if the source uses en-dashes or curly quotes."""
+    s = (s or "").translate(_PUNCT_FOLD).replace("…", "...")
+    return re.sub(r"\s+", " ", s.lower()).strip()
+
+
+def is_grounded(excerpt: str, source_text: str, threshold: float = 0.85) -> bool:
+    """True if `excerpt` genuinely appears in `source_text` — verbatim after
+    normalization, or a near-verbatim longest-common-substring (tolerates minor
+    punctuation/whitespace). A paraphrased or invented 'quote' fails this."""
+    ne, ns = normalize_text(excerpt), normalize_text(source_text)
+    if not ne or not ns:
+        return False
+    if ne in ns:
+        return True
+    match = SequenceMatcher(None, ne, ns).find_longest_match(0, len(ne), 0, len(ns))
+    return match.size >= threshold * len(ne)
+
+
 def title_similar(a: str, b: str, threshold: float = 0.87) -> bool:
     """Fuzzy title match for cross-source de-duplication."""
     na = re.sub(r"\s+", " ", (a or "").lower()).strip()
@@ -384,15 +425,22 @@ def is_scored(entry: dict) -> bool:
 
 def is_curated(entry: dict, conf: Config) -> bool:
     """True if the finding belongs in the public curated view (topic pages +
-    newsletter). Everything else — flagged needs_review, unscored, OR below the
-    composite floor — is held in the REVIEW.md queue (still in the pool)."""
+    newsletter). Everything else — flagged needs_review, unscored, ungrounded, OR
+    below the composite floor — is held in the REVIEW.md queue (still in the pool)."""
     if entry.get("needs_review") or not is_scored(entry):
         return False
+    if conf.curation.get("require_grounding", True):
+        gs = entry.get("grounding_score")
+        if gs is not None and gs < 1.0:  # verified a source and found a bad quote
+            return False
     return entry_composite(entry, conf) >= conf.curation.get("min_composite", 0)
 
 
 def review_reason(entry: dict, conf: Config) -> str:
     """Why an entry is in the review queue (for REVIEW.md)."""
+    gs = entry.get("grounding_score")
+    if gs is not None and gs < 1.0:
+        return f"ungrounded excerpt — only {int(gs * 100)}% of quotes verified against the source"
     if entry.get("needs_review"):
         return "flagged needs_review (low confidence / novelty / relevance)"
     if not is_scored(entry):

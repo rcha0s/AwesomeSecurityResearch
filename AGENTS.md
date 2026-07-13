@@ -31,7 +31,8 @@ scripts/common.py         # shared helpers, TOPICS, schema, scoring, Jina fetch
 scripts/sources_registry.py # source registry + hybrid ranking
 scripts/aggregate.py · ingest_twitter.py · ingest_github.py · ingest_youtube.py · add.py  # ingest → candidates
 scripts/add_source.py     # register a source (x/blog/newsletter/github/youtube)
-scripts/merge_analysis.py # validate + dedup + route by topic + rerank into pools
+scripts/merge_analysis.py # validate + dedup + route by topic + ground excerpts + rerank
+scripts/verify_citations.py # ground each lesson excerpt vs its source (hallucinated quote → review)
 scripts/rerank.py         # decay + composite + sort + prune stale → archive
 scripts/generate_site.py  # README.md + the 3 topic trees + per-entry pages
 scripts/trends.py         # data/trends.json + TRENDS.md (emerging themes)

@@ -13,9 +13,9 @@ Unit 42 found five evasive malicious 'skills' persisting on ClawHub — the mark
 
 ## What to learn
 
-- Agent skills are broad-access packages; the marketplace is a supply-chain link to treat as untrusted — _"markdown-driven packages with broad local system access, making ClawHub a critical link in the agentic software supply chain"_
-- Malware evades marketplace scanners with simple tricks (oversized files exceed scan thresholds) — _"inflated file size to exceed scanner thresholds, bypassing both ClawScan and VirusTotal detection"_
-- New 'agentic' threat classes are emerging — affiliate injection and front-running done at agent runtime — _"runtime agentic affiliate injection and agentic front-running. Both are novel techniques"_
+- Agent skills are broad-access packages; the marketplace is a supply-chain link to treat as untrusted — _"markdown-driven packages with broad local system access, making ClawHub a critical link in the agentic software supply chain"_ ✅
+- Malware evades marketplace scanners with simple tricks (oversized files exceed scan thresholds) — _"inflated file size to exceed scanner thresholds, bypassing both ClawScan and VirusTotal detection"_ ✅
+- New 'agentic' threat classes are emerging — affiliate injection and front-running done at agent runtime — _"runtime agentic affiliate injection and agentic front-running. Both are novel techniques"_ ✅
 
 ## Actionable leverage
 
