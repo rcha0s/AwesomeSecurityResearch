@@ -1,37 +1,25 @@
 # Awesome Security & AI Research [![Awesome](https://cdn.jsdelivr.net/gh/sindresorhus/awesome@d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
-> An auto-updating, source-cited pool of the most **teachable** security and AI research — scanned from X/Twitter, articles, and RSS, then extracted, scored, and turned into actionable takeaways, skills, and harness improvements.
+> An auto-updating, source-cited tracker of the most **teachable** security and AI research — scanned from X/Twitter, GitHub, articles, and RSS, then extracted, scored, and turned into actionable takeaways, skills, and harness improvements.
 
-![Updated](https://img.shields.io/badge/updated-2026--07--13-blue) ![Findings](https://img.shields.io/badge/findings-30-success) ![Security](https://img.shields.io/badge/security-28-orange) ![AI](https://img.shields.io/badge/AI-2-purple) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
+**Only the latest research:** every entry was published within the last ~31 days. Older findings age out to [`data/archive.json`](data/archive.json) automatically.
+
+![Updated](https://img.shields.io/badge/updated-2026--07--13-blue) ![Findings](https://img.shields.io/badge/findings-3-success) ![Security](https://img.shields.io/badge/security-2-orange) ![AI](https://img.shields.io/badge/AI-1-purple) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
 
 Two growing knowledge directories:
 
-- 🛡️ **[Security Research](security/README.md)** — 28 findings (AI, Web, Mobile).
-- 🤖 **[AI Research](ai/README.md)** — 2 findings (agents, harnesses, prompting, models, tooling, evaluation).
+- 🛡️ **[Security Research](security/README.md)** — 2 findings (AI, Web, Mobile).
+- 🤖 **[AI Research](ai/README.md)** — 1 findings (agents, harnesses, prompting, models, tooling, evaluation).
 - 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.
 
 ## 🔝 Top learnings right now
 
-1. **[Phantom Squatting: attackers register the domains LLMs hallucinate](security/web-application-security/2026-07-phantom-squatting-attackers-register-the-domains-llms-halluc.md)** · security · composite **84.7**  
+1. **[Phantom Squatting: attackers register the domains LLMs hallucinate](security/web-application-security/2026-07-phantom-squatting-attackers-register-the-domains-llms-halluc.md)** · security · composite **76.9**  
    LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
-1. **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](ai/agents-harnesses/2026-06-omnigent-an-open-source-meta-harness-over-claude-code-codex.md)** · ai · composite **68.4**  
+1. **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](ai/agents-harnesses/2026-06-omnigent-an-open-source-meta-harness-over-claude-code-codex.md)** · ai · composite **59.7**  
    The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
-1. **[MemoryTrap: persistent memory poisoning in AI coding agents (OWASP ASI06)](security/ai-security/2026-05-memorytrap-persistent-memory-poisoning-in-ai-coding-agents-o.md)** · security · composite **68.3**  
-   Agent memory/persistence is a first-class attack surface: untrusted input carried forward becomes durable, trusted instruction.
-1. **[Project Zero: a 0-click exploit chain for the Pixel 10](security/mobile-security/2026-05-project-zero-a-0-click-exploit-chain-for-the-pixel-10.md)** · security · composite **61.3**  
-   0-click chains remain viable on flagship, hardened devices; defense-in-depth and rapid patching still matter most.
-1. **[PawBench: benchmarking LLM x harness performance](ai/evaluation-safety/2026-05-pawbench-benchmarking-llm-x-harness-performance.md)** · ai · composite **59.2**  
-   Evaluate the model-plus-harness as a unit; the harness is a first-class variable in agent performance.
-1. **[Prismor: a runtime firewall that blocks rogue AI-agent tool calls](security/ai-security/2026-02-prismor-a-runtime-firewall-that-blocks-rogue-ai-agent-tool-c.md)** · security · composite **56.55**  
-   The strongest control point for agent safety is the tool-call boundary — enforce policy at call time, not just in the prompt.
-1. **[Augustus: a production LLM vulnerability scanner (210+ probes)](security/ai-security/2026-02-augustus-a-production-llm-vulnerability-scanner-210-probes.md)** · security · composite **55.5**  
-   LLM red-teaming is becoming an operational, CI-ready discipline — run a probe suite against every model/prompt change, not just at launch.
-1. **[Prompt injection in the wild: Google on the current state](security/ai-security/2026-04-prompt-injection-in-the-wild-google-on-the-current-state.md)** · security · composite **54.1**  
-   Indirect prompt injection is now an operational threat, not a theoretical one; design agents assuming hostile web content.
-1. **[PortSwigger's Top 10 Web Hacking Techniques of 2025](security/web-application-security/2026-02-portswigger-s-top-10-web-hacking-techniques-of-2025.md)** · security · composite **52.0**  
-   The single best reading list for web-security researchers each year — a curated map of the techniques that will define the next cycle of attacks.
-1. **[Google brings Rust (memory safety) to the Pixel baseband](security/mobile-security/2026-04-google-brings-rust-memory-safety-to-the-pixel-baseband.md)** · security · composite **52.0**  
-   Memory-safe languages are reaching the lowest, most security-critical layers — the baseband — meaningfully shrinking remote attack surface.
+1. **[@redhat-cloud-services npm namespace compromise (32+ packages)](security/web-application-security/2026-06-redhat-cloud-services-npm-namespace-compromise-32-packages.md)** · security · composite **3.0**  
+   Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
 
 ## How it works
 

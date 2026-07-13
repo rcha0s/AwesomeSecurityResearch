@@ -48,6 +48,32 @@ def test_rerank_all_scores_both_pools(sandbox):
         assert "composite" in c.load_pool(track)["entries"][0]["scores"]
 
 
+def test_rerank_prunes_stale_to_archive(sandbox):
+    pool = c.load_pool("security")
+    pool["entries"] = [
+        make_entry(
+            track="security",
+            domain="AI Security",
+            title="fresh",
+            source_url="https://a/fresh",
+            published="2099-01-01",
+        ),
+        make_entry(
+            track="security",
+            domain="AI Security",
+            title="stale",
+            source_url="https://a/stale",
+            published="2000-01-01",
+        ),
+    ]
+    c.save_pool("security", pool)
+    rerank.rerank_pool("security")
+    live = [e["title"] for e in c.load_pool("security")["entries"]]
+    assert live == ["fresh"]
+    archived = [e["title"] for e in c.load_json(c.ARCHIVE_FILE, default=[])]
+    assert "stale" in archived
+
+
 def test_rerank_main_cli(sandbox, monkeypatch):
     pool = c.load_pool("ai")
     pool["entries"] = [make_entry(source_url="https://a/cli")]

@@ -43,6 +43,34 @@ def test_clean_source_url_strips_tracking():
     assert c.clean_source_url("https://a.com/x?fbclid=abc") == "https://a.com/x"
 
 
+def test_date_from_url():
+    assert c.date_from_url("https://x.com/2026/05/13/post") == "2026-05-13"
+    assert c.date_from_url("https://x.com/2026/05/post") == "2026-05"
+    assert c.date_from_url("https://x.com/no-date-here") is None
+
+
+def test_is_fresh_window():
+    now = datetime(2026, 7, 13, tzinfo=UTC)
+    assert c.is_fresh({"published": "2026-07-01"}, 31, now=now) is True
+    assert c.is_fresh({"published": "2026-06-30"}, 31, now=now) is True
+    assert c.is_fresh({"published": "2026-05-01"}, 31, now=now) is False
+    # month-only is treated as end-of-month (lenient)
+    assert c.is_fresh({"date": "2026-06"}, 31, now=now) is True
+    assert c.is_fresh({"date": "2026-05"}, 31, now=now) is False
+    # undated entries are kept (never dropped for lack of a date)
+    assert c.is_fresh({}, 31, now=now) is True
+
+
+def test_add_candidates_rejects_stale(sandbox):
+    stale = {
+        "id": "old",
+        "title": "Old thing",
+        "source_url": "https://a/old",
+        "published": "2020-01-01",
+    }
+    assert c.add_candidates([stale]) == []
+
+
 def test_newness_score_decays():
     now = datetime(2026, 7, 1, tzinfo=UTC)
     fresh = c.newness_score("2026-07", 45, now=now)

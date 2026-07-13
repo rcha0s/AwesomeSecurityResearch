@@ -50,7 +50,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add data/security.json data/ai.json README.md LEARNINGS.md security ai skills
+            git add data/security.json data/ai.json data/archive.json README.md LEARNINGS.md security ai skills
             git commit -m "chore: render refresh ($(date -u +%Y-%m-%d))"
             git push
           else

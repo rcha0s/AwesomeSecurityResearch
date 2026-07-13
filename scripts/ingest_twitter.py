@@ -139,6 +139,7 @@ def tweet_to_candidate(tweet: dict, fetch: bool) -> dict | None:
         "article_url": article_url if tw["links"] else None,
         "tweet_url": tw["url"] or None,
         "author": tw["author"] or None,
+        "published": created[:10] if len(created) >= 10 and created[4] == "-" else None,
         "date": date,
         "excerpt": tw["text"][:320],
         "raw_path": raw_path,

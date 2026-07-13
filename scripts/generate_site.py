@@ -35,6 +35,19 @@ def fmt_month(date: str) -> str:
     return date or "—"
 
 
+def fmt_published(entry: dict) -> str:
+    """Human-readable source publish date, day-precision when known."""
+    pub = entry.get("published") or entry.get("date") or ""
+    try:
+        return datetime.strptime(pub, "%Y-%m-%d").strftime("%b %-d, %Y")
+    except (ValueError, TypeError):
+        pass
+    try:  # Windows strftime has no %-d
+        return datetime.strptime(pub, "%Y-%m-%d").strftime("%b %d, %Y").replace(" 0", " ")
+    except (ValueError, TypeError):
+        return fmt_month(pub)
+
+
 def entry_scores(entry: dict, conf: c.Config) -> dict:
     scores = dict(entry.get("scores") or {})
     if "newness" not in scores:
@@ -96,7 +109,7 @@ def render_entry_page(entry: dict, conf: c.Config) -> str:
         f"  ·  **Subtype:** {entry.get('subtype','—')}",
         f"**Source:** [{entry.get('source_name','source')}]({src})"
         + (f"  ·  **Author:** {entry['author']}" if entry.get("author") else "")
-        + f"  ·  **Disclosed:** {fmt_month(entry.get('date',''))}"
+        + f"  ·  **Published:** {fmt_published(entry)}"
         + (
             f"  ·  **Retrieved:** {entry['retrieved_at'][:10]}" if entry.get("retrieved_at") else ""
         ),
@@ -144,7 +157,7 @@ def render_index_block(entry: dict, conf: c.Config) -> str:
     flag = " · ⚠️ _review_" if entry.get("needs_review") else ""
     return (
         f"- **[{entry.get('title','Untitled')}]({entry_relpath(entry)})** "
-        f"· composite **{scores['composite']}** · {fmt_month(entry.get('date',''))}{flag}  \n"
+        f"· composite **{scores['composite']}** · {fmt_published(entry)}{flag}  \n"
         f"  {c.clean_summary(takeaway, 200)}  \n"
         f"  _[{entry.get('source_name','source')}]({entry.get('source_url','')})_"
     )
@@ -199,9 +212,13 @@ def render_landing(all_entries: list[dict], conf: c.Config, now: str) -> str:
         "# Awesome Security & AI Research "
         "[![Awesome](https://cdn.jsdelivr.net/gh/sindresorhus/awesome@d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)",
         "",
-        "> An auto-updating, source-cited pool of the most **teachable** security and AI "
-        "research — scanned from X/Twitter, articles, and RSS, then extracted, scored, and "
-        "turned into actionable takeaways, skills, and harness improvements.",
+        "> An auto-updating, source-cited tracker of the most **teachable** security and AI "
+        "research — scanned from X/Twitter, GitHub, articles, and RSS, then extracted, scored, "
+        "and turned into actionable takeaways, skills, and harness improvements.",
+        "",
+        f"**Only the latest research:** every entry was published within the last "
+        f"~{conf.max_age_days} days. Older findings age out to "
+        "[`data/archive.json`](data/archive.json) automatically.",
         "",
         f"![Updated](https://img.shields.io/badge/updated-{now.replace('-', '--')}-blue) "
         f"![Findings](https://img.shields.io/badge/findings-{total}-success) "

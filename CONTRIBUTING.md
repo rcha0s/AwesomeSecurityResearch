@@ -21,7 +21,7 @@ The rendered `README.md`, `security/`, `ai/`, `skills/`, and `LEARNINGS.md` are
 1. **Credible, first-party source** — a recognized research team, vendor lab,
    standards body, CERT advisory, peer-reviewed/preprint venue, or a substantive
    practitioner post. No marketing or unattributed claims.
-2. **New** — prefer material from the last six months; newness decays in ranking.
+2. **New (hard rule)** — the source must have been published within the freshness window (`max_age_days` in `config.yaml`, ~1 month). We track only the latest research; older entries age out to `data/archive.json` automatically and are no longer shown.
 3. **In scope** — one of the two tracks above.
 4. **Teachable & actionable** — you can state the lessons and a concrete action.
 

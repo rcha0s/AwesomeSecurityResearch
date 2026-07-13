@@ -1,8 +1,8 @@
 # Phantom Squatting: attackers register the domains LLMs hallucinate
 
 **Track:** Security  ·  **Domain:** Web Application Security  ·  **Subtype:** Supply Chain  
-**Source:** [Palo Alto Networks Unit 42](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/)  ·  **Disclosed:** Jul 2026  ·  **Retrieved:** 2026-07-13  
-**Scores:** 🆕 Newness 77 · ✨ Novelty 90 · 🎯 Relevance 86 · **Composite 84.7**  
+**Source:** [Palo Alto Networks Unit 42](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/)  ·  **Published:** Jun 30, 2026  ·  **Retrieved:** 2026-07-13  
+**Scores:** 🆕 Newness 51 · ✨ Novelty 90 · 🎯 Relevance 86 · **Composite 76.9**  
 **Tags:** `supply-chain`, `slopsquatting`, `hallucination`, `phishing`, `unit42`
 
 > **Takeaway —** LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.

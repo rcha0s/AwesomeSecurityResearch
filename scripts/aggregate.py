@@ -67,6 +67,7 @@ def build_candidate(entry: dict, feed: dict, rules: dict) -> dict | None:
         "article_url": url,
         "tweet_url": None,
         "author": None,
+        "published": dt.strftime("%Y-%m-%d") if dt else c.date_from_url(url),
         "date": dt.strftime("%Y-%m") if dt else None,
         "excerpt": excerpt,
         "raw_path": None,
@@ -84,7 +85,7 @@ def main() -> int:
 
     config = c.load_yaml(c.SOURCES_FILE)
     rules = config["classification"]
-    cutoff = datetime.now(UTC) - timedelta(days=config.get("max_age_days", 183))
+    cutoff = datetime.now(UTC) - timedelta(days=c.load_config().max_age_days)
 
     candidates: list[dict] = []
     for feed in config["feeds"]:

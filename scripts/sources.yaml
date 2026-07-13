@@ -10,8 +10,9 @@
 # "AI Security" can still contribute a Web or Mobile item.
 # ---------------------------------------------------------------------------
 
-# Number of days an item may be old before it is dropped (last 6 months).
-max_age_days: 183
+# The hard freshness window (how old a resource may be) lives in config.yaml
+# as `max_age_days` — a single source of truth used by every ingestor and the
+# pool-pruning step. We track only the latest research.
 
 # ---------------------------------------------------------------------------
 # Twitter / X ingestion (via Agent Reach -> twitter-cli). Runs LOCALLY only —
@@ -41,8 +42,7 @@ linkedin:
 # ---------------------------------------------------------------------------
 github:
   min_stars: 40          # ignore repos below this (noise floor)
-  per_query: 8           # top-N per query by stars
-  max_age_days: 200      # only repos created within this window (bias to novel)
+  per_query: 8           # top-N per query by stars (created within config max_age_days)
   queries:
     - query: "prompt injection LLM"
       track: security

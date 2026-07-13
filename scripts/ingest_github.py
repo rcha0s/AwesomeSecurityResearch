@@ -107,6 +107,7 @@ def repo_to_candidate(repo: dict, q: dict, fetch: bool, max_chars: int) -> dict:
         "article_url": url,
         "tweet_url": None,
         "author": full_name.split("/")[0] if "/" in full_name else None,
+        "published": created[:10] if len(created) >= 10 else None,
         "date": created[:7] if len(created) >= 7 else None,
         "excerpt": c.clean_summary(f"{desc} ({stars} stars)", 320),
         "raw_path": raw_path,
@@ -123,10 +124,11 @@ def collect(cfg: dict, per_query: int | None, fetch: bool) -> list[dict]:
     if not gh_cfg.get("queries"):
         print("   (no github.queries configured)")
         return []
+    conf = c.load_config()
     min_stars = gh_cfg.get("min_stars", 0)
     limit = per_query or gh_cfg.get("per_query", 8)
-    max_chars = c.load_config().limits.get("article_chars", 20000)
-    cutoff = datetime.now(UTC) - timedelta(days=gh_cfg.get("max_age_days", 200))
+    max_chars = conf.limits.get("article_chars", 20000)
+    cutoff = datetime.now(UTC) - timedelta(days=conf.max_age_days)
     created_after = cutoff.strftime("%Y-%m-%d")
 
     out: list[dict] = []

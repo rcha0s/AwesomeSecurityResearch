@@ -16,7 +16,7 @@ import math
 import re
 import sys
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any
@@ -47,6 +47,7 @@ SECURITY_POOL = DATA_DIR / "security.json"
 AI_POOL = DATA_DIR / "ai.json"
 CANDIDATES_FILE = DATA_DIR / "candidates.json"
 ANALYSIS_OUT = DATA_DIR / "analysis_out.json"
+ARCHIVE_FILE = DATA_DIR / "archive.json"
 RAW_DIR = DATA_DIR / "_raw"
 
 SCHEMA_VERSION = "2.0"
@@ -91,6 +92,7 @@ class Config:
     confidence_min: float
     limits: dict[str, int]
     curation: dict[str, float]
+    max_age_days: int
 
 
 def load_config(path: Path = CONFIG_FILE) -> Config:
@@ -102,6 +104,7 @@ def load_config(path: Path = CONFIG_FILE) -> Config:
         confidence_min=float(raw["confidence_min"]),
         limits=raw.get("limits", {}),
         curation=raw.get("curation", {}),
+        max_age_days=int(raw.get("max_age_days", 31)),
     )
 
 
@@ -224,6 +227,56 @@ def extract_urls(text: str) -> list[str]:
     return list(seen)
 
 
+def date_from_url(url: str) -> str | None:
+    """Extract a publish date embedded in a URL path, e.g. /2026/05/13/ or
+    /2026/05/. Returns YYYY-MM-DD or YYYY-MM, or None. Many blogs (OWASP, Unit42,
+    Google, Microsoft, Project Zero) date their permalinks this way."""
+    m = re.search(r"/(20\d{2})/(0[1-9]|1[0-2])/(0[1-9]|[12]\d|3[01])(?:/|-)", url or "")
+    if m:
+        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+    m = re.search(r"/(20\d{2})/(0[1-9]|1[0-2])/", url or "")
+    if m:
+        return f"{m.group(1)}-{m.group(2)}"
+    return None
+
+
+def to_month(date: str | None) -> str | None:
+    """Coerce a full or partial date string to YYYY-MM (for newness scoring)."""
+    return date[:7] if date and len(date) >= 7 and date[4] == "-" else None
+
+
+def best_date(entry: dict) -> str | None:
+    """The most precise source date available for an entry."""
+    return entry.get("published") or entry.get("date")
+
+
+def parse_date_end(date: str | None) -> datetime | None:
+    """Parse YYYY-MM-DD, or YYYY-MM as the LAST day of that month (lenient — a
+    month-only date shouldn't age out early). Returns None if unparseable."""
+    if not date:
+        return None
+    try:
+        return datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=UTC)
+    except (ValueError, TypeError):
+        pass
+    try:
+        start = datetime.strptime(date[:7], "%Y-%m").replace(tzinfo=UTC)
+    except (ValueError, TypeError):
+        return None
+    nxt = start.replace(year=start.year + (start.month == 12), month=start.month % 12 + 1)
+    return nxt - timedelta(days=1)
+
+
+def is_fresh(entry: dict, max_age_days: int, now: datetime | None = None) -> bool:
+    """True if the entry's source date is within the freshness window. Undated
+    entries are treated as fresh (we don't drop what we can't date)."""
+    dt = parse_date_end(best_date(entry))
+    if dt is None:
+        return True
+    now = now or datetime.now(UTC)
+    return (now - dt).days <= max_age_days
+
+
 # --- Scoring math (deterministic; shared by rerank + tests) ----------------
 def parse_month(date: str) -> datetime | None:
     for fmt in ("%Y-%m-%d", "%Y-%m"):
@@ -295,6 +348,19 @@ def known_urls() -> set[str]:
     return urls
 
 
+def archive_entries(entries: list[dict]) -> int:
+    """Append aged-out entries to data/archive.json, de-duped by id. Preserves
+    history so the growing pool isn't lost even though the live tracker prunes."""
+    if not entries:
+        return 0
+    existing = load_json(ARCHIVE_FILE, default=[]) or []
+    seen = {e.get("id") for e in existing}
+    added = [e for e in entries if e.get("id") not in seen]
+    if added:
+        save_json(ARCHIVE_FILE, existing + added)
+    return len(added)
+
+
 def load_candidates() -> list[dict]:
     return load_json(CANDIDATES_FILE, default=[]) or []
 
@@ -310,6 +376,7 @@ def add_candidates(new: list[dict]) -> list[dict]:
     so nothing already analyzed gets re-queued. Returns the actually-added list.
     """
     existing = load_candidates()
+    max_age = load_config().max_age_days
     seen_urls = known_urls() | {normalize_url(c.get("source_url", "")) for c in existing}
     seen_titles = [c.get("title", "") for c in existing] + [
         e.get("title", "") for e in all_pool_entries()
@@ -318,6 +385,9 @@ def add_candidates(new: list[dict]) -> list[dict]:
     for cand in new:
         nurl = normalize_url(cand.get("source_url", ""))
         if not nurl or nurl in seen_urls:
+            continue
+        # HARD freshness gate: never stage anything older than the window.
+        if not is_fresh(cand, max_age):
             continue
         if any(title_similar(cand.get("title", ""), t) for t in seen_titles):
             continue

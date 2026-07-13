@@ -1,8 +1,8 @@
 # Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor
 
 **Track:** Ai  ·  **Domain:** Agents & Harnesses  ·  **Subtype:** Meta-Harness  
-**Source:** [omnigent-ai/omnigent](https://github.com/omnigent-ai/omnigent)  ·  **Author:** omnigent-ai  ·  **Disclosed:** Jun 2026  ·  **Retrieved:** 2026-07-13  
-**Scores:** 🆕 Newness 39 · ✨ Novelty 78 · 🎯 Relevance 84 · **Composite 68.4**  
+**Source:** [omnigent-ai/omnigent](https://github.com/omnigent-ai/omnigent)  ·  **Author:** omnigent-ai  ·  **Published:** Jun 2026  ·  **Retrieved:** 2026-07-13  
+**Scores:** 🆕 Newness 10 · ✨ Novelty 78 · 🎯 Relevance 84 · **Composite 59.7**  
 **Tags:** `meta-harness`, `orchestration`, `agents`, `claude-code`, `tooling-2026`
 
 > **Takeaway —** The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.

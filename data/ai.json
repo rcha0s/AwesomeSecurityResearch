@@ -50,56 +50,14 @@
       "scores": {
         "novelty": 78,
         "relevance": 84,
-        "newness": 39,
-        "composite": 68.4,
-        "scored_at": "2026-07-13T00:46:09+00:00"
+        "newness": 10,
+        "composite": 59.7,
+        "scored_at": "2026-07-13T01:05:11+00:00"
       },
       "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
       "retrieved_at": "2026-07-13T00:46:09+00:00",
-      "needs_review": false
-    },
-    {
-      "source_url": "https://github.com/agentscope-ai/PawBench",
-      "article_url": "https://github.com/agentscope-ai/PawBench",
-      "source_name": "agentscope-ai/PawBench",
-      "source_type": "GitHub repository",
-      "author": "agentscope-ai",
-      "date": "2026-05",
-      "discovered_via": "github",
-      "id": "agentscope-ai-pawbench-2caeb55853",
-      "track": "ai",
-      "domain": "Evaluation & Safety",
-      "subtype": "Evals",
-      "summary": "PawBench is a benchmark for evaluating LLM × harness performance — measuring not just the model but the model-plus-harness system, reflecting that agent capability depends heavily on the surrounding scaffold.",
-      "takeaway": "Evaluate the model-plus-harness as a unit; the harness is a first-class variable in agent performance.",
-      "lessons": [
-        {
-          "point": "Benchmark the (model, harness) pair, not the model alone — the scaffold changes outcomes",
-          "excerpt": "A benchmark for evaluating LLM x harness performance",
-          "confidence": 0.8
-        }
-      ],
-      "tags": [
-        "evals",
-        "harness",
-        "benchmark",
-        "agents"
-      ],
-      "actionable": {
-        "type": "tool",
-        "title": "Add harness-aware evals",
-        "detail": "When comparing agents, hold the task set fixed and vary the harness; measure end-to-end task success, not raw model scores."
-      },
-      "scores": {
-        "novelty": 72,
-        "relevance": 80,
-        "newness": 20,
-        "composite": 59.2,
-        "scored_at": "2026-07-13T00:46:09+00:00"
-      },
-      "title": "PawBench: benchmarking LLM x harness performance",
-      "retrieved_at": "2026-07-13T00:46:09+00:00",
-      "needs_review": false
+      "needs_review": false,
+      "published": "2026-06"
     }
   ],
   "generated_note": "AI research learnings (agents, harnesses, prompting, models, tooling, evaluation). Grown by the /research-scan and /add-resource skills."
