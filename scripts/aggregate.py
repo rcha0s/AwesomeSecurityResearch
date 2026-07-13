@@ -55,7 +55,10 @@ def build_candidate(entry: dict, feed: dict, rules: dict) -> dict | None:
     title = (entry.get("title") or "").strip()
     excerpt = c.clean_summary(entry.get("summary", ""))
     blob = f"{title} {excerpt}"
-    domain = classify_domain(blob, rules, feed.get("domains", []))
+    # A `strict` feed (e.g. the high-volume arXiv cs.AI/cs.LG firehose) only stages
+    # items that actually keyword-match a topic — no single-domain fallback.
+    feed_domains = [] if feed.get("strict") else feed.get("domains", [])
+    domain = classify_domain(blob, rules, feed_domains)
     if domain is None:
         return None
     return {
@@ -88,6 +91,7 @@ def feed_from_source(source: dict) -> dict:
         "url": source["handle"],
         "type": source.get("notes", ""),
         "domains": source.get("domains", []),
+        "strict": source.get("strict", False),
         "source_id": source["id"],
         "source_rank": source.get("rank"),
         "topics": source.get("topics", []),

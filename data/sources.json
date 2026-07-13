@@ -20,7 +20,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Standards body / consortium"
+    "notes": "Standards body / consortium",
+    "strict": false
   },
   {
     "id": "rss:https-googleprojectzero-blogspot-com-feeds-posts",
@@ -46,7 +47,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Vendor research"
+    "notes": "Vendor research",
+    "strict": false
   },
   {
     "id": "rss:https-unit42-paloaltonetworks-com-feed",
@@ -72,7 +74,8 @@
     "rank": 77.5,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Vendor research"
+    "notes": "Vendor research",
+    "strict": false
   },
   {
     "id": "rss:https-www-microsoft-com-en-us-security-blog-feed",
@@ -97,7 +100,8 @@
     "rank": 77.5,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Vendor research"
+    "notes": "Vendor research",
+    "strict": false
   },
   {
     "id": "rss:http-export-arxiv-org-rss-cs-cr",
@@ -123,7 +127,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Academic preprints"
+    "notes": "Academic preprints",
+    "strict": false
   },
   {
     "id": "rss:https-portswigger-net-research-rss",
@@ -146,7 +151,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Vendor research"
+    "notes": "Vendor research",
+    "strict": false
   },
   {
     "id": "rss:https-github-blog-tag-github-security-lab-feed",
@@ -169,7 +175,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Vendor research"
+    "notes": "Vendor research",
+    "strict": false
   },
   {
     "id": "rss:https-security-googleblog-com-feeds-posts-defaul",
@@ -195,7 +202,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Vendor research"
+    "notes": "Vendor research",
+    "strict": false
   },
   {
     "id": "rss:https-owasp-org-blog-feed-xml",
@@ -218,7 +226,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Standards body"
+    "notes": "Standards body",
+    "strict": false
   },
   {
     "id": "rss:https-citizenlab-ca-feed",
@@ -241,7 +250,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Academic / research lab"
+    "notes": "Academic / research lab",
+    "strict": false
   },
   {
     "id": "rss:https-www-quokka-io-blog-rss-xml",
@@ -264,7 +274,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Vendor research"
+    "notes": "Vendor research",
+    "strict": false
   },
   {
     "id": "rss:https-www-zimperium-com-blog-feed",
@@ -287,7 +298,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Vendor research"
+    "notes": "Vendor research",
+    "strict": false
   },
   {
     "id": "rss:http-export-arxiv-org-rss-cs-ai",
@@ -310,7 +322,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Academic preprints"
+    "notes": "Academic preprints",
+    "strict": true
   },
   {
     "id": "rss:http-export-arxiv-org-rss-cs-lg",
@@ -333,7 +346,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Academic preprints"
+    "notes": "Academic preprints",
+    "strict": true
   },
   {
     "id": "rss:https-simonwillison-net-atom-everything",
@@ -356,7 +370,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Practitioner blog"
+    "notes": "Practitioner blog",
+    "strict": false
   },
   {
     "id": "rss:https-www-anthropic-com-rss-xml",
@@ -379,7 +394,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "Model lab"
+    "notes": "Model lab",
+    "strict": false
   },
   {
     "id": "x_account:kunchenguid",
@@ -402,7 +418,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": null
+    "notes": null,
+    "strict": false
   },
   {
     "id": "x_account:simonw",
@@ -425,7 +442,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": null
+    "notes": null,
+    "strict": false
   },
   {
     "id": "x_account:portswigger",
@@ -448,7 +466,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": null
+    "notes": null,
+    "strict": false
   },
   {
     "id": "x_account:unit42-intel",
@@ -471,7 +490,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": null
+    "notes": null,
+    "strict": false
   },
   {
     "id": "x_account:googlevrp",
@@ -494,7 +514,8 @@
     "rank": 75.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": null
+    "notes": null,
+    "strict": false
   },
   {
     "id": "github_query:prompt-injection-llm",
@@ -517,7 +538,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "github search"
+    "notes": "github search",
+    "strict": false
   },
   {
     "id": "github_query:mcp-server-security-scanner",
@@ -540,7 +562,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "github search"
+    "notes": "github search",
+    "strict": false
   },
   {
     "id": "github_query:ai-agent-security-guardrails",
@@ -563,7 +586,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "github search"
+    "notes": "github search",
+    "strict": false
   },
   {
     "id": "github_query:web-application-security-research-exploit",
@@ -586,7 +610,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "github search"
+    "notes": "github search",
+    "strict": false
   },
   {
     "id": "github_query:mobile-android-security-research-tool",
@@ -609,7 +634,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "github search"
+    "notes": "github search",
+    "strict": false
   },
   {
     "id": "github_query:agent-harness-framework-llm",
@@ -632,7 +658,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "github search"
+    "notes": "github search",
+    "strict": false
   },
   {
     "id": "github_query:llm-evaluation-harness-benchmark",
@@ -655,7 +682,8 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "github search"
+    "notes": "github search",
+    "strict": false
   },
   {
     "id": "github_query:context-engineering-retrieval-llm",
@@ -678,6 +706,7 @@
     "rank": 55.0,
     "added": "2026-07-13",
     "active": true,
-    "notes": "github search"
+    "notes": "github search",
+    "strict": false
   }
 ]

@@ -105,6 +105,41 @@ def test_add_build_candidate(sandbox):
     assert cand["raw_path"] is not None
 
 
+def test_aggregate_strict_feed_requires_keyword():
+    rules = c.load_yaml(c.SOURCES_FILE)["classification"]
+    item = {"link": "https://x/a", "title": "unrelated philosophical musings", "summary": ""}
+    # non-strict single-domain feed: fallback stages the unclassifiable item
+    assert aggregate.build_candidate(item, {"name": "F", "domains": ["AI Security"]}, rules)
+    # strict feed (arXiv firehose): no keyword match -> not staged
+    strict = aggregate.build_candidate(
+        {**item, "link": "https://x/b"},
+        {"name": "F", "domains": ["AI Security"], "strict": True},
+        rules,
+    )
+    assert strict is None
+
+
+def test_github_candidate_uses_pushed_date():
+    import ingest_github as ig
+
+    src = {
+        "id": "github_query:x",
+        "rank": 55,
+        "topics": ["ai-security"],
+        "domains": ["AI Security"],
+    }
+    repo = {
+        "fullName": "a/b",
+        "url": "https://github.com/a/b",
+        "stargazersCount": 100,
+        "createdAt": "2024-01-01T00:00:00Z",
+        "updatedAt": "2026-07-10T00:00:00Z",
+        "description": "x",
+    }
+    cand = ig.repo_to_candidate(repo, src, fetch=False, max_chars=100)
+    assert cand["published"] == "2026-07-10"  # last-push date, not creation
+
+
 def test_aggregate_build_candidate_none_cases():
     rules = c.load_yaml(c.SOURCES_FILE)["classification"]
     assert aggregate.build_candidate({"link": "", "title": "x"}, {"domains": []}, rules) is None
