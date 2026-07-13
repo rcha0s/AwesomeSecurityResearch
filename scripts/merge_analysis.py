@@ -22,11 +22,12 @@ import rerank
 import sources_registry as sr
 
 
-def update_source_hit_rate(merged: list[dict]) -> None:
+def update_source_hit_rate(new_entries: list[dict]) -> None:
     """Bump each source's ingested/curated stats so productive sources rank up.
-    ingested = analyzed, curated = published (needs_review == False)."""
+    Pass ONLY newly-added entries (not in-place updates) so re-merging the same
+    input never double-counts. ingested = analyzed, curated = needs_review False."""
     deltas: dict[str, list[int]] = {}
-    for e in merged:
+    for e in new_entries:
         sid = e.get("source_id")
         if not sid:
             continue
@@ -91,11 +92,17 @@ def normalize_entry(entry: dict, conf: c.Config) -> dict:
     return entry
 
 
-def merge(analyzed: list[dict], conf: c.Config) -> tuple[list[dict], list[str], set[str]]:
+def merge(
+    analyzed: list[dict], conf: c.Config
+) -> tuple[list[dict], list[str], set[str], list[dict]]:
+    """Returns (merged, errors, merged_urls, newly_added). `newly_added` are the
+    entries that were freshly appended (not in-place updates) — only these should
+    credit a source's hit-rate, so re-merging the same input never double-counts."""
     pools = {t: c.load_pool(t) for t in c.TOPICS}
     merged: list[dict] = []
     errors: list[str] = []
     merged_urls: set[str] = set()
+    newly_added: list[dict] = []
     for raw in analyzed:
         problems = c.validate_entry(raw)
         if problems:
@@ -106,6 +113,7 @@ def merge(analyzed: list[dict], conf: c.Config) -> tuple[list[dict], list[str], 
         idx = match_index(entries, entry)
         if idx is None:
             entries.append(entry)
+            newly_added.append(entry)
         else:
             entries[idx] = {**entries[idx], **entry, "id": entries[idx].get("id", entry["id"])}
         merged.append(entry)
@@ -114,7 +122,7 @@ def merge(analyzed: list[dict], conf: c.Config) -> tuple[list[dict], list[str], 
                 merged_urls.add(c.normalize_url(entry[k]))
     for topic, pool in pools.items():
         c.save_pool(topic, pool)
-    return merged, errors, merged_urls
+    return merged, errors, merged_urls, newly_added
 
 
 def clear_candidates(merged: list[dict], merged_urls: set[str]) -> int:
@@ -139,8 +147,8 @@ def main() -> int:
     if isinstance(analyzed, dict):
         analyzed = analyzed.get("entries", [])
 
-    merged, errors, merged_urls = merge(analyzed, conf)
-    print(f"Merged {len(merged)} entr(y/ies) into the pools.")
+    merged, errors, merged_urls, newly_added = merge(analyzed, conf)
+    print(f"Merged {len(merged)} entr(y/ies) into the pools ({len(newly_added)} new).")
     for topic in c.TOPICS:
         flagged = sum(1 for m in merged if m["topic"] == topic and m.get("needs_review"))
         count = sum(1 for m in merged if m["topic"] == topic)
@@ -153,7 +161,7 @@ def main() -> int:
     cleared = clear_candidates(merged, merged_urls)
     print(f"Cleared {cleared} staged candidate(s).")
 
-    update_source_hit_rate(merged)
+    update_source_hit_rate(newly_added)  # credit only NEW findings, never re-counts
     rerank.rerank_all(conf)
     return 0
 

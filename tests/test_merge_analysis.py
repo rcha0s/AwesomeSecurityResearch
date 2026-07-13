@@ -58,7 +58,7 @@ def test_merge_routes_and_flags_low_confidence(sandbox):
         ),
         make_entry(topic="nope", domain="x", source_url="https://a/bad"),  # invalid domain/track
     ]
-    merged, errors, _ = m.merge(analyzed, conf)
+    merged, errors, _, _ = m.merge(analyzed, conf)
     assert len(merged) == 2 and len(errors) == 1
     assert len(c.load_pool("ai-research")["entries"]) == 1
     sec = c.load_pool("ai-security")["entries"]
@@ -82,7 +82,7 @@ def test_curation_gate_flags_low_novelty(sandbox):
         scores={"novelty": 85, "relevance": 90},
         lessons=[{"point": "fresh", "confidence": 0.95}],
     )
-    merged, _, _ = m.merge([derivative, novel], conf)
+    merged, _, _, _ = m.merge([derivative, novel], conf)
     by_url = {e["source_url"]: e for e in merged}
     assert by_url["https://a/deriv"]["needs_review"] is True
     assert by_url["https://a/novel"]["needs_review"] is False
@@ -106,6 +106,30 @@ def test_main_merges_and_reranks(sandbox):
     assert m.main() == 0
     entries = c.load_pool("ai-research")["entries"]
     assert len(entries) == 1 and "composite" in entries[0]["scores"]
+
+
+def test_merge_returns_only_new_on_remerge(sandbox):
+    conf = c.load_config()
+    analyzed = [make_entry(topic="ai-security", domain="MCP", source_url="https://a/x")]
+    _, _, _, new1 = m.merge(analyzed, conf)
+    _, _, _, new2 = m.merge(analyzed, conf)  # same input again (idempotent)
+    assert len(new1) == 1  # first merge: appended
+    assert new2 == []  # re-merge: in-place update, NOT re-counted
+
+
+def test_hit_rate_credited_once(sandbox):
+    import sources_registry as sr
+
+    src = sr.new_source("rss", "https://feed", tier="medium")
+    sr.add_source(src)
+    entry = make_entry(
+        topic="ai-security", domain="MCP", source_url="https://a/hit", source_id=src["id"]
+    )
+    c.save_json(c.ANALYSIS_OUT, [entry])
+    m.main()
+    m.main()  # second run must NOT double-count
+    stats = sr.get_by_id(src["id"])["stats"]
+    assert stats["ingested"] == 1 and stats["curated"] == 1
 
 
 def test_clear_candidates_removes_merged(sandbox):
