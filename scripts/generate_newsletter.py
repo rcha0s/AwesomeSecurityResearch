@@ -77,12 +77,13 @@ def build(conf: c.Config, now: str) -> str:
     all_trends = c.load_json(c.DATA_DIR / "trends.json", default={}) or {}
     total = sum(len(c.load_pool(t)["entries"]) for t in c.TOPICS)
     out = [
-        "# 📰 Security & AI Research — Latest Issue",
+        f"# 📰 Security & AI Research — Daily Snapshot ({now})",
         "",
-        f"> The most teachable security and AI research from the last {conf.max_age_days} days, "
-        "curated and source-cited. Three tracks: AI Security, Product Security, AI Research.",
+        f"> A daily-refreshed digest of the most teachable, **vetted** security and AI research "
+        f"from the last {conf.max_age_days} days, curated and source-cited. Three tracks: "
+        "AI Security, Product Security, AI Research.",
         "",
-        f"**Issue {now}** · {total} findings this window · "
+        f"{total} vetted findings in window · [← home](README.md) · "
         "[full trends](TRENDS.md) · [all learnings](LEARNINGS.md)",
         "",
         "---",

@@ -147,6 +147,7 @@ class Config:
     limits: dict[str, int]
     curation: dict[str, float]
     max_age_days: int
+    snapshot_days: int
 
 
 def load_config(path: Path = CONFIG_FILE) -> Config:
@@ -163,6 +164,7 @@ def load_config(path: Path = CONFIG_FILE) -> Config:
         limits=raw.get("limits", {}),
         curation=raw.get("curation", {}),
         max_age_days=int(raw.get("max_age_days", 31)),
+        snapshot_days=int(raw.get("snapshot_days", 7)),
     )
 
 

@@ -1,8 +1,8 @@
-# 📰 Security & AI Research — Latest Issue
+# 📰 Security & AI Research — Daily Snapshot (2026-07-13)
 
-> The most teachable security and AI research from the last 31 days, curated and source-cited. Three tracks: AI Security, Product Security, AI Research.
+> A daily-refreshed digest of the most teachable, **vetted** security and AI research from the last 31 days, curated and source-cited. Three tracks: AI Security, Product Security, AI Research.
 
-**Issue 2026-07-13** · 7 findings this window · [full trends](TRENDS.md) · [all learnings](LEARNINGS.md)
+7 vetted findings in window · [← home](README.md) · [full trends](TRENDS.md) · [all learnings](LEARNINGS.md)
 
 ---
 

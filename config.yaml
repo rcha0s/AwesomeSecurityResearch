@@ -16,6 +16,10 @@ weights:
 # (preserved, but no longer shown in the live tracker). "About a month."
 max_age_days: 31
 
+# The README "this week" snapshot shows only curated findings published within
+# this many days (the newsletter still covers the full max_age_days window).
+snapshot_days: 7
+
 # Newness decay: newness = 100 * exp(-age_days / half_life_days).
 # A finding loses half its newness score every `half_life_days` days. Kept short
 # so ranking still differentiates within the ~1-month window.
