@@ -58,7 +58,9 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
 
 4. **Emit** `data/analysis_out.json` — a JSON list of the analyzed entries (each a full
    schema-v2 entry: at minimum `track, domain, subtype, title, source_url`, plus the fields
-   above; carry over `article_url, tweet_url, author, date, discovered_via` from the candidate).
+   above; carry over `article_url, tweet_url, author, date, published, discovered_via,
+   source_id, source_rank, source_topics` from the candidate). Carrying `source_id` is what
+   lets `merge_analysis.py` credit the source's hit-rate when your finding is curated.
 
 5. **Merge + rerank + render:**
    ```bash

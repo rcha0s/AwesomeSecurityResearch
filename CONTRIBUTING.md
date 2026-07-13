@@ -64,8 +64,20 @@ python scripts/generate_skills.py
 
 Open a PR (direct-PR mode — see [AGENTS.md](AGENTS.md)). Keep lint + tests green.
 
-## Adding a source feed / account
+## Adding a source (X user, blog, newsletter, GitHub user/query, YouTube channel)
 
-Propose feeds in [`scripts/sources.yaml`](scripts/sources.yaml) with a short
-credibility justification. X accounts go under `twitter.accounts` (use a **burner**
-account — never your main). Single-domain feeds classify more accurately.
+Sources live in the **ranked registry** [`data/sources.json`](data/sources.json), not in
+`sources.yaml` anymore. Add one with `scripts/add_source.py` (or the `/add-source` skill):
+
+```bash
+python scripts/add_source.py x_account @simonw --topics ai-research --tier high
+python scripts/add_source.py blog https://blog.trailofbits.com --topics product-security
+python scripts/add_source.py github_user praetorian-inc --topics ai-security,product-security
+python scripts/add_source.py youtube https://youtube.com/@LiveOverflow --topics product-security
+python scripts/add_source.py newsletter https://tldrsec.com --topics product-security
+```
+
+Each source is **ranked** `rank = 0.5·tier + 0.25·reach-signal + 0.25·hit-rate`, and the
+hit-rate rises as the source yields *curated* findings — so good sources climb over time. For
+X accounts, also **follow them on the burner**. `sources.yaml` now holds only classification
+rules + `home_feed`/`min_stars` knobs.

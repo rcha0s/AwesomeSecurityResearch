@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import common
 import pytest
+import sources_registry
 
 
 @pytest.fixture
@@ -20,6 +21,7 @@ def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(common, "CANDIDATES_FILE", data / "candidates.json")
     monkeypatch.setattr(common, "ANALYSIS_OUT", data / "analysis_out.json")
     monkeypatch.setattr(common, "RAW_DIR", data / "_raw")
+    monkeypatch.setattr(sources_registry, "REGISTRY_FILE", data / "sources.json")
     common.save_pool("security", common.empty_pool("security"))
     common.save_pool("ai", common.empty_pool("ai"))
     return tmp_path

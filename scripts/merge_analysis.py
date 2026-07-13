@@ -19,6 +19,22 @@ import sys
 
 import common as c
 import rerank
+import sources_registry as sr
+
+
+def update_source_hit_rate(merged: list[dict]) -> None:
+    """Bump each source's ingested/curated stats so productive sources rank up.
+    ingested = analyzed, curated = published (needs_review == False)."""
+    deltas: dict[str, list[int]] = {}
+    for e in merged:
+        sid = e.get("source_id")
+        if not sid:
+            continue
+        d = deltas.setdefault(sid, [0, 0])
+        d[0] += 1
+        if not e.get("needs_review"):
+            d[1] += 1
+    sr.update_stats({sid: (d[0], d[1]) for sid, d in deltas.items()})
 
 
 def entry_confidence(entry: dict) -> float:
@@ -137,6 +153,7 @@ def main() -> int:
     cleared = clear_candidates(merged, merged_urls)
     print(f"Cleared {cleared} staged candidate(s).")
 
+    update_source_hit_rate(merged)
     rerank.rerank_all(conf)
     return 0
 
