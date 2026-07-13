@@ -36,6 +36,8 @@ confidence_min: 0.55
 curation:
   min_novelty: 60      # derivative / well-known material scores below this
   min_relevance: 55    # must be directly useful to the track's expert audience
+  min_composite: 20    # curated view floor — below this a finding stays in REVIEW.md,
+                       # not the topic pages/newsletter (catches unscored/legacy noise)
 
 # Per-run ingestion caps (bound cost/ban-risk of a single scan).
 limits:

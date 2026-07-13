@@ -12,6 +12,100 @@
   ],
   "entries": [
     {
+      "source_url": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
+      "article_url": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
+      "source_name": "Simon Willison's Weblog",
+      "source_type": "Practitioner blog",
+      "published": "2026-07-04",
+      "date": "2026-07",
+      "discovered_via": "rss",
+      "source_id": "rss:https-simonwillison-net-atom-everything",
+      "source_rank": 55.0,
+      "topic": "ai-research",
+      "domain": "Tooling & Infrastructure",
+      "title": "Better Models, Worse Tools: SOTA models regress on non-native tool schemas",
+      "summary": "Armin (building the Pi harness) found newer Claude models (Opus 4.8, Sonnet 5) invent made-up fields when calling Pi's custom edit tool — worse than older models — likely because they're RL-trained on Claude Code's built-in edit tool. Third-party harnesses with their own tool schemas get degraded tool-calling from the very newest models.",
+      "takeaway": "Newer ≠ better for YOUR tools: match your harness's tool schemas to what the target model was trained on.",
+      "lessons": [
+        {
+          "point": "A SOTA model can be WORSE at a custom tool schema than its older siblings if it was RL-trained on a different harness's tools",
+          "excerpt": "the SOTA models of the family are worse at this specific tool schema than their older siblings",
+          "confidence": 0.9
+        },
+        {
+          "point": "Align tool formats to the model — Claude is trained on str-replace edits, OpenAI on apply_patch",
+          "excerpt": "Claude's edit tool uses search and replace... OpenAI's Codex uses an apply_patch mechanism instead",
+          "confidence": 0.85
+        }
+      ],
+      "tags": [
+        "harness",
+        "tool-use",
+        "agents",
+        "claude-code",
+        "architecture"
+      ],
+      "actionable": {
+        "type": "harness",
+        "title": "Offer model-matched edit tools",
+        "detail": "In a multi-model harness, provide the edit-tool format each model was trained on (Claude str-replace, OpenAI apply_patch) instead of one custom schema, and validate/repair malformed tool calls."
+      },
+      "scores": {
+        "novelty": 80,
+        "relevance": 90,
+        "newness": 51,
+        "composite": 74.8,
+        "scored_at": "2026-07-13T04:19:32+00:00"
+      },
+      "id": "better-models-worse-tools-sota-models-regress-on-23a5b69b6f",
+      "retrieved_at": "2026-07-13T04:19:32+00:00",
+      "needs_review": false
+    },
+    {
+      "source_url": "https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything",
+      "article_url": "https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything",
+      "source_name": "Simon Willison's Weblog",
+      "source_type": "Practitioner blog",
+      "published": "2026-07-09",
+      "date": "2026-07",
+      "discovered_via": "rss",
+      "source_id": "rss:https-simonwillison-net-atom-everything",
+      "source_rank": 55.0,
+      "topic": "ai-research",
+      "domain": "Models & Capabilities",
+      "title": "GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims",
+      "summary": "OpenAI shipped GPT-5.6 in three sizes (Luna/Terra/Sol) at $1-5 in / $6-30 out per Mtok, all with a 1M-token context, 128k max output, and a Feb 2026 cutoff. OpenAI's headline claim is long-running agentic performance beating Claude Fable 5.",
+      "takeaway": "Evaluate the tiers on your own agentic task — per-token price means less now that reasoning-token counts dominate cost.",
+      "lessons": [
+        {
+          "point": "Price-per-token is a weak comparison when reasoning-token usage varies wildly per model/task",
+          "excerpt": "price-per-million tokens doesn't tell us much now that the number of reasoning tokens can differ so much",
+          "confidence": 0.85
+        }
+      ],
+      "tags": [
+        "models",
+        "openai",
+        "agents",
+        "benchmarks"
+      ],
+      "actionable": {
+        "type": "takeaway",
+        "title": "Benchmark the tiers on your real tasks",
+        "detail": "Run Luna/Terra/Sol against your harness's actual agentic workload and measure end-to-end cost incl. reasoning tokens, not sticker price."
+      },
+      "scores": {
+        "novelty": 55,
+        "relevance": 75,
+        "newness": 51,
+        "composite": 60.8,
+        "scored_at": "2026-07-13T04:19:32+00:00"
+      },
+      "id": "gpt-5-6-luna-terra-sol-three-tiers-1m-context-ag-c37d1d22d0",
+      "retrieved_at": "2026-07-13T04:19:32+00:00",
+      "needs_review": true
+    },
+    {
       "source_url": "https://github.com/omnigent-ai/omnigent",
       "article_url": "https://github.com/omnigent-ai/omnigent",
       "source_name": "omnigent-ai/omnigent",
@@ -53,7 +147,7 @@
         "relevance": 84,
         "newness": 10,
         "composite": 59.7,
-        "scored_at": "2026-07-13T02:48:31+00:00"
+        "scored_at": "2026-07-13T04:19:32+00:00"
       },
       "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
       "retrieved_at": "2026-07-13T00:46:09+00:00",

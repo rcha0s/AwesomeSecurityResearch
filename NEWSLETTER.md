@@ -2,7 +2,7 @@
 
 > The most teachable security and AI research from the last 31 days, curated and source-cited. Three tracks: AI Security, Product Security, AI Research.
 
-**Issue 2026-07-13** · 3 findings this window · [full trends](TRENDS.md) · [all learnings](LEARNINGS.md)
+**Issue 2026-07-13** · 7 findings this window · [full trends](TRENDS.md) · [all learnings](LEARNINGS.md)
 
 ---
 
@@ -12,11 +12,13 @@ _Securing AI systems: harness & agent security, MCP, skill scanning, prompt inje
 
 **🔬 Latest research**
 
-- _Nothing new in the current window._
+- **[OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/)** · _Palo Alto Networks Unit 42_ · composite 62.5
+  Agent skill marketplaces are a critical, largely-untrusted link in the software supply chain — marketplace scanning alone does not make them safe.
+  → **Do:** (harness) Vet and sandbox agent skills
 
 **📈 Emerging trends**
 
-- **agent-security** (watching) — 4 findings from 4 sources since 2026-02.
+- **agent-security** (🔺 rising) — 5 findings from 5 sources since 2026-02.
 - **prompt-injection** (watching) — 3 findings from 3 sources since 2026-02.
 - **tooling-2026** (watching) — 2 findings from 2 sources since 2026-02.
 
@@ -33,8 +35,9 @@ _Securing products: application security, supply chain, cloud & infra, identity,
 - **[Phantom Squatting: attackers register the domains LLMs hallucinate](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/)** · _Palo Alto Networks Unit 42_ · composite 76.9
   LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
   → **Do:** (tool) Enumerate & monitor your brand's hallucinated domains
-- **[@redhat-cloud-services npm namespace compromise (32+ packages)](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)** · _Red Hat Security_ · composite 3.0
-  Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
+- **[GigaWiper: modular destructive malware that fakes ransomware](https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware/)** · _Microsoft Security Blog_ · composite 64.3
+  Wiper malware is consolidating into modular platforms, and 'ransomware' may be undecryptable destruction in disguise — plan recovery accordingly.
+  → **Do:** (takeaway) Assume fake-ransomware; harden recovery
 
 **📈 Emerging trends**
 
@@ -50,13 +53,18 @@ _Practitioner AI: improving your harness, understanding, and architecture for us
 
 **🔬 Latest research**
 
+- **[Better Models, Worse Tools: SOTA models regress on non-native tool schemas](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything)** · _Simon Willison's Weblog_ · composite 74.8
+  Newer ≠ better for YOUR tools: match your harness's tool schemas to what the target model was trained on.
+  → **Do:** (harness) Offer model-matched edit tools
 - **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](https://github.com/omnigent-ai/omnigent)** · _omnigent-ai/omnigent_ · composite 59.7
   The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
   → **Do:** (harness) Consider a meta-harness for multi-agent work
 
 **📈 Emerging trends**
 
-- **agents** (🔺 rising) — 2 findings from 2 sources since 2026-05.
+- **agents** (🔺 rising) — 4 findings from 3 sources since 2026-05.
+- **claude-code** (🔺 rising) — 2 findings from 2 sources since 2026-06.
+- **harness** (🔺 rising) — 2 findings from 2 sources since 2026-05.
 
 [→ Full AI Research database](ai-research/README.md)
 

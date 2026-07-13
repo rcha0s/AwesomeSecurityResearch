@@ -165,12 +165,15 @@ def render_index_block(entry: dict, conf: c.Config) -> str:
 
 def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
     base = c.ROOT / topic
-    entries = c.load_pool(topic)["entries"]
+    all_entries = c.load_pool(topic)["entries"]
+    # Only VETTED findings are shown; the rest live in the REVIEW.md queue.
+    curated = [e for e in all_entries if c.is_curated(e, conf)]
+    held = len(all_entries) - len(curated)
     by_domain: dict[str, list[dict]] = defaultdict(list)
-    for e in entries:
+    for e in curated:
         by_domain[e.get("domain") or "General"].append(e)
 
-    # Clear stale per-domain dirs, then write a page per entry.
+    # Clear stale per-domain dirs, then write a page per curated entry.
     if base.exists():
         for old in base.glob("*/*.md"):
             old.unlink()
@@ -181,13 +184,14 @@ def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
             (dpath / entry_filename(e)).write_text(render_entry_page(e, conf), encoding="utf-8")
 
     meta = c.TOPICS[topic]
+    held_note = f" · [{held} held for review](../REVIEW.md)" if held else ""
     out = [
         f"# {meta['name']}",
         "",
         f"> {meta['blurb']}",
         "",
-        f"_{len(entries)} findings · updated {now} · ranked by composite · "
-        f"latest {conf.max_age_days} days only._",
+        f"_{len(curated)} vetted findings · updated {now} · ranked by composite · "
+        f"latest {conf.max_age_days} days only{held_note}._",
         "",
         "| Domain | Findings |",
         "| --- | --- |",
@@ -204,20 +208,52 @@ def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
         "---",
         "",
         "[← Home](../README.md) · [Newsletter](../NEWSLETTER.md) · "
-        "[Trends](../TRENDS.md) · [Learnings](../LEARNINGS.md)",
+        "[Trends](../TRENDS.md) · [Review queue](../REVIEW.md) · [Learnings](../LEARNINGS.md)",
         "",
     ]
     base.mkdir(parents=True, exist_ok=True)
     (base / "README.md").write_text("\n".join(out), encoding="utf-8")
-    return entries
+    return curated
 
 
 TOPIC_EMOJI = {"ai-security": "🤖🛡️", "product-security": "🛡️", "ai-research": "🧠"}
 
 
-def render_landing(all_entries: list[dict], conf: c.Config, now: str) -> str:
-    ranked = rank(all_entries, conf)[:TOP_N_LANDING]
-    counts = {t: len(c.load_pool(t)["entries"]) for t in c.TOPICS}
+def _landing_topic_lines(counts: dict[str, int]) -> list[str]:
+    lines = [
+        "Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md), "
+        "[📈 Trends](TRENDS.md), and [🔍 Review queue](REVIEW.md):",
+        "",
+    ]
+    for t, meta in c.TOPICS.items():
+        lines.append(
+            f"- {TOPIC_EMOJI.get(t, '•')} **[{meta['name']}]({t}/README.md)** "
+            f"— {counts[t]} vetted findings. {meta['blurb']}"
+        )
+    lines.append("- 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.")
+    return lines + [""]
+
+
+def _landing_top_findings(ranked: list[dict], conf: c.Config) -> list[str]:
+    out = ["## 🔝 Top findings right now", ""]
+    if not ranked:
+        return out + ["_Run the `/research-scan` skill to populate the pools._"]
+    for e in ranked:
+        s = entry_scores(e, conf)
+        take = e.get("takeaway") or e.get("summary") or e.get("threat") or ""
+        tname = c.TOPICS.get(e.get("topic", ""), {}).get("name", e.get("topic", ""))
+        out.append(
+            f"1. **[{e.get('title','')}]({e['topic']}/{entry_relpath(e)})** "
+            f"· {tname} · composite **{s['composite']}**  \n   {c.clean_summary(take, 180)}"
+        )
+    return out
+
+
+def render_landing(curated_entries: list[dict], conf: c.Config, now: str) -> str:
+    ranked = rank(curated_entries, conf)[:TOP_N_LANDING]
+    counts = {
+        t: sum(1 for e in c.load_pool(t)["entries"] if c.is_curated(e, conf)) for t in c.TOPICS
+    }
     total = sum(counts.values())
     out = [
         "# Awesome Security & AI Research "
@@ -229,34 +265,16 @@ def render_landing(all_entries: list[dict], conf: c.Config, now: str) -> str:
         "",
         f"**Only the latest research:** every entry was published within the last "
         f"~{conf.max_age_days} days. Older findings age out to "
-        "[`data/archive.json`](data/archive.json) automatically.",
+        "[`data/archive.json`](data/archive.json) automatically. Only **vetted** findings are "
+        "shown; borderline ones wait in the [review queue](REVIEW.md).",
         "",
         f"![Updated](https://img.shields.io/badge/updated-{now.replace('-', '--')}-blue) "
-        f"![Findings](https://img.shields.io/badge/findings-{total}-success) "
+        f"![Vetted findings](https://img.shields.io/badge/vetted-{total}-success) "
         "![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)",
         "",
-        "Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md) and "
-        "[📈 Trends](TRENDS.md):",
-        "",
     ]
-    for t, meta in c.TOPICS.items():
-        out.append(
-            f"- {TOPIC_EMOJI.get(t, '•')} **[{meta['name']}]({t}/README.md)** "
-            f"— {counts[t]} findings. {meta['blurb']}"
-        )
-    out += ["- 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.", ""]
-    out += ["## 🔝 Top findings right now", ""]
-    if ranked:
-        for e in ranked:
-            s = entry_scores(e, conf)
-            take = e.get("takeaway") or e.get("summary") or e.get("threat") or ""
-            tname = c.TOPICS.get(e.get("topic", ""), {}).get("name", e.get("topic", ""))
-            out.append(
-                f"1. **[{e.get('title','')}]({e['topic']}/{entry_relpath(e)})** "
-                f"· {tname} · composite **{s['composite']}**  \n   {c.clean_summary(take, 180)}"
-            )
-    else:
-        out.append("_Run the `/research-scan` skill to populate the pools._")
+    out += _landing_topic_lines(counts)
+    out += _landing_top_findings(ranked, conf)
     out += [
         "",
         "## How it works",

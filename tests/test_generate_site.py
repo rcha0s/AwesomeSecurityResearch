@@ -13,13 +13,14 @@ def _seed(sandbox):
     c.save_pool("ai-research", ai)
     sec = c.load_pool("ai-security")
     sec["entries"] = [
-        # legacy security entry: no scores, no summary, has threat
+        # security entry: scored (so it's curated), no summary, has threat block
         {
             "topic": "ai-security",
             "domain": "Injection",
             "title": "Legacy XSS finding",
             "source_url": "https://a/sec1",
             "date": "2026-01",
+            "scores": {"novelty": 70, "relevance": 70},
             "threat": "Reflected XSS in search.",
             "conditions": "Unescaped param.",
             "mitigations": "Encode output.",

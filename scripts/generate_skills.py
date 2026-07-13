@@ -147,10 +147,11 @@ def render_learnings(entries: list[dict], conf: c.Config, skills: list[str], now
 def main() -> int:
     conf = c.load_config()
     now = datetime.now(UTC).strftime("%Y-%m-%d")
-    entries = c.all_pool_entries()
+    # Skills + learnings draw from the VETTED set only (review-queue items excluded).
+    entries = [e for e in c.all_pool_entries() if c.is_curated(e, conf)]
     skills = write_skills(entries, conf)
     learnings_path().write_text(render_learnings(entries, conf, skills, now), encoding="utf-8")
-    print(f"Wrote {len(skills)} skill stub(s) and LEARNINGS.md ({len(entries)} findings).")
+    print(f"Wrote {len(skills)} skill stub(s) and LEARNINGS.md ({len(entries)} vetted findings).")
     return 0
 
 

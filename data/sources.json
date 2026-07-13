@@ -66,10 +66,10 @@
     "tier": "high",
     "signals": {},
     "stats": {
-      "ingested": 0,
-      "curated": 0
+      "ingested": 1,
+      "curated": 1
     },
-    "rank": 75.0,
+    "rank": 77.5,
     "added": "2026-07-13",
     "active": true,
     "notes": "Vendor research"
@@ -91,10 +91,10 @@
     "tier": "high",
     "signals": {},
     "stats": {
-      "ingested": 0,
-      "curated": 0
+      "ingested": 1,
+      "curated": 1
     },
-    "rank": 75.0,
+    "rank": 77.5,
     "added": "2026-07-13",
     "active": true,
     "notes": "Vendor research"
@@ -350,8 +350,8 @@
     "tier": "medium",
     "signals": {},
     "stats": {
-      "ingested": 0,
-      "curated": 0
+      "ingested": 2,
+      "curated": 1
     },
     "rank": 55.0,
     "added": "2026-07-13",

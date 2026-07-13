@@ -47,7 +47,8 @@ def research_block(entry: dict, conf: c.Config) -> list[str]:
 
 def topic_section(topic: str, conf: c.Config, trends: list[dict]) -> list[str]:
     meta = c.TOPICS[topic]
-    entries = sorted(c.load_pool(topic)["entries"], key=lambda e: -composite_of(e, conf))
+    curated = [e for e in c.load_pool(topic)["entries"] if c.is_curated(e, conf)]
+    entries = sorted(curated, key=lambda e: -composite_of(e, conf))
     out = [f"## {meta['name']}", "", f"_{meta['blurb']}_", ""]
 
     out += ["**🔬 Latest research**", ""]
