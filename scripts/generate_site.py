@@ -118,6 +118,14 @@ def _entry_meta(entry: dict, scores: dict) -> list[str]:
     ]
     if entry.get("tags"):
         meta.append("**Tags:** " + ", ".join(f"`{t}`" for t in entry["tags"]))
+    verified = entry.get("verified")
+    if verified is True:
+        line = "**Verification:** ✓ independently verified"
+        if entry.get("prior_art"):
+            line += f" · closest prior art: {entry['prior_art']}"
+        meta.append(line)
+    elif verified is False:
+        meta.append("> ⚠️ _Failed independent verification._")
     if entry.get("needs_review"):
         meta.append("> ⚠️ _Pending review — auto-analyzed, not yet human-verified._")
     return meta

@@ -47,6 +47,8 @@ curation:
                            # (protects the pool from hallucinated/paraphrased quotes)
   min_credibility: 45      # a low-authority source (registry rank below this) whose excerpts
                            # aren't grounded ⇒ needs_review (trust must be earned or verified)
+  require_verification: true  # a finding the independent verifier pass REFUTED (verified=false)
+                              # ⇒ needs_review. Un-verified (verified absent) is not penalized.
 
 # Per-run ingestion caps (bound cost/ban-risk of a single scan).
 limits:

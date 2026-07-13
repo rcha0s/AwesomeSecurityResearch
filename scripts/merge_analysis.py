@@ -119,6 +119,9 @@ def merge(
         confirmed = gs is not None and gs >= 1.0
         if c.credibility_of(entry) < conf.curation.get("min_credibility", 0) and not confirmed:
             entry["needs_review"] = True
+        # The independent verifier (run by the skill) may have refuted the finding.
+        if conf.curation.get("require_verification", True) and entry.get("verified") is False:
+            entry["needs_review"] = True
         entries = pools[entry["topic"]]["entries"]
         idx = match_index(entries, entry)
         if idx is None:

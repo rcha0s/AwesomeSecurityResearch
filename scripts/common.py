@@ -437,6 +437,8 @@ def is_curated(entry: dict, conf: Config) -> bool:
     below the composite floor — is held in the REVIEW.md queue (still in the pool)."""
     if entry.get("needs_review") or not is_scored(entry):
         return False
+    if conf.curation.get("require_verification", True) and entry.get("verified") is False:
+        return False  # the independent verifier refuted it
     if conf.curation.get("require_grounding", True):
         gs = entry.get("grounding_score")
         if gs is not None and gs < 1.0:  # verified a source and found a bad quote
@@ -446,6 +448,9 @@ def is_curated(entry: dict, conf: Config) -> bool:
 
 def review_reason(entry: dict, conf: Config) -> str:
     """Why an entry is in the review queue (for REVIEW.md)."""
+    if entry.get("verified") is False:
+        note = entry.get("verify_note") or "the independent verifier refuted a claim/score"
+        return f"failed independent verification — {note}"
     gs = entry.get("grounding_score")
     if gs is not None and gs < 1.0:
         return f"ungrounded excerpt — only {int(gs * 100)}% of quotes verified against the source"
