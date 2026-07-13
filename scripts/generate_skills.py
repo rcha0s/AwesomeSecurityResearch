@@ -49,6 +49,26 @@ def skill_slug(entry: dict) -> str | None:
     return act.get("skill_slug") or c.slugify(act.get("title", entry.get("title", "")))
 
 
+def _skill_source_lines(findings: list[dict]) -> list[str]:
+    return [
+        f"- **[{f.get('title','')}]({f.get('source_url','')})** "
+        f"({f.get('source_name','source')}, {f.get('date','')})"
+        for f in findings
+    ]
+
+
+def _skill_apply_lines(findings: list[dict]) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for f in findings:
+        for les in f.get("lessons") or []:
+            point = les.get("point") if isinstance(les, dict) else str(les)
+            if point and point not in seen:
+                seen.add(point)
+                out.append(f"- {point}")
+    return out
+
+
 def render_skill(slug: str, findings: list[dict]) -> str:
     top = findings[0]
     act = top.get("actionable", {})
@@ -68,19 +88,8 @@ def render_skill(slug: str, findings: list[dict]) -> str:
         "Distilled from these findings:",
         "",
     ]
-    for f in findings:
-        out.append(
-            f"- **[{f.get('title','')}]({f.get('source_url','')})** "
-            f"({f.get('source_name','source')}, {f.get('date','')})"
-        )
-    out += ["", "## What to apply", ""]
-    seen: set[str] = set()
-    for f in findings:
-        for les in f.get("lessons") or []:
-            point = les.get("point") if isinstance(les, dict) else str(les)
-            if point and point not in seen:
-                seen.add(point)
-                out.append(f"- {point}")
+    out += _skill_source_lines(findings)
+    out += ["", "## What to apply", ""] + _skill_apply_lines(findings)
     out += [
         "",
         "## Draft",

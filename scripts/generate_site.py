@@ -101,8 +101,7 @@ def render_actionable(entry: dict) -> list[str]:
     return out
 
 
-def render_entry_page(entry: dict, conf: c.Config) -> str:
-    scores = entry_scores(entry, conf)
+def _entry_meta(entry: dict, scores: dict) -> list[str]:
     src = entry.get("source_url", "")
     topic_name = c.TOPICS.get(entry.get("topic", ""), {}).get("name", entry.get("topic", ""))
     meta = [
@@ -119,33 +118,49 @@ def render_entry_page(entry: dict, conf: c.Config) -> str:
         meta.append("**Tags:** " + ", ".join(f"`{t}`" for t in entry["tags"]))
     if entry.get("needs_review"):
         meta.append("> ⚠️ _Pending review — auto-analyzed, not yet human-verified._")
+    return meta
 
-    out = [f"# {entry.get('title','Untitled')}", "", "  \n".join(meta), ""]
+
+def _entry_lessons_md(entry: dict) -> list[str]:
+    lessons = entry.get("lessons") or []
+    if not lessons:
+        return []
+    out = ["## What to learn", ""]
+    for les in lessons:
+        if isinstance(les, dict):
+            line = f"- {les.get('point','')}"
+            if les.get("excerpt"):
+                line += f' — _"{les["excerpt"]}"_'
+            out.append(line)
+        else:
+            out.append(f"- {les}")
+    return out + [""]
+
+
+def _entry_tcm_md(entry: dict) -> list[str]:
+    if not any(entry.get(k) for k in ("threat", "conditions", "mitigations")):
+        return []
+    out = ["## Threat · Conditions · Mitigations", ""]
+    for label in ("threat", "conditions", "mitigations"):
+        if entry.get(label):
+            out.append(f"- **{label.title()} —** {entry[label].strip()}")
+    return out + [""]
+
+
+def render_entry_page(entry: dict, conf: c.Config) -> str:
+    src = entry.get("source_url", "")
+    out = [
+        f"# {entry.get('title','Untitled')}",
+        "",
+        "  \n".join(_entry_meta(entry, entry_scores(entry, conf))),
+        "",
+    ]
     if entry.get("takeaway"):
         out += [f"> **Takeaway —** {entry['takeaway']}", ""]
     if entry.get("summary"):
         out += ["## Summary", "", entry["summary"].strip(), ""]
-
-    lessons = entry.get("lessons") or []
-    if lessons:
-        out += ["## What to learn", ""]
-        for les in lessons:
-            if isinstance(les, dict):
-                line = f"- {les.get('point','')}"
-                if les.get("excerpt"):
-                    line += f' — _"{les["excerpt"]}"_'
-                out.append(line)
-            else:
-                out.append(f"- {les}")
-        out.append("")
-
-    if any(entry.get(k) for k in ("threat", "conditions", "mitigations")):
-        out += ["## Threat · Conditions · Mitigations", ""]
-        for label in ("threat", "conditions", "mitigations"):
-            if entry.get(label):
-                out.append(f"- **{label.title()} —** {entry[label].strip()}")
-        out.append("")
-
+    out += _entry_lessons_md(entry)
+    out += _entry_tcm_md(entry)
     out += render_actionable(entry)
     out += ["---", "", f"_Source: [{src}]({src})_  ·  [← back to index](../README.md)", ""]
     return "\n".join(out)
@@ -163,18 +178,8 @@ def render_index_block(entry: dict, conf: c.Config) -> str:
     )
 
 
-def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
-    base = c.ROOT / topic
-    all_entries = c.load_pool(topic)["entries"]
-    # Only VETTED findings are shown; the rest live in the REVIEW.md queue.
-    curated = [e for e in all_entries if c.is_curated(e, conf)]
-    held = len(all_entries) - len(curated)
-    by_domain: dict[str, list[dict]] = defaultdict(list)
-    for e in curated:
-        by_domain[e.get("domain") or "General"].append(e)
-
-    # Clear stale per-domain dirs, then write a page per curated entry.
-    if base.exists():
+def _write_entry_pages(base: c.Path, by_domain: dict[str, list[dict]], conf: c.Config) -> None:
+    if base.exists():  # clear stale per-domain pages first
         for old in base.glob("*/*.md"):
             old.unlink()
     for domain, items in by_domain.items():
@@ -183,6 +188,8 @@ def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
         for e in items:
             (dpath / entry_filename(e)).write_text(render_entry_page(e, conf), encoding="utf-8")
 
+
+def _topic_index_md(topic: str, by_domain: dict, curated: list, held: int, conf, now) -> str:
     meta = c.TOPICS[topic]
     held_note = f" · [{held} held for review](../REVIEW.md)" if held else ""
     out = [
@@ -196,23 +203,36 @@ def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
         "| Domain | Findings |",
         "| --- | --- |",
     ]
-    for domain in sorted(by_domain, key=lambda d: -len(by_domain[d])):
-        out.append(f"| {domain} | {len(by_domain[domain])} |")
-    out.append("")
-    for domain in sorted(by_domain, key=lambda d: -len(by_domain[d])):
-        items = rank(by_domain[domain], conf)
-        out += [f"## {domain}", ""]
-        out += [render_index_block(e, conf) for e in items]
-        out.append("")
+    order = sorted(by_domain, key=lambda d: -len(by_domain[d]))
+    out += [f"| {d} | {len(by_domain[d])} |" for d in order] + [""]
+    for domain in order:
+        out += (
+            [f"## {domain}", ""]
+            + [render_index_block(e, conf) for e in rank(by_domain[domain], conf)]
+            + [""]
+        )
     out += [
         "---",
         "",
-        "[← Home](../README.md) · [Newsletter](../NEWSLETTER.md) · "
-        "[Trends](../TRENDS.md) · [Review queue](../REVIEW.md) · [Learnings](../LEARNINGS.md)",
+        "[← Home](../README.md) · [Newsletter](../NEWSLETTER.md) · [Trends](../TRENDS.md) · "
+        "[Review queue](../REVIEW.md) · [Learnings](../LEARNINGS.md)",
         "",
     ]
+    return "\n".join(out)
+
+
+def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
+    base = c.ROOT / topic
+    all_entries = c.load_pool(topic)["entries"]
+    # Only VETTED findings are shown; the rest live in the REVIEW.md queue.
+    curated = [e for e in all_entries if c.is_curated(e, conf)]
+    by_domain: dict[str, list[dict]] = defaultdict(list)
+    for e in curated:
+        by_domain[e.get("domain") or "General"].append(e)
+    _write_entry_pages(base, by_domain, conf)
     base.mkdir(parents=True, exist_ok=True)
-    (base / "README.md").write_text("\n".join(out), encoding="utf-8")
+    md = _topic_index_md(topic, by_domain, curated, len(all_entries) - len(curated), conf, now)
+    (base / "README.md").write_text(md, encoding="utf-8")
     return curated
 
 

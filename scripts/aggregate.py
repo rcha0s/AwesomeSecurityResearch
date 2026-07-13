@@ -82,28 +82,24 @@ def build_candidate(entry: dict, feed: dict, rules: dict) -> dict | None:
     }
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--dry-run", action="store_true", help="don't write changes")
-    args = ap.parse_args()
+def feed_from_source(source: dict) -> dict:
+    return {
+        "name": source["name"],
+        "url": source["handle"],
+        "type": source.get("notes", ""),
+        "domains": source.get("domains", []),
+        "source_id": source["id"],
+        "source_rank": source.get("rank"),
+        "topics": source.get("topics", []),
+    }
 
-    config = c.load_yaml(c.SOURCES_FILE)
-    rules = config["classification"]
-    cutoff = datetime.now(UTC) - timedelta(days=c.load_config().max_age_days)
 
-    # Feeds now come from the ranked registry (rss + newsletter sources).
+def collect_rss(rules: dict, cutoff: datetime) -> list[dict]:
+    """Fetch every registered rss/newsletter feed and build fresh candidates."""
     feeds = sr.sources_of_type("rss") + sr.sources_of_type("newsletter")
     candidates: list[dict] = []
     for source in feeds:
-        feed = {
-            "name": source["name"],
-            "url": source["handle"],
-            "type": source.get("notes", ""),
-            "domains": source.get("domains", []),
-            "source_id": source["id"],
-            "source_rank": source.get("rank"),
-            "topics": source.get("topics", []),
-        }
+        feed = feed_from_source(source)
         print(f"-> {feed['name']}: {feed['url']}")
         parsed = feedparser.parse(feed["url"])
         if parsed.bozo and not parsed.entries:
@@ -116,6 +112,17 @@ def main() -> int:
             cand = build_candidate(entry, feed, rules)
             if cand:
                 candidates.append(cand)
+    return candidates
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dry-run", action="store_true", help="don't write changes")
+    args = ap.parse_args()
+
+    rules = c.load_yaml(c.SOURCES_FILE)["classification"]
+    cutoff = datetime.now(UTC) - timedelta(days=c.load_config().max_age_days)
+    candidates = collect_rss(rules, cutoff)
 
     if args.dry_run:
         print(f"\n(dry run) {len(candidates)} candidate(s) would be staged:")

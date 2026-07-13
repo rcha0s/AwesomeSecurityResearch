@@ -19,11 +19,22 @@ def test_is_curated_gate():
     assert not c.is_curated(low, conf)
 
 
+def test_is_curated_rejects_unscored_even_if_fresh():
+    """An unscored but recent entry must NOT be curated on newness alone."""
+    conf = c.load_config()
+    unscored = make_entry(published="2099-01-01", scores={})  # future -> high newness
+    unscored.pop("scores", None)
+    assert not c.is_scored(unscored)
+    assert not c.is_curated(unscored, conf)
+    assert "not yet scored" in c.review_reason(unscored, conf)
+
+
 def test_review_reason():
     conf = c.load_config()
     assert "needs_review" in c.review_reason(make_entry(needs_review=True), conf)
+    # scored but below the composite floor -> "floor" reason
     assert "floor" in c.review_reason(
-        make_entry(date="2020-01", scores={"novelty": 0, "relevance": 0}), conf
+        make_entry(date="2020-01", scores={"novelty": 5, "relevance": 5}), conf
     )
 
 

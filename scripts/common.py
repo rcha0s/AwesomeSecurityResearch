@@ -375,11 +375,18 @@ def entry_composite(entry: dict, conf: Config) -> float:
     return composite_score(scores, conf.weights)
 
 
+def is_scored(entry: dict) -> bool:
+    """True if the entry was actually analyzed (has a novelty or relevance score).
+    An unscored entry must never reach the curated view on recency (newness) alone."""
+    scores = entry.get("scores") or {}
+    return bool(float(scores.get("novelty", 0) or 0) or float(scores.get("relevance", 0) or 0))
+
+
 def is_curated(entry: dict, conf: Config) -> bool:
     """True if the finding belongs in the public curated view (topic pages +
-    newsletter). Everything else — flagged needs_review OR below the composite
-    floor — is held in the REVIEW.md queue (still in the pool, just not shown)."""
-    if entry.get("needs_review"):
+    newsletter). Everything else — flagged needs_review, unscored, OR below the
+    composite floor — is held in the REVIEW.md queue (still in the pool)."""
+    if entry.get("needs_review") or not is_scored(entry):
         return False
     return entry_composite(entry, conf) >= conf.curation.get("min_composite", 0)
 
@@ -388,9 +395,10 @@ def review_reason(entry: dict, conf: Config) -> str:
     """Why an entry is in the review queue (for REVIEW.md)."""
     if entry.get("needs_review"):
         return "flagged needs_review (low confidence / novelty / relevance)"
-    return (
-        f"composite {entry_composite(entry, conf)} < floor {conf.curation.get('min_composite', 0)}"
-    )
+    if not is_scored(entry):
+        return "not yet scored (no novelty/relevance — needs analysis)"
+    floor = conf.curation.get("min_composite", 0)
+    return f"composite {entry_composite(entry, conf)} < floor {floor}"
 
 
 # --- Schema validation -----------------------------------------------------

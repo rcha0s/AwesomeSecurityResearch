@@ -10,7 +10,7 @@ _Nothing awaiting review._
 
 ## Product Security (1)
 
-- **[@redhat-cloud-services npm namespace compromise (32+ packages)](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)** · composite 3.0 · _composite 3.0 < floor 20_
+- **[@redhat-cloud-services npm namespace compromise (32+ packages)](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)** · composite 3.0 · _not yet scored (no novelty/relevance — needs analysis)_
   Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
 
 ## AI Research (1)
