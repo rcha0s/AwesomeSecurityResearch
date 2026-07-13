@@ -25,6 +25,7 @@ import sys
 from datetime import UTC, datetime, timedelta
 
 import common as c
+import sources_registry as sr
 
 REPO_FIELDS = "fullName,description,url,stargazersCount,updatedAt,createdAt"
 
@@ -85,13 +86,14 @@ def fetch_readme(full_name: str, max_chars: int) -> str | None:
     return text[:max_chars] if text.strip() else None
 
 
-def repo_to_candidate(repo: dict, q: dict, fetch: bool, max_chars: int) -> dict:
+def repo_to_candidate(repo: dict, source: dict, fetch: bool, max_chars: int) -> dict:
     full_name = repo.get("fullName", "")
     url = repo.get("url", "")
     stars = repo.get("stargazersCount", 0)
     desc = repo.get("description") or ""
     created = repo.get("createdAt", "")
     cand_id = c.make_id(full_name, c.normalize_url(url))
+    domains = source.get("domains") or []
     raw_path = None
     if fetch:
         readme = fetch_readme(full_name, max_chars)
@@ -107,35 +109,49 @@ def repo_to_candidate(repo: dict, q: dict, fetch: bool, max_chars: int) -> dict:
         "article_url": url,
         "tweet_url": None,
         "author": full_name.split("/")[0] if "/" in full_name else None,
+        "published": created[:10] if len(created) >= 10 else None,
         "date": created[:7] if len(created) >= 7 else None,
         "excerpt": c.clean_summary(f"{desc} ({stars} stars)", 320),
         "raw_path": raw_path,
         "stars": stars,
-        "guess_track": q.get("track"),
-        "guess_domain": q.get("domain"),
+        "guess_topic": c.topic_for_domain(domains[0]) if domains else None,
+        "guess_domain": domains[0] if domains else None,
         "guess_subtype": None,
+        "source_id": source.get("id"),
+        "source_rank": source.get("rank"),
+        "source_topics": source.get("topics", []),
         "retrieved_at": c.utcnow_iso(),
     }
 
 
+def query_for_source(source: dict) -> str:
+    """The gh search query for a source: raw query, or `user:<handle>`."""
+    if source["type"] == "github_user":
+        return f"user:{source['handle']}"
+    return source["handle"]
+
+
 def collect(cfg: dict, per_query: int | None, fetch: bool) -> list[dict]:
     gh_cfg = cfg.get("github", {})
-    if not gh_cfg.get("queries"):
-        print("   (no github.queries configured)")
+    sources = sr.sources_of_type("github_query") + sr.sources_of_type("github_user")
+    if not sources:
+        print("   (no github_query/github_user sources registered)")
         return []
+    conf = c.load_config()
     min_stars = gh_cfg.get("min_stars", 0)
     limit = per_query or gh_cfg.get("per_query", 8)
-    max_chars = c.load_config().limits.get("article_chars", 20000)
-    cutoff = datetime.now(UTC) - timedelta(days=gh_cfg.get("max_age_days", 200))
+    max_chars = conf.limits.get("article_chars", 20000)
+    cutoff = datetime.now(UTC) - timedelta(days=conf.max_age_days)
     created_after = cutoff.strftime("%Y-%m-%d")
 
     out: list[dict] = []
-    for q in gh_cfg["queries"]:
-        print(f"-> gh search: {q['query']} (>= {min_stars} stars, created > {created_after})")
-        for repo in search_repos(q["query"], limit, created_after):
+    for source in sources:
+        query = query_for_source(source)
+        print(f"-> gh search: {query} (>= {min_stars} stars, created > {created_after})")
+        for repo in search_repos(query, limit, created_after):
             if repo.get("stargazersCount", 0) < min_stars:
                 continue
-            out.append(repo_to_candidate(repo, q, fetch, max_chars))
+            out.append(repo_to_candidate(repo, source, fetch, max_chars))
     return out
 
 
@@ -153,7 +169,7 @@ def main() -> int:
     if args.dry_run:
         for cand in candidates:
             print(
-                f"   [{cand['guess_track']}/{cand['guess_domain']}] {cand['title']} "
+                f"   [{cand['guess_topic']}/{cand['guess_domain']}] {cand['title']} "
                 f"({cand['stars']} stars)"
             )
         return 0

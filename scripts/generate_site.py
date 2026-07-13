@@ -35,6 +35,19 @@ def fmt_month(date: str) -> str:
     return date or "—"
 
 
+def fmt_published(entry: dict) -> str:
+    """Human-readable source publish date, day-precision when known."""
+    pub = entry.get("published") or entry.get("date") or ""
+    try:
+        return datetime.strptime(pub, "%Y-%m-%d").strftime("%b %-d, %Y")
+    except (ValueError, TypeError):
+        pass
+    try:  # Windows strftime has no %-d
+        return datetime.strptime(pub, "%Y-%m-%d").strftime("%b %d, %Y").replace(" 0", " ")
+    except (ValueError, TypeError):
+        return fmt_month(pub)
+
+
 def entry_scores(entry: dict, conf: c.Config) -> dict:
     scores = dict(entry.get("scores") or {})
     if "newness" not in scores:
@@ -62,7 +75,7 @@ def entry_filename(entry: dict) -> str:
 
 
 def entry_relpath(entry: dict) -> str:
-    return f"{c.domain_slug(entry['domain'])}/{entry_filename(entry)}"
+    return f"{c.domain_slug(entry.get('domain') or 'General')}/{entry_filename(entry)}"
 
 
 def score_line(scores: dict) -> str:
@@ -91,12 +104,12 @@ def render_actionable(entry: dict) -> list[str]:
 def render_entry_page(entry: dict, conf: c.Config) -> str:
     scores = entry_scores(entry, conf)
     src = entry.get("source_url", "")
+    topic_name = c.TOPICS.get(entry.get("topic", ""), {}).get("name", entry.get("topic", ""))
     meta = [
-        f"**Track:** {entry.get('track','').title()}  ·  **Domain:** {entry.get('domain','')}"
-        f"  ·  **Subtype:** {entry.get('subtype','—')}",
+        f"**Topic:** {topic_name}  ·  **Domain:** {entry.get('domain','—')}",
         f"**Source:** [{entry.get('source_name','source')}]({src})"
         + (f"  ·  **Author:** {entry['author']}" if entry.get("author") else "")
-        + f"  ·  **Disclosed:** {fmt_month(entry.get('date',''))}"
+        + f"  ·  **Published:** {fmt_published(entry)}"
         + (
             f"  ·  **Retrieved:** {entry['retrieved_at'][:10]}" if entry.get("retrieved_at") else ""
         ),
@@ -144,102 +157,119 @@ def render_index_block(entry: dict, conf: c.Config) -> str:
     flag = " · ⚠️ _review_" if entry.get("needs_review") else ""
     return (
         f"- **[{entry.get('title','Untitled')}]({entry_relpath(entry)})** "
-        f"· composite **{scores['composite']}** · {fmt_month(entry.get('date',''))}{flag}  \n"
+        f"· composite **{scores['composite']}** · {fmt_published(entry)}{flag}  \n"
         f"  {c.clean_summary(takeaway, 200)}  \n"
         f"  _[{entry.get('source_name','source')}]({entry.get('source_url','')})_"
     )
 
 
-def write_track(track: str, conf: c.Config, now: str) -> list[dict]:
-    base = c.ROOT / track
-    entries = c.load_pool(track)["entries"]
+def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
+    base = c.ROOT / topic
+    entries = c.load_pool(topic)["entries"]
     by_domain: dict[str, list[dict]] = defaultdict(list)
     for e in entries:
-        by_domain[e.get("domain", "Uncategorized")].append(e)
+        by_domain[e.get("domain") or "General"].append(e)
 
-    for domain in c.TRACK_DOMAINS[track]:
+    # Clear stale per-domain dirs, then write a page per entry.
+    if base.exists():
+        for old in base.glob("*/*.md"):
+            old.unlink()
+    for domain, items in by_domain.items():
         dpath = base / c.domain_slug(domain)
-        if dpath.exists():
-            for old in dpath.glob("*.md"):
-                old.unlink()
-        for e in by_domain.get(domain, []):
-            page = render_entry_page(e, conf)
-            (dpath).mkdir(parents=True, exist_ok=True)
-            (dpath / entry_filename(e)).write_text(page, encoding="utf-8")
+        dpath.mkdir(parents=True, exist_ok=True)
+        for e in items:
+            (dpath / entry_filename(e)).write_text(render_entry_page(e, conf), encoding="utf-8")
 
-    title = "Security Research" if track == "security" else "AI Research"
+    meta = c.TOPICS[topic]
     out = [
-        f"# {title}",
+        f"# {meta['name']}",
         "",
-        f"> {len(entries)} findings · updated {now} · ranked by composite score.",
+        f"> {meta['blurb']}",
         "",
+        f"_{len(entries)} findings · updated {now} · ranked by composite · "
+        f"latest {conf.max_age_days} days only._",
+        "",
+        "| Domain | Findings |",
+        "| --- | --- |",
     ]
-    out += ["| Domain | Findings |", "| --- | --- |"]
-    for domain in c.TRACK_DOMAINS[track]:
-        out.append(f"| {domain} | {len(by_domain.get(domain, []))} |")
+    for domain in sorted(by_domain, key=lambda d: -len(by_domain[d])):
+        out.append(f"| {domain} | {len(by_domain[domain])} |")
     out.append("")
-    for domain in c.TRACK_DOMAINS[track]:
-        items = rank(by_domain.get(domain, []), conf)
-        if not items:
-            continue
+    for domain in sorted(by_domain, key=lambda d: -len(by_domain[d])):
+        items = rank(by_domain[domain], conf)
         out += [f"## {domain}", ""]
         out += [render_index_block(e, conf) for e in items]
         out.append("")
-    out += ["---", "", "[← Home](../README.md) · [Learnings digest](../LEARNINGS.md)", ""]
-    (base / "README.md").parent.mkdir(parents=True, exist_ok=True)
+    out += [
+        "---",
+        "",
+        "[← Home](../README.md) · [Newsletter](../NEWSLETTER.md) · "
+        "[Trends](../TRENDS.md) · [Learnings](../LEARNINGS.md)",
+        "",
+    ]
+    base.mkdir(parents=True, exist_ok=True)
     (base / "README.md").write_text("\n".join(out), encoding="utf-8")
     return entries
 
 
+TOPIC_EMOJI = {"ai-security": "🤖🛡️", "product-security": "🛡️", "ai-research": "🧠"}
+
+
 def render_landing(all_entries: list[dict], conf: c.Config, now: str) -> str:
     ranked = rank(all_entries, conf)[:TOP_N_LANDING]
-    counts = {t: len(c.load_pool(t)["entries"]) for t in c.TRACK_DOMAINS}
+    counts = {t: len(c.load_pool(t)["entries"]) for t in c.TOPICS}
     total = sum(counts.values())
     out = [
         "# Awesome Security & AI Research "
         "[![Awesome](https://cdn.jsdelivr.net/gh/sindresorhus/awesome@d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)",
         "",
-        "> An auto-updating, source-cited pool of the most **teachable** security and AI "
-        "research — scanned from X/Twitter, articles, and RSS, then extracted, scored, and "
-        "turned into actionable takeaways, skills, and harness improvements.",
+        "> An auto-updating, source-cited tracker of the most **teachable** security and AI "
+        "research — scanned from X/Twitter, GitHub, YouTube, articles, and RSS, then extracted, "
+        "scored, and turned into actionable takeaways, skills, and harness improvements.",
+        "",
+        f"**Only the latest research:** every entry was published within the last "
+        f"~{conf.max_age_days} days. Older findings age out to "
+        "[`data/archive.json`](data/archive.json) automatically.",
         "",
         f"![Updated](https://img.shields.io/badge/updated-{now.replace('-', '--')}-blue) "
         f"![Findings](https://img.shields.io/badge/findings-{total}-success) "
-        f"![Security](https://img.shields.io/badge/security-{counts['security']}-orange) "
-        f"![AI](https://img.shields.io/badge/AI-{counts['ai']}-purple) "
         "![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)",
         "",
-        "Two growing knowledge directories:",
-        "",
-        f"- 🛡️ **[Security Research](security/README.md)** — {counts['security']} findings (AI, Web, Mobile).",
-        f"- 🤖 **[AI Research](ai/README.md)** — {counts['ai']} findings (agents, harnesses, prompting, models, tooling, evaluation).",
-        "- 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.",
-        "",
-        "## 🔝 Top learnings right now",
+        "Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md) and "
+        "[📈 Trends](TRENDS.md):",
         "",
     ]
+    for t, meta in c.TOPICS.items():
+        out.append(
+            f"- {TOPIC_EMOJI.get(t, '•')} **[{meta['name']}]({t}/README.md)** "
+            f"— {counts[t]} findings. {meta['blurb']}"
+        )
+    out += ["- 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.", ""]
+    out += ["## 🔝 Top findings right now", ""]
     if ranked:
         for e in ranked:
             s = entry_scores(e, conf)
             take = e.get("takeaway") or e.get("summary") or e.get("threat") or ""
+            tname = c.TOPICS.get(e.get("topic", ""), {}).get("name", e.get("topic", ""))
             out.append(
-                f"1. **[{e.get('title','')}]({e['track']}/{entry_relpath(e)})** "
-                f"· {e['track']} · composite **{s['composite']}**  \n   {c.clean_summary(take, 180)}"
+                f"1. **[{e.get('title','')}]({e['topic']}/{entry_relpath(e)})** "
+                f"· {tname} · composite **{s['composite']}**  \n   {c.clean_summary(take, 180)}"
             )
     else:
-        out.append("_Run the `/research-scan` skill to populate the pool._")
+        out.append("_Run the `/research-scan` skill to populate the pools._")
     out += [
         "",
         "## How it works",
         "",
         "```",
-        "X feed / LinkedIn / articles / RSS   → ingest + Jina Reader (clean text)",
+        "X / GitHub / YouTube / articles / RSS  → ingest + Jina Reader (clean text)",
         "  → analyze (extract lessons · score newness/novelty/relevance · derive action)",
-        "  → merge into data/{security,ai}.json → rerank → render these directories",
+        "  → merge into the 3 topic pools → rerank → render + newsletter + trends",
         "```",
         "",
-        "Add a single resource anytime: `python scripts/add.py <url>` then the `/add-resource` "
-        "skill. Batch-scan your X feed with the `/research-scan` skill (self-paced via `/loop`).",
+        "Add a single resource: `python scripts/add.py <url>` (`/add-resource`). Add a source "
+        "to track: `python scripts/add_source.py …` (`/add-source`). Batch-scan with "
+        "`/research-scan` (self-paced via `/loop`).",
         "",
         "## License",
         "",
@@ -257,10 +287,10 @@ def main() -> int:
     conf = c.load_config()
     now = datetime.now(UTC).strftime("%Y-%m-%d")
     all_entries: list[dict] = []
-    for track in c.TRACK_DOMAINS:
-        all_entries += write_track(track, conf, now)
+    for topic in c.TOPICS:
+        all_entries += write_topic(topic, conf, now)
     (c.ROOT / "README.md").write_text(render_landing(all_entries, conf, now), encoding="utf-8")
-    print(f"Rendered README.md + security/ + ai/ ({len(all_entries)} findings).")
+    print(f"Rendered README.md + {'/ '.join(c.TOPICS)}/ ({len(all_entries)} findings).")
     return 0
 
 

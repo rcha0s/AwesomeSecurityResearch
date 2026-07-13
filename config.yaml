@@ -10,9 +10,16 @@ weights:
   novelty: 0.35    # how new the idea is versus what is already in the pool
   relevance: 0.35  # how useful/teachable it is for the track's audience
 
+# HARD freshness window (days). We track only the latest research: anything
+# whose source was published more than this many days ago is never ingested,
+# and existing pool entries that age past it are pruned to data/archive.json
+# (preserved, but no longer shown in the live tracker). "About a month."
+max_age_days: 31
+
 # Newness decay: newness = 100 * exp(-age_days / half_life_days).
-# A finding loses half its newness score every `half_life_days` days.
-half_life_days: 45
+# A finding loses half its newness score every `half_life_days` days. Kept short
+# so ranking still differentiates within the ~1-month window.
+half_life_days: 18
 
 # Entries whose skill-shaped actionable scores at least this composite get a
 # generated skills/<slug>/SKILL.md stub.

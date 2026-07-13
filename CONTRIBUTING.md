@@ -5,15 +5,17 @@ inclusion is deliberately high, and every finding must cite a real source.
 
 ## Two tracks
 
-Findings live in one of two growing pools (the source of truth):
+Findings live in one of three growing topic pools (the source of truth):
 
-- **Security** (`data/security.json`) — domains: `AI Security`, `Web Application
-  Security`, `Mobile Security`. Threats and defenses.
-- **AI** (`data/ai.json`) — domains: `Agents & Harnesses`, `Prompting & Context`,
-  `Models & Capabilities`, `Tooling & Infrastructure`, `Evaluation & Safety`.
-  Capabilities, how-tos, and harness learnings.
+- **AI Security** (`data/ai-security.json`) — securing AI: harness/agent security, MCP,
+  skill scanning, prompt injection, memory poisoning, model supply chain, LLM red-teaming.
+- **Product Security** (`data/product-security.json`) — appsec, supply chain, cloud/infra,
+  identity, mobile, plus red teaming and threat modeling (AI-assisted or not).
+- **AI Research** (`data/ai-research.json`) — *practitioner* AI: improving your harness,
+  understanding, or architecture for using LLMs/agents. Not model internals / ML-research.
 
-The rendered `README.md`, `security/`, `ai/`, `skills/`, and `LEARNINGS.md` are
+`domain` within a topic is a free-text sub-grouping label. The rendered `README.md`,
+`NEWSLETTER.md`, `TRENDS.md`, the three topic dirs, `skills/`, and `LEARNINGS.md` are
 **generated** — never hand-edit them. Edit the pools and regenerate.
 
 ## What belongs here
@@ -21,7 +23,7 @@ The rendered `README.md`, `security/`, `ai/`, `skills/`, and `LEARNINGS.md` are
 1. **Credible, first-party source** — a recognized research team, vendor lab,
    standards body, CERT advisory, peer-reviewed/preprint venue, or a substantive
    practitioner post. No marketing or unattributed claims.
-2. **New** — prefer material from the last six months; newness decays in ranking.
+2. **New (hard rule)** — the source must have been published within the freshness window (`max_age_days` in `config.yaml`, ~1 month). We track only the latest research; older entries age out to `data/archive.json` automatically and are no longer shown.
 3. **In scope** — one of the two tracks above.
 4. **Teachable & actionable** — you can state the lessons and a concrete action.
 
@@ -64,8 +66,20 @@ python scripts/generate_skills.py
 
 Open a PR (direct-PR mode — see [AGENTS.md](AGENTS.md)). Keep lint + tests green.
 
-## Adding a source feed / account
+## Adding a source (X user, blog, newsletter, GitHub user/query, YouTube channel)
 
-Propose feeds in [`scripts/sources.yaml`](scripts/sources.yaml) with a short
-credibility justification. X accounts go under `twitter.accounts` (use a **burner**
-account — never your main). Single-domain feeds classify more accurately.
+Sources live in the **ranked registry** [`data/sources.json`](data/sources.json), not in
+`sources.yaml` anymore. Add one with `scripts/add_source.py` (or the `/add-source` skill):
+
+```bash
+python scripts/add_source.py x_account @simonw --topics ai-research --tier high
+python scripts/add_source.py blog https://blog.trailofbits.com --topics product-security
+python scripts/add_source.py github_user praetorian-inc --topics ai-security,product-security
+python scripts/add_source.py youtube https://youtube.com/@LiveOverflow --topics product-security
+python scripts/add_source.py newsletter https://tldrsec.com --topics product-security
+```
+
+Each source is **ranked** `rank = 0.5·tier + 0.25·reach-signal + 0.25·hit-rate`, and the
+hit-rate rises as the source yields *curated* findings — so good sources climb over time. For
+X accounts, also **follow them on the burner**. `sources.yaml` now holds only classification
+rules + `home_feed`/`min_stars` knobs.

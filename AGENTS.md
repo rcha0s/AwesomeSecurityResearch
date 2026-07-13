@@ -13,26 +13,32 @@ branch and a PR you review/merge on GitHub. Nothing is merged unseen.
 An auto-updating analyzer that scans X/Twitter, LinkedIn/articles, and RSS for
 **AI and security** material, extracts the most *teachable* lessons, scores them by
 newness / novelty / relevance, derives an actionable leverage per finding, and grows
-two source-cited public knowledge directories: **`security/`** and **`ai/`**.
+three source-cited public knowledge directories — **`ai-security/`**, **`product-security/`**,
+**`ai-research/`** — plus a rolling **`NEWSLETTER.md`** and **`TRENDS.md`**.
 
 ## Repo layout
 
 ```
-config.yaml              # scoring weights, decay half-life, thresholds (no magic numbers)
-data/security.json       # Security-track pool (source of truth)
-data/ai.json             # AI-track pool (source of truth)
-data/candidates.json     # transient ingest staging (gitignored)
-data/_raw/               # transient fetched article text (gitignored)
-scripts/common.py        # shared helpers, schema, scoring math, Jina fetch
-scripts/aggregate.py     # RSS ingest → candidates
-scripts/ingest_twitter.py# X feed/accounts ingest via Agent Reach → candidates (WSL2)
-scripts/add.py           # ad-hoc single URL / pasted text → candidate
-scripts/merge_analysis.py# validate + dedup + route + rerank analysis_out.json into pools
-scripts/rerank.py        # deterministic decay + composite + sort
-scripts/generate_site.py # render README.md + security/ + ai/ trees + per-entry pages
+config.yaml               # scoring weights, decay half-life, thresholds, freshness window
+data/ai-security.json     # AI Security pool (source of truth)
+data/product-security.json# Product Security pool (source of truth)
+data/ai-research.json     # AI Research (practitioner) pool (source of truth)
+data/archive.json         # aged-out findings (preserved, not shown)
+data/sources.json         # ranked source registry (add via add_source.py)
+data/candidates.json      # transient ingest staging (gitignored)
+data/_raw/                # transient fetched article text (gitignored)
+scripts/common.py         # shared helpers, TOPICS, schema, scoring, Jina fetch
+scripts/sources_registry.py # source registry + hybrid ranking
+scripts/aggregate.py · ingest_twitter.py · ingest_github.py · ingest_youtube.py · add.py  # ingest → candidates
+scripts/add_source.py     # register a source (x/blog/newsletter/github/youtube)
+scripts/merge_analysis.py # validate + dedup + route by topic + rerank into pools
+scripts/rerank.py         # decay + composite + sort + prune stale → archive
+scripts/generate_site.py  # README.md + the 3 topic trees + per-entry pages
+scripts/trends.py         # data/trends.json + TRENDS.md (emerging themes)
+scripts/generate_newsletter.py # NEWSLETTER.md (rolling, 3 topic sections)
 scripts/generate_skills.py# skills/<slug>/SKILL.md + LEARNINGS.md
-.claude/skills/          # /research-scan (batch) and /add-resource (single) — the LLM stages
-README.md security/ ai/ skills/ LEARNINGS.md  # GENERATED — never hand-edit
+.claude/skills/           # /research-scan /add-resource /add-source — the LLM stages
+README.md · NEWSLETTER.md · TRENDS.md · LEARNINGS.md · ai-security/ product-security/ ai-research/ skills/  # GENERATED
 ```
 
 ## How to run
@@ -61,7 +67,7 @@ A change is only "done" when the pipeline runs clean on real data — not just u
    one-entry `data/analysis_out.json`, run `merge_analysis.py` → confirm it lands in
    the correct pool, low-confidence flags `needs_review`, and re-adding is idempotent.
 3. `python scripts/rerank.py && python scripts/generate_site.py && python scripts/generate_skills.py`
-   — confirm `security/` and `ai/` regenerate, per-entry pages + `LEARNINGS.md` exist,
+   — confirm the 3 topic trees regenerate, per-entry pages + `TRENDS.md`/`NEWSLETTER.md` exist,
    and the pools ↔ rendered site stay in sync (a second run is a no-op diff).
 
 ## Standard test suite (must be green before a PR)

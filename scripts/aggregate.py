@@ -21,6 +21,7 @@ import sys
 from datetime import UTC, datetime, timedelta
 
 import common as c
+import sources_registry as sr
 
 try:
     import feedparser
@@ -67,12 +68,16 @@ def build_candidate(entry: dict, feed: dict, rules: dict) -> dict | None:
         "article_url": url,
         "tweet_url": None,
         "author": None,
+        "published": dt.strftime("%Y-%m-%d") if dt else c.date_from_url(url),
         "date": dt.strftime("%Y-%m") if dt else None,
         "excerpt": excerpt,
         "raw_path": None,
-        "guess_track": c.track_for_domain(domain),
+        "guess_topic": c.topic_for_domain(domain),
         "guess_domain": domain,
         "guess_subtype": classify_subtype(blob, domain, rules),
+        "source_id": feed.get("source_id"),
+        "source_rank": feed.get("source_rank"),
+        "source_topics": feed.get("topics", []),
         "retrieved_at": c.utcnow_iso(),
     }
 
@@ -84,10 +89,21 @@ def main() -> int:
 
     config = c.load_yaml(c.SOURCES_FILE)
     rules = config["classification"]
-    cutoff = datetime.now(UTC) - timedelta(days=config.get("max_age_days", 183))
+    cutoff = datetime.now(UTC) - timedelta(days=c.load_config().max_age_days)
 
+    # Feeds now come from the ranked registry (rss + newsletter sources).
+    feeds = sr.sources_of_type("rss") + sr.sources_of_type("newsletter")
     candidates: list[dict] = []
-    for feed in config["feeds"]:
+    for source in feeds:
+        feed = {
+            "name": source["name"],
+            "url": source["handle"],
+            "type": source.get("notes", ""),
+            "domains": source.get("domains", []),
+            "source_id": source["id"],
+            "source_rank": source.get("rank"),
+            "topics": source.get("topics", []),
+        }
         print(f"-> {feed['name']}: {feed['url']}")
         parsed = feedparser.parse(feed["url"])
         if parsed.bozo and not parsed.entries:
@@ -104,13 +120,13 @@ def main() -> int:
     if args.dry_run:
         print(f"\n(dry run) {len(candidates)} candidate(s) would be staged:")
         for cand in candidates:
-            print(f"   [{cand['guess_track']}/{cand['guess_domain']}] {cand['title']}")
+            print(f"   [{cand['guess_topic']}/{cand['guess_domain']}] {cand['title']}")
         return 0
 
     added = c.add_candidates(candidates)
     print(f"\nStaged {len(added)} new candidate(s) in {c.CANDIDATES_FILE.name}.")
     for cand in added:
-        print(f"   [{cand['guess_track']}/{cand['guess_domain']}] {cand['title']}")
+        print(f"   [{cand['guess_topic']}/{cand['guess_domain']}] {cand['title']}")
     return 0
 
 

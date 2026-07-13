@@ -1,0 +1,65 @@
+{
+  "schema_version": "3.0",
+  "topic": "ai-research",
+  "name": "AI Research",
+  "domains": [
+    "Agents & Harnesses",
+    "Prompting & Context",
+    "Tooling & Infrastructure",
+    "Evaluation",
+    "Architecture & Optimization",
+    "Models & Capabilities"
+  ],
+  "entries": [
+    {
+      "source_url": "https://github.com/omnigent-ai/omnigent",
+      "article_url": "https://github.com/omnigent-ai/omnigent",
+      "source_name": "omnigent-ai/omnigent",
+      "source_type": "GitHub repository",
+      "author": "omnigent-ai",
+      "date": "2026-06",
+      "discovered_via": "github",
+      "id": "omnigent-ai-omnigent-b26281bf0e",
+      "domain": "Meta-Harness",
+      "subtype": "Meta-Harness",
+      "summary": "Omnigent is an open-source meta-harness: a common orchestration layer over Claude Code, Codex, Cursor, OpenCode, Pi and custom agents. You swap or combine harnesses without rewriting, enforce policies and sandboxing, and drive sessions from terminal, browser, or phone.",
+      "takeaway": "The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.",
+      "lessons": [
+        {
+          "point": "A harness-agnostic orchestration layer lets you route each task to the best agent and avoid lock-in",
+          "excerpt": "swap or combine harnesses without rewriting",
+          "confidence": 0.85
+        },
+        {
+          "point": "Central policy + sandboxing at the meta-harness is a natural place to enforce agent security",
+          "excerpt": "enforce policies and sandboxing",
+          "confidence": 0.8
+        }
+      ],
+      "tags": [
+        "meta-harness",
+        "orchestration",
+        "agents",
+        "claude-code",
+        "tooling-2026"
+      ],
+      "actionable": {
+        "type": "harness",
+        "title": "Consider a meta-harness for multi-agent work",
+        "detail": "Evaluate an orchestration layer (like Omnigent) when running multiple coding agents, so policy/sandboxing/routing live in one place instead of per-agent."
+      },
+      "scores": {
+        "novelty": 78,
+        "relevance": 84,
+        "newness": 10,
+        "composite": 59.7,
+        "scored_at": "2026-07-13T02:48:31+00:00"
+      },
+      "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
+      "retrieved_at": "2026-07-13T00:46:09+00:00",
+      "needs_review": false,
+      "published": "2026-06",
+      "topic": "ai-research"
+    }
+  ]
+}

@@ -133,7 +133,7 @@ def render_learnings(entries: list[dict], conf: c.Config, skills: list[str], now
         act = e.get("actionable") if isinstance(e.get("actionable"), dict) else None
         line = (
             f"### {e.get('title','')} · `{composite_of(e, conf)}`\n"
-            f"- **Track:** {e.get('track','')} / {e.get('domain','')}\n"
+            f"- **Topic:** {e.get('topic', '')} / {e.get('domain', '')}\n"
             f"- **Takeaway:** {c.clean_summary(take, 240)}\n"
         )
         if act:

@@ -20,24 +20,27 @@ re-rank. Same rubric as `/research-scan`, one item.
    python scripts/add.py "<url>" --text "<pasted body>"
    python scripts/add.py --file <path> --title "<title>"
    ```
-   Use `--track security|ai` only if the user already knows the track; otherwise let the
-   analysis decide. `add.py` prints the candidate `id` and its `raw_path`.
+   Use `--topic ai-security|product-security|ai-research` only if the user already knows it;
+   otherwise let the analysis decide. `add.py` prints the candidate `id` and its `raw_path`.
 
 2. **Read the content** from the candidate's `raw_path` in `data/candidates.json` (or the
    pasted text). Ground everything below in this text.
 
 3. **Analyze the single item** with the `/research-scan` rubric:
-   valid `track`/`domain`/`subtype` (see `scripts/common.py` `TRACK_DOMAINS`); a teachable
-   `summary`; `lessons` as `{point, excerpt, confidence}`; a one-line `takeaway`; `tags`;
-   and an open-ended `actionable` `{type, title, detail, skill_slug?}` (skill | harness |
-   tool | takeaway | other). Score `novelty` (vs. the existing pools — skim
-   `data/security.json` + `data/ai.json`) and `relevance` (0-100). Write it as a one-element
-   list to `data/analysis_out.json`.
+   a valid `topic` (`ai-security` | `product-security` | `ai-research` — see `common.py`
+   `TOPICS`) + a free-text `domain`; a teachable `summary`; `lessons` as
+   `{point, excerpt, confidence}`; a one-line `takeaway`; `tags`; and an open-ended
+   `actionable` `{type, title, detail, skill_slug?}` (skill | harness | tool | takeaway |
+   other). Score `novelty` (vs. the existing pools — skim `data/{ai-security,product-security,
+   ai-research}.json`) and `relevance` (0-100). Write it as a one-element list to
+   `data/analysis_out.json` (carry over `source_id` if present).
 
 4. **Merge, re-rank, render:**
    ```bash
-   python scripts/merge_analysis.py    # merges the one item, re-ranks (it can demote neighbors)
+   python scripts/merge_analysis.py       # merge the one item, re-rank (can demote neighbors)
    python scripts/generate_site.py
+   python scripts/trends.py
+   python scripts/generate_newsletter.py
    python scripts/generate_skills.py
    ```
 
@@ -46,7 +49,8 @@ re-rank. Same rubric as `/research-scan`, one item.
    - **Takeaway** — the one-liner.
    - **Action** — the actionable leverage (type + what to do), and if a skill was
      generated, its `skills/<slug>/SKILL.md` path.
-   - Where it landed (`security/` or `ai/…`) and whether the re-rank moved anything.
+   - Which topic it landed in (`ai-security/`, `product-security/`, or `ai-research/…`) and
+     whether the re-rank moved anything.
 
 6. **Commit (direct-PR mode)** if the user wants it persisted: branch → commit the pools +
    regenerated site (never the gitignored staging files) → PR.

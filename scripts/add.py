@@ -55,7 +55,7 @@ def build_candidate(args: argparse.Namespace, text: str) -> dict:
     title = args.title or (text.splitlines()[0][:120] if text else "Untitled resource")
     cand_id = c.make_id(title, c.normalize_url(url) or title)
     raw_path = c.write_raw(cand_id, text) if text else None
-    track = None if args.track == "auto" else args.track
+    topic = None if args.topic == "auto" else args.topic
     return {
         "id": cand_id,
         "discovered_via": source_via(url),
@@ -66,10 +66,11 @@ def build_candidate(args: argparse.Namespace, text: str) -> dict:
         "article_url": url or None,
         "tweet_url": None,
         "author": args.author,
-        "date": args.date,
+        "published": args.date or c.date_from_url(url),
+        "date": c.to_month(args.date or c.date_from_url(url)),
         "excerpt": c.clean_summary(text, 320),
         "raw_path": raw_path,
-        "guess_track": track,
+        "guess_topic": topic,
         "guess_domain": None,
         "guess_subtype": None,
         "retrieved_at": c.utcnow_iso(),
@@ -85,10 +86,10 @@ def main() -> int:
     ap.add_argument("--author", help="author / byline")
     ap.add_argument("--date", help="publish date YYYY-MM (optional)")
     ap.add_argument(
-        "--track",
-        choices=["auto", "security", "ai"],
+        "--topic",
+        choices=["auto", "ai-security", "product-security", "ai-research"],
         default="auto",
-        help="track hint; 'auto' lets the analyzer decide",
+        help="topic hint; 'auto' lets the analyzer decide",
     )
     args = ap.parse_args()
 

@@ -1,0 +1,146 @@
+{
+  "ai-security": [
+    {
+      "topic": "ai-security",
+      "tag": "agent-security",
+      "count": 4,
+      "recent": 0,
+      "sources": 4,
+      "momentum": 4.0,
+      "first_seen": "2026-02",
+      "last_seen": "2026-05-14",
+      "members": [
+        {
+          "title": "MemoryTrap: persistent memory poisoning in AI coding agents (OWASP ASI06)",
+          "url": "https://genai.owasp.org/2026/05/13/memory-is-a-feature-it-is-also-an-attack-surface/",
+          "date": "2026-05-14",
+          "fresh": false
+        },
+        {
+          "title": "Prompt injection in the wild: Google on the current state",
+          "url": "http://security.googleblog.com/2026/04/ai-threats-in-wild-current-state-of.html",
+          "date": "2026-04",
+          "fresh": false
+        },
+        {
+          "title": "Prismor: a runtime firewall that blocks rogue AI-agent tool calls",
+          "url": "https://github.com/PrismorSec/prismor",
+          "date": "2026-02",
+          "fresh": false
+        },
+        {
+          "title": "Augustus: a production LLM vulnerability scanner (210+ probes)",
+          "url": "https://github.com/praetorian-inc/augustus",
+          "date": "2026-02",
+          "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "prompt-injection",
+      "count": 3,
+      "recent": 0,
+      "sources": 3,
+      "momentum": 3.0,
+      "first_seen": "2026-02",
+      "last_seen": "2026-05-14",
+      "members": [
+        {
+          "title": "MemoryTrap: persistent memory poisoning in AI coding agents (OWASP ASI06)",
+          "url": "https://genai.owasp.org/2026/05/13/memory-is-a-feature-it-is-also-an-attack-surface/",
+          "date": "2026-05-14",
+          "fresh": false
+        },
+        {
+          "title": "Prompt injection in the wild: Google on the current state",
+          "url": "http://security.googleblog.com/2026/04/ai-threats-in-wild-current-state-of.html",
+          "date": "2026-04",
+          "fresh": false
+        },
+        {
+          "title": "Augustus: a production LLM vulnerability scanner (210+ probes)",
+          "url": "https://github.com/praetorian-inc/augustus",
+          "date": "2026-02",
+          "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "tooling-2026",
+      "count": 2,
+      "recent": 0,
+      "sources": 2,
+      "momentum": 2.0,
+      "first_seen": "2026-02",
+      "last_seen": "2026-02",
+      "members": [
+        {
+          "title": "Prismor: a runtime firewall that blocks rogue AI-agent tool calls",
+          "url": "https://github.com/PrismorSec/prismor",
+          "date": "2026-02",
+          "fresh": false
+        },
+        {
+          "title": "Augustus: a production LLM vulnerability scanner (210+ probes)",
+          "url": "https://github.com/praetorian-inc/augustus",
+          "date": "2026-02",
+          "fresh": false
+        }
+      ]
+    }
+  ],
+  "product-security": [
+    {
+      "topic": "product-security",
+      "tag": "android",
+      "count": 2,
+      "recent": 0,
+      "sources": 2,
+      "momentum": 2.0,
+      "first_seen": "2026-04",
+      "last_seen": "2026-05",
+      "members": [
+        {
+          "title": "Project Zero: a 0-click exploit chain for the Pixel 10",
+          "url": "https://projectzero.google/2026/05/pixel-10-exploit.html",
+          "date": "2026-05",
+          "fresh": false
+        },
+        {
+          "title": "Google brings Rust (memory safety) to the Pixel baseband",
+          "url": "http://security.googleblog.com/2026/04/bringing-rust-to-pixel-baseband.html",
+          "date": "2026-04",
+          "fresh": false
+        }
+      ]
+    }
+  ],
+  "ai-research": [
+    {
+      "topic": "ai-research",
+      "tag": "agents",
+      "count": 2,
+      "recent": 1,
+      "sources": 2,
+      "momentum": 3.0,
+      "first_seen": "2026-05",
+      "last_seen": "2026-06",
+      "members": [
+        {
+          "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
+          "url": "https://github.com/omnigent-ai/omnigent",
+          "date": "2026-06",
+          "fresh": true
+        },
+        {
+          "title": "PawBench: benchmarking LLM x harness performance",
+          "url": "https://github.com/agentscope-ai/PawBench",
+          "date": "2026-05",
+          "fresh": false
+        }
+      ]
+    }
+  ]
+}

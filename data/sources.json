@@ -1,0 +1,683 @@
+[
+  {
+    "id": "rss:https-genai-owasp-org-feed",
+    "type": "rss",
+    "handle": "https://genai.owasp.org/feed/",
+    "name": "OWASP GenAI Security Project",
+    "url": "https://genai.owasp.org/feed/",
+    "topics": [
+      "ai-security"
+    ],
+    "domains": [
+      "AI Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Standards body / consortium"
+  },
+  {
+    "id": "rss:https-googleprojectzero-blogspot-com-feeds-posts",
+    "type": "rss",
+    "handle": "https://googleprojectzero.blogspot.com/feeds/posts/default",
+    "name": "Google Project Zero",
+    "url": "https://googleprojectzero.blogspot.com/feeds/posts/default",
+    "topics": [
+      "ai-security",
+      "product-security"
+    ],
+    "domains": [
+      "AI Security",
+      "Mobile Security",
+      "Web Application Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:https-unit42-paloaltonetworks-com-feed",
+    "type": "rss",
+    "handle": "https://unit42.paloaltonetworks.com/feed/",
+    "name": "Palo Alto Networks Unit 42",
+    "url": "https://unit42.paloaltonetworks.com/feed/",
+    "topics": [
+      "ai-security",
+      "product-security"
+    ],
+    "domains": [
+      "AI Security",
+      "Mobile Security",
+      "Web Application Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:https-www-microsoft-com-en-us-security-blog-feed",
+    "type": "rss",
+    "handle": "https://www.microsoft.com/en-us/security/blog/feed/",
+    "name": "Microsoft Security Blog",
+    "url": "https://www.microsoft.com/en-us/security/blog/feed/",
+    "topics": [
+      "ai-security",
+      "product-security"
+    ],
+    "domains": [
+      "AI Security",
+      "Web Application Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:http-export-arxiv-org-rss-cs-cr",
+    "type": "rss",
+    "handle": "http://export.arxiv.org/rss/cs.CR",
+    "name": "arXiv cs.CR (Cryptography and Security)",
+    "url": "http://export.arxiv.org/rss/cs.CR",
+    "topics": [
+      "ai-security",
+      "product-security"
+    ],
+    "domains": [
+      "AI Security",
+      "Web Application Security",
+      "Mobile Security"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Academic preprints"
+  },
+  {
+    "id": "rss:https-portswigger-net-research-rss",
+    "type": "rss",
+    "handle": "https://portswigger.net/research/rss",
+    "name": "PortSwigger Research",
+    "url": "https://portswigger.net/research/rss",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:https-github-blog-tag-github-security-lab-feed",
+    "type": "rss",
+    "handle": "https://github.blog/tag/github-security-lab/feed/",
+    "name": "GitHub Security Lab",
+    "url": "https://github.blog/tag/github-security-lab/feed/",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:https-security-googleblog-com-feeds-posts-defaul",
+    "type": "rss",
+    "handle": "https://security.googleblog.com/feeds/posts/default",
+    "name": "Google Online Security Blog",
+    "url": "https://security.googleblog.com/feeds/posts/default",
+    "topics": [
+      "ai-security",
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security",
+      "Mobile Security",
+      "AI Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:https-owasp-org-blog-feed-xml",
+    "type": "rss",
+    "handle": "https://owasp.org/blog/feed.xml",
+    "name": "OWASP Foundation Blog",
+    "url": "https://owasp.org/blog/feed.xml",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Standards body"
+  },
+  {
+    "id": "rss:https-citizenlab-ca-feed",
+    "type": "rss",
+    "handle": "https://citizenlab.ca/feed/",
+    "name": "The Citizen Lab",
+    "url": "https://citizenlab.ca/feed/",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Mobile Security"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Academic / research lab"
+  },
+  {
+    "id": "rss:https-www-quokka-io-blog-rss-xml",
+    "type": "rss",
+    "handle": "https://www.quokka.io/blog/rss.xml",
+    "name": "Quokka Research",
+    "url": "https://www.quokka.io/blog/rss.xml",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Mobile Security"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:https-www-zimperium-com-blog-feed",
+    "type": "rss",
+    "handle": "https://www.zimperium.com/blog/feed/",
+    "name": "Zimperium zLabs",
+    "url": "https://www.zimperium.com/blog/feed/",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Mobile Security"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:http-export-arxiv-org-rss-cs-ai",
+    "type": "rss",
+    "handle": "http://export.arxiv.org/rss/cs.AI",
+    "name": "arXiv cs.AI (Artificial Intelligence)",
+    "url": "http://export.arxiv.org/rss/cs.AI",
+    "topics": [
+      "ai-research"
+    ],
+    "domains": [
+      "Models & Capabilities"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Academic preprints"
+  },
+  {
+    "id": "rss:http-export-arxiv-org-rss-cs-lg",
+    "type": "rss",
+    "handle": "http://export.arxiv.org/rss/cs.LG",
+    "name": "arXiv cs.LG (Machine Learning)",
+    "url": "http://export.arxiv.org/rss/cs.LG",
+    "topics": [
+      "ai-research"
+    ],
+    "domains": [
+      "Models & Capabilities"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Academic preprints"
+  },
+  {
+    "id": "rss:https-simonwillison-net-atom-everything",
+    "type": "rss",
+    "handle": "https://simonwillison.net/atom/everything/",
+    "name": "Simon Willison's Weblog",
+    "url": "https://simonwillison.net/atom/everything/",
+    "topics": [
+      "ai-research"
+    ],
+    "domains": [
+      "Tooling & Infrastructure"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Practitioner blog"
+  },
+  {
+    "id": "rss:https-www-anthropic-com-rss-xml",
+    "type": "rss",
+    "handle": "https://www.anthropic.com/rss.xml",
+    "name": "Anthropic News",
+    "url": "https://www.anthropic.com/rss.xml",
+    "topics": [
+      "ai-research"
+    ],
+    "domains": [
+      "Models & Capabilities"
+    ],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "Model lab"
+  },
+  {
+    "id": "x_account:kunchenguid",
+    "type": "x_account",
+    "handle": "kunchenguid",
+    "name": "@kunchenguid",
+    "url": "https://x.com/kunchenguid",
+    "topics": [
+      "ai-security",
+      "product-security",
+      "ai-research"
+    ],
+    "domains": [],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": null
+  },
+  {
+    "id": "x_account:simonw",
+    "type": "x_account",
+    "handle": "simonw",
+    "name": "@simonw",
+    "url": "https://x.com/simonw",
+    "topics": [
+      "ai-security",
+      "product-security",
+      "ai-research"
+    ],
+    "domains": [],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": null
+  },
+  {
+    "id": "x_account:portswigger",
+    "type": "x_account",
+    "handle": "PortSwigger",
+    "name": "@PortSwigger",
+    "url": "https://x.com/PortSwigger",
+    "topics": [
+      "ai-security",
+      "product-security",
+      "ai-research"
+    ],
+    "domains": [],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": null
+  },
+  {
+    "id": "x_account:unit42-intel",
+    "type": "x_account",
+    "handle": "Unit42_Intel",
+    "name": "@Unit42_Intel",
+    "url": "https://x.com/Unit42_Intel",
+    "topics": [
+      "ai-security",
+      "product-security",
+      "ai-research"
+    ],
+    "domains": [],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": null
+  },
+  {
+    "id": "x_account:googlevrp",
+    "type": "x_account",
+    "handle": "GoogleVRP",
+    "name": "@GoogleVRP",
+    "url": "https://x.com/GoogleVRP",
+    "topics": [
+      "ai-security",
+      "product-security",
+      "ai-research"
+    ],
+    "domains": [],
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": null
+  },
+  {
+    "id": "github_query:prompt-injection-llm",
+    "type": "github_query",
+    "handle": "prompt injection LLM",
+    "name": "prompt injection LLM",
+    "url": null,
+    "topics": [
+      "ai-security"
+    ],
+    "domains": [
+      "AI Security"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "github search"
+  },
+  {
+    "id": "github_query:mcp-server-security-scanner",
+    "type": "github_query",
+    "handle": "MCP server security scanner",
+    "name": "MCP server security scanner",
+    "url": null,
+    "topics": [
+      "ai-security"
+    ],
+    "domains": [
+      "AI Security"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "github search"
+  },
+  {
+    "id": "github_query:ai-agent-security-guardrails",
+    "type": "github_query",
+    "handle": "AI agent security guardrails",
+    "name": "AI agent security guardrails",
+    "url": null,
+    "topics": [
+      "ai-security"
+    ],
+    "domains": [
+      "AI Security"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "github search"
+  },
+  {
+    "id": "github_query:web-application-security-research-exploit",
+    "type": "github_query",
+    "handle": "web application security research exploit",
+    "name": "web application security research exploit",
+    "url": null,
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "github search"
+  },
+  {
+    "id": "github_query:mobile-android-security-research-tool",
+    "type": "github_query",
+    "handle": "mobile android security research tool",
+    "name": "mobile android security research tool",
+    "url": null,
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Mobile Security"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "github search"
+  },
+  {
+    "id": "github_query:agent-harness-framework-llm",
+    "type": "github_query",
+    "handle": "agent harness framework llm",
+    "name": "agent harness framework llm",
+    "url": null,
+    "topics": [
+      "ai-research"
+    ],
+    "domains": [
+      "Agents & Harnesses"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "github search"
+  },
+  {
+    "id": "github_query:llm-evaluation-harness-benchmark",
+    "type": "github_query",
+    "handle": "llm evaluation harness benchmark",
+    "name": "llm evaluation harness benchmark",
+    "url": null,
+    "topics": [
+      "ai-research"
+    ],
+    "domains": [
+      "Evaluation & Safety"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "github search"
+  },
+  {
+    "id": "github_query:context-engineering-retrieval-llm",
+    "type": "github_query",
+    "handle": "context engineering retrieval llm",
+    "name": "context engineering retrieval llm",
+    "url": null,
+    "topics": [
+      "ai-research"
+    ],
+    "domains": [
+      "Tooling & Infrastructure"
+    ],
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-13",
+    "active": true,
+    "notes": "github search"
+  }
+]

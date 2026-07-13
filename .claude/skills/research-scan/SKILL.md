@@ -33,10 +33,15 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
    but `article_url` is set, fetch clean text yourself: `curl -s https://r.jina.ai/<url>`.
 
 3. **Analyze each candidate** grounded in the source text (never invent facts):
-   - **track/domain/subtype** — valid values are in `scripts/common.py` `TRACK_DOMAINS`
-     (security: AI Security, Web Application Security, Mobile Security; ai: Agents &
-     Harnesses, Prompting & Context, Models & Capabilities, Tooling & Infrastructure,
-     Evaluation & Safety). `security` = threats/defenses; `ai` = capabilities/how-to.
+   - **topic** — exactly one of three (see `scripts/common.py` `TOPICS`):
+     - `ai-security` — securing AI systems: harness/agent security, MCP, skill scanning,
+       prompt injection, memory poisoning, model supply chain, LLM red-teaming.
+     - `product-security` — securing products: appsec, supply chain, cloud/infra, identity,
+       mobile, **red teaming and threat modeling** (AI-assisted or not).
+     - `ai-research` — **practitioner** AI: improving your harness, understanding, or
+       architecture for using LLMs/agents on real tasks. NOT model internals / ML-research.
+   - **domain** — a short sub-grouping label within the topic (free text; see the topic's
+     suggested `domains` in `common.py`, but you may coin a precise one).
    - **summary** — 2-3 sentence teachable summary.
    - **lessons** — the concrete, transferable takeaways. Each: `{point, excerpt,
      confidence}` where `excerpt` is a short quote/anchor from the source and
@@ -58,13 +63,17 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
 
 4. **Emit** `data/analysis_out.json` — a JSON list of the analyzed entries (each a full
    schema-v2 entry: at minimum `track, domain, subtype, title, source_url`, plus the fields
-   above; carry over `article_url, tweet_url, author, date, discovered_via` from the candidate).
+   above; carry over `article_url, tweet_url, author, date, published, discovered_via,
+   source_id, source_rank, source_topics` from the candidate). Carrying `source_id` is what
+   lets `merge_analysis.py` credit the source's hit-rate when your finding is curated.
 
 5. **Merge + rerank + render:**
    ```bash
-   python scripts/merge_analysis.py     # validate, dedup, route, flag low-confidence, rerank
-   python scripts/generate_site.py      # rebuild README.md + security/ + ai/
-   python scripts/generate_skills.py    # skills/<slug>/SKILL.md + LEARNINGS.md
+   python scripts/merge_analysis.py       # validate, dedup, route by topic, flag, rerank
+   python scripts/generate_site.py        # README.md + ai-security/ product-security/ ai-research/
+   python scripts/trends.py               # data/trends.json + TRENDS.md (emerging themes)
+   python scripts/generate_newsletter.py  # NEWSLETTER.md (rolling, 3 topic sections)
+   python scripts/generate_skills.py      # skills/<slug>/SKILL.md + LEARNINGS.md
    ```
 
 6. **Commit (direct-PR mode).** Create a branch, commit the regenerated pools + site

@@ -24,6 +24,7 @@ import subprocess
 import sys
 
 import common as c
+import sources_registry as sr
 
 
 def run_cli(args: list[str], timeout: int = 60) -> str | None:
@@ -139,31 +140,42 @@ def tweet_to_candidate(tweet: dict, fetch: bool) -> dict | None:
         "article_url": article_url if tw["links"] else None,
         "tweet_url": tw["url"] or None,
         "author": tw["author"] or None,
+        "published": created[:10] if len(created) >= 10 and created[4] == "-" else None,
         "date": date,
         "excerpt": tw["text"][:320],
         "raw_path": raw_path,
-        "guess_track": None,
+        "guess_topic": None,
         "guess_domain": None,
         "guess_subtype": None,
+        "source_id": (tweet.get("_source") or {}).get("id"),
+        "source_rank": (tweet.get("_source") or {}).get("rank"),
+        "source_topics": (tweet.get("_source") or {}).get("topics", []),
         "retrieved_at": c.utcnow_iso(),
     }
 
 
 def collect_tweets(cfg: dict, limits: dict) -> list[dict]:
-    tw_cfg = cfg.get("twitter", {})
+    """Home timeline (unranked) + each registered x_account source (ranked)."""
     tweets: list[dict] = []
-    if tw_cfg.get("home_feed"):
+    if cfg.get("twitter", {}).get("home_feed"):
         n = limits.get("twitter_feed", 40)
         print(f"-> twitter feed -n {n}")
         out = run_cli(["twitter", "feed", "-n", str(n), "--json"])
         if out:
-            tweets += parse_tweets(out)
-    for account in tw_cfg.get("accounts", []):
+            tweets += parse_tweets(out)  # home-feed tweets carry no _source
+    for source in sr.sources_of_type("x_account"):
+        account = source["handle"]
         n = limits.get("twitter_user_posts", 20)
-        print(f"-> twitter user-posts @{account} -n {n}")
+        print(f"-> twitter user-posts @{account} -n {n}  (rank {source.get('rank')})")
         out = run_cli(["twitter", "user-posts", f"@{account}", "-n", str(n), "--json"])
         if out:
-            tweets += parse_tweets(out)
+            for tw in parse_tweets(out):
+                tw["_source"] = {
+                    "id": source["id"],
+                    "rank": source.get("rank"),
+                    "topics": source.get("topics", []),
+                }
+                tweets.append(tw)
     return tweets
 
 

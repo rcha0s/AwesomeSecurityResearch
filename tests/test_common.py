@@ -43,6 +43,34 @@ def test_clean_source_url_strips_tracking():
     assert c.clean_source_url("https://a.com/x?fbclid=abc") == "https://a.com/x"
 
 
+def test_date_from_url():
+    assert c.date_from_url("https://x.com/2026/05/13/post") == "2026-05-13"
+    assert c.date_from_url("https://x.com/2026/05/post") == "2026-05"
+    assert c.date_from_url("https://x.com/no-date-here") is None
+
+
+def test_is_fresh_window():
+    now = datetime(2026, 7, 13, tzinfo=UTC)
+    assert c.is_fresh({"published": "2026-07-01"}, 31, now=now) is True
+    assert c.is_fresh({"published": "2026-06-30"}, 31, now=now) is True
+    assert c.is_fresh({"published": "2026-05-01"}, 31, now=now) is False
+    # month-only is treated as end-of-month (lenient)
+    assert c.is_fresh({"date": "2026-06"}, 31, now=now) is True
+    assert c.is_fresh({"date": "2026-05"}, 31, now=now) is False
+    # undated entries are kept (never dropped for lack of a date)
+    assert c.is_fresh({}, 31, now=now) is True
+
+
+def test_add_candidates_rejects_stale(sandbox):
+    stale = {
+        "id": "old",
+        "title": "Old thing",
+        "source_url": "https://a/old",
+        "published": "2020-01-01",
+    }
+    assert c.add_candidates([stale]) == []
+
+
 def test_newness_score_decays():
     now = datetime(2026, 7, 1, tzinfo=UTC)
     fresh = c.newness_score("2026-07", 45, now=now)
@@ -59,11 +87,10 @@ def test_composite_score_weights():
 
 def test_validate_entry_ok_and_errors():
     assert c.validate_entry(make_entry()) == []
-    assert any("missing" in e for e in c.validate_entry({"track": "ai"}))
-    assert any("not valid" in e for e in c.validate_entry(make_entry(domain="AI Security")))
-    assert any(
-        "unknown track" in e for e in c.validate_entry(make_entry(track="bogus", domain="x"))
-    )
+    assert any("missing" in e for e in c.validate_entry({"topic": "ai-research"}))
+    # domain is free-text now — any string is valid
+    assert c.validate_entry(make_entry(domain="Any Free Domain")) == []
+    assert any("unknown topic" in e for e in c.validate_entry(make_entry(topic="nope")))
     bad = make_entry(actionable={"type": "nope"})
     assert any("actionable.type" in e for e in c.validate_entry(bad))
 
@@ -85,11 +112,11 @@ def test_add_candidates_dedup(sandbox):
 
 
 def test_add_candidates_skips_pooled(sandbox):
-    pool = c.load_pool("security")
+    pool = c.load_pool("ai-security")
     pool["entries"].append(
-        make_entry(track="security", domain="AI Security", source_url="https://a.com/known")
+        make_entry(topic="ai-security", domain="Prompt Injection", source_url="https://a.com/known")
     )
-    c.save_pool("security", pool)
+    c.save_pool("ai-security", pool)
     assert (
         c.add_candidates([{"id": "n", "title": "New", "source_url": "https://a.com/known"}]) == []
     )

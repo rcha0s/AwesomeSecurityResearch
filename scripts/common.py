@@ -16,7 +16,7 @@ import math
 import re
 import sys
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any
@@ -43,31 +43,83 @@ DATA_DIR = ROOT / "data"
 CONFIG_FILE = ROOT / "config.yaml"
 SOURCES_FILE = ROOT / "scripts" / "sources.yaml"
 
-SECURITY_POOL = DATA_DIR / "security.json"
-AI_POOL = DATA_DIR / "ai.json"
 CANDIDATES_FILE = DATA_DIR / "candidates.json"
 ANALYSIS_OUT = DATA_DIR / "analysis_out.json"
+ARCHIVE_FILE = DATA_DIR / "archive.json"
 RAW_DIR = DATA_DIR / "_raw"
 
-SCHEMA_VERSION = "2.0"
+SCHEMA_VERSION = "3.0"
 JINA_READER = "https://r.jina.ai/"
 
-# --- Tracks, domains, and their directory slugs ----------------------------
-POOL_FILES: dict[str, Path] = {"security": SECURITY_POOL, "ai": AI_POOL}
+# --- Topics: the three tracked databases -----------------------------------
+# Each topic is its own rolling pool + rendered directory. `domains` are
+# suggested sub-groupings (not enforced — the analyzer picks a sensible one).
+TOPICS: dict[str, dict] = {
+    "ai-security": {
+        "name": "AI Security",
+        "blurb": "Securing AI systems: harness & agent security, MCP, skill scanning, "
+        "prompt injection, memory poisoning, model supply chain, LLM red-teaming.",
+        "domains": [
+            "Harness & Agent Security",
+            "MCP & Tools",
+            "Prompt Injection",
+            "Memory & Context Poisoning",
+            "Model Supply Chain",
+            "LLM Red-Teaming",
+            "RAG / Data Poisoning",
+            "Information Disclosure",
+        ],
+    },
+    "product-security": {
+        "name": "Product Security",
+        "blurb": "Securing products: application security, supply chain, cloud & infra, "
+        "identity, mobile, plus red teaming and threat modeling (AI-assisted or not).",
+        "domains": [
+            "Application Security",
+            "Supply Chain & Dependencies",
+            "Cloud & Infrastructure",
+            "Identity & Access",
+            "Mobile Security",
+            "Threat Modeling & Red Teaming",
+            "Detection & Response",
+            "AI-Generated Code Risk",
+        ],
+    },
+    "ai-research": {
+        "name": "AI Research",
+        "blurb": "Practitioner AI: improving your harness, understanding, and architecture "
+        "for using LLMs/agents on real tasks. Not model internals or ML-research.",
+        "domains": [
+            "Agents & Harnesses",
+            "Prompting & Context",
+            "Tooling & Infrastructure",
+            "Evaluation",
+            "Architecture & Optimization",
+            "Models & Capabilities",
+        ],
+    },
+}
 
-TRACK_DOMAINS: dict[str, list[str]] = {
-    "security": ["AI Security", "Web Application Security", "Mobile Security"],
-    "ai": [
-        "Agents & Harnesses",
-        "Prompting & Context",
-        "Models & Capabilities",
-        "Tooling & Infrastructure",
-        "Evaluation & Safety",
-    ],
+# Convenience: {topic: [domains]} (mirrors the old TRACK_DOMAINS shape).
+TOPIC_DOMAINS: dict[str, list[str]] = {k: v["domains"] for k, v in TOPICS.items()}
+
+POOL_FILES: dict[str, Path] = {t: DATA_DIR / f"{t}.json" for t in TOPICS}
+
+# Maps the legacy 2-track domains onto the three topics (used to migrate old
+# data and to coarse-guess a topic at ingest from the keyword classifier).
+LEGACY_DOMAIN_TO_TOPIC: dict[str, str] = {
+    "AI Security": "ai-security",
+    "Web Application Security": "product-security",
+    "Mobile Security": "product-security",
+    "Agents & Harnesses": "ai-research",
+    "Prompting & Context": "ai-research",
+    "Models & Capabilities": "ai-research",
+    "Tooling & Infrastructure": "ai-research",
+    "Evaluation & Safety": "ai-research",
 }
 
 ACTIONABLE_TYPES = ("takeaway", "skill", "harness", "tool", "other")
-DISCOVERED_VIA = ("twitter", "linkedin", "rss", "github", "manual")
+DISCOVERED_VIA = ("twitter", "linkedin", "rss", "github", "youtube", "manual")
 
 
 def domain_slug(domain: str) -> str:
@@ -75,10 +127,13 @@ def domain_slug(domain: str) -> str:
     return slugify(domain)
 
 
-def track_for_domain(domain: str) -> str | None:
-    for track, domains in TRACK_DOMAINS.items():
+def topic_for_domain(domain: str) -> str | None:
+    """Best topic for a (possibly legacy) domain string."""
+    if domain in LEGACY_DOMAIN_TO_TOPIC:
+        return LEGACY_DOMAIN_TO_TOPIC[domain]
+    for topic, domains in TOPIC_DOMAINS.items():
         if domain in domains:
-            return track
+            return topic
     return None
 
 
@@ -91,6 +146,7 @@ class Config:
     confidence_min: float
     limits: dict[str, int]
     curation: dict[str, float]
+    max_age_days: int
 
 
 def load_config(path: Path = CONFIG_FILE) -> Config:
@@ -102,6 +158,7 @@ def load_config(path: Path = CONFIG_FILE) -> Config:
         confidence_min=float(raw["confidence_min"]),
         limits=raw.get("limits", {}),
         curation=raw.get("curation", {}),
+        max_age_days=int(raw.get("max_age_days", 31)),
     )
 
 
@@ -125,22 +182,23 @@ def save_json(path: Path, data: Any) -> None:
         fh.write("\n")
 
 
-def empty_pool(track: str) -> dict:
+def empty_pool(topic: str) -> dict:
     return {
         "schema_version": SCHEMA_VERSION,
-        "track": track,
-        "domains": TRACK_DOMAINS[track],
+        "topic": topic,
+        "name": TOPICS[topic]["name"],
+        "domains": TOPICS[topic]["domains"],
         "entries": [],
     }
 
 
-def load_pool(track: str) -> dict:
-    pool = load_json(POOL_FILES[track], default=None)
-    return pool if pool else empty_pool(track)
+def load_pool(topic: str) -> dict:
+    pool = load_json(POOL_FILES[topic], default=None)
+    return pool if pool else empty_pool(topic)
 
 
-def save_pool(track: str, pool: dict) -> None:
-    save_json(POOL_FILES[track], pool)
+def save_pool(topic: str, pool: dict) -> None:
+    save_json(POOL_FILES[topic], pool)
 
 
 # --- Text / URL helpers (reused by both aggregators) -----------------------
@@ -224,6 +282,56 @@ def extract_urls(text: str) -> list[str]:
     return list(seen)
 
 
+def date_from_url(url: str) -> str | None:
+    """Extract a publish date embedded in a URL path, e.g. /2026/05/13/ or
+    /2026/05/. Returns YYYY-MM-DD or YYYY-MM, or None. Many blogs (OWASP, Unit42,
+    Google, Microsoft, Project Zero) date their permalinks this way."""
+    m = re.search(r"/(20\d{2})/(0[1-9]|1[0-2])/(0[1-9]|[12]\d|3[01])(?:/|-)", url or "")
+    if m:
+        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+    m = re.search(r"/(20\d{2})/(0[1-9]|1[0-2])/", url or "")
+    if m:
+        return f"{m.group(1)}-{m.group(2)}"
+    return None
+
+
+def to_month(date: str | None) -> str | None:
+    """Coerce a full or partial date string to YYYY-MM (for newness scoring)."""
+    return date[:7] if date and len(date) >= 7 and date[4] == "-" else None
+
+
+def best_date(entry: dict) -> str | None:
+    """The most precise source date available for an entry."""
+    return entry.get("published") or entry.get("date")
+
+
+def parse_date_end(date: str | None) -> datetime | None:
+    """Parse YYYY-MM-DD, or YYYY-MM as the LAST day of that month (lenient — a
+    month-only date shouldn't age out early). Returns None if unparseable."""
+    if not date:
+        return None
+    try:
+        return datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=UTC)
+    except (ValueError, TypeError):
+        pass
+    try:
+        start = datetime.strptime(date[:7], "%Y-%m").replace(tzinfo=UTC)
+    except (ValueError, TypeError):
+        return None
+    nxt = start.replace(year=start.year + (start.month == 12), month=start.month % 12 + 1)
+    return nxt - timedelta(days=1)
+
+
+def is_fresh(entry: dict, max_age_days: int, now: datetime | None = None) -> bool:
+    """True if the entry's source date is within the freshness window. Undated
+    entries are treated as fresh (we don't drop what we can't date)."""
+    dt = parse_date_end(best_date(entry))
+    if dt is None:
+        return True
+    now = now or datetime.now(UTC)
+    return (now - dt).days <= max_age_days
+
+
 # --- Scoring math (deterministic; shared by rerank + tests) ----------------
 def parse_month(date: str) -> datetime | None:
     for fmt in ("%Y-%m-%d", "%Y-%m"):
@@ -253,7 +361,9 @@ def composite_score(scores: dict, weights: dict[str, float]) -> float:
 
 
 # --- Schema validation -----------------------------------------------------
-REQUIRED_FIELDS = ("track", "domain", "subtype", "title", "source_url")
+# `topic` is the hard constraint; `domain` is a free-text sub-grouping label
+# (the analyzer picks a sensible one, so we don't enforce membership).
+REQUIRED_FIELDS = ("topic", "domain", "title", "source_url")
 
 
 def validate_entry(entry: dict) -> list[str]:
@@ -262,12 +372,9 @@ def validate_entry(entry: dict) -> list[str]:
     for field in REQUIRED_FIELDS:
         if not entry.get(field):
             errors.append(f"missing required field: {field}")
-    track = entry.get("track")
-    if track and track not in TRACK_DOMAINS:
-        errors.append(f"unknown track: {track}")
-    domain = entry.get("domain")
-    if track in TRACK_DOMAINS and domain and domain not in TRACK_DOMAINS[track]:
-        errors.append(f"domain '{domain}' not valid for track '{track}'")
+    topic = entry.get("topic")
+    if topic and topic not in TOPICS:
+        errors.append(f"unknown topic: {topic} (want one of {tuple(TOPICS)})")
     actionable = entry.get("actionable")
     if actionable is not None:
         if not isinstance(actionable, dict):
@@ -282,7 +389,10 @@ def validate_entry(entry: dict) -> list[str]:
 
 # --- Pool / candidate helpers (shared by ingestors + merge) ----------------
 def all_pool_entries() -> list[dict]:
-    return load_pool("security")["entries"] + load_pool("ai")["entries"]
+    entries: list[dict] = []
+    for topic in TOPICS:
+        entries += load_pool(topic)["entries"]
+    return entries
 
 
 def known_urls() -> set[str]:
@@ -293,6 +403,19 @@ def known_urls() -> set[str]:
             if entry.get(key):
                 urls.add(normalize_url(entry[key]))
     return urls
+
+
+def archive_entries(entries: list[dict]) -> int:
+    """Append aged-out entries to data/archive.json, de-duped by id. Preserves
+    history so the growing pool isn't lost even though the live tracker prunes."""
+    if not entries:
+        return 0
+    existing = load_json(ARCHIVE_FILE, default=[]) or []
+    seen = {e.get("id") for e in existing}
+    added = [e for e in entries if e.get("id") not in seen]
+    if added:
+        save_json(ARCHIVE_FILE, existing + added)
+    return len(added)
 
 
 def load_candidates() -> list[dict]:
@@ -310,6 +433,7 @@ def add_candidates(new: list[dict]) -> list[dict]:
     so nothing already analyzed gets re-queued. Returns the actually-added list.
     """
     existing = load_candidates()
+    max_age = load_config().max_age_days
     seen_urls = known_urls() | {normalize_url(c.get("source_url", "")) for c in existing}
     seen_titles = [c.get("title", "") for c in existing] + [
         e.get("title", "") for e in all_pool_entries()
@@ -318,6 +442,9 @@ def add_candidates(new: list[dict]) -> list[dict]:
     for cand in new:
         nurl = normalize_url(cand.get("source_url", ""))
         if not nurl or nurl in seen_urls:
+            continue
+        # HARD freshness gate: never stage anything older than the window.
+        if not is_fresh(cand, max_age):
             continue
         if any(title_similar(cand.get("title", ""), t) for t in seen_titles):
             continue

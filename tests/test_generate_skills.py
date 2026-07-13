@@ -53,9 +53,9 @@ def test_human_edited_skill_preserved(sandbox):
 
 
 def test_main_writes_skill_and_learnings(sandbox):
-    pool = c.load_pool("security")
+    pool = c.load_pool("ai-security")
     pool["entries"] = [_skill_entry()]
-    c.save_pool("security", pool)
+    c.save_pool("ai-security", pool)
     assert gs.main() == 0
     assert (sandbox / "skills" / "calendar-input-guard" / "SKILL.md").exists()
     assert (sandbox / "LEARNINGS.md").exists()

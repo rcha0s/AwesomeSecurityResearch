@@ -1,0 +1,92 @@
+{
+  "schema_version": "3.0",
+  "topic": "product-security",
+  "name": "Product Security",
+  "domains": [
+    "Application Security",
+    "Supply Chain & Dependencies",
+    "Cloud & Infrastructure",
+    "Identity & Access",
+    "Mobile Security",
+    "Threat Modeling & Red Teaming",
+    "Detection & Response",
+    "AI-Generated Code Risk"
+  ],
+  "entries": [
+    {
+      "source_url": "https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/",
+      "article_url": "https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/",
+      "source_name": "Palo Alto Networks Unit 42",
+      "source_type": "Vendor research",
+      "date": "2026-07",
+      "discovered_via": "rss",
+      "id": "phantom-squatting-ai-hallucinated-domains-as-a-s-99acdb5c5d",
+      "domain": "Supply Chain",
+      "subtype": "Supply Chain",
+      "summary": "Unit 42 documented 'phantom squatting': LLMs consistently hallucinate web domains for legitimate brands, and adversaries register those nonexistent domains to intercept AI-generated traffic. Across 913 brands and 685,339 queries they found 13,229 malicious URLs and ~250,000 still-unregistered hallucinated domains — and predicted adversary registrations 18–51 days ahead.",
+      "takeaway": "LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.",
+      "lessons": [
+        {
+          "point": "Hallucinated domains/packages are predictable — defenders can enumerate and pre-register or block them before attackers do",
+          "excerpt": "predict use of these domains from 18-51 days ahead of adversary registration",
+          "confidence": 0.9
+        },
+        {
+          "point": "AI coding assistants are being used to build the phishing kits that then exploit hallucinated targets",
+          "excerpt": "an attacker who leveraged an AI coding assistant to build a full phishing kit named Montana Empire",
+          "confidence": 0.85
+        }
+      ],
+      "tags": [
+        "supply-chain",
+        "slopsquatting",
+        "hallucination",
+        "phishing",
+        "unit42"
+      ],
+      "actionable": {
+        "type": "tool",
+        "title": "Enumerate & monitor your brand's hallucinated domains",
+        "detail": "Query LLMs for your brand's URLs/packages at scale, then pre-register or block-list the hallucinated ones and monitor for adversary registration."
+      },
+      "scores": {
+        "novelty": 90,
+        "relevance": 86,
+        "newness": 51,
+        "composite": 76.9,
+        "scored_at": "2026-07-13T02:48:31+00:00"
+      },
+      "title": "Phantom Squatting: attackers register the domains LLMs hallucinate",
+      "retrieved_at": "2026-07-13T00:46:09+00:00",
+      "needs_review": false,
+      "published": "2026-06-30",
+      "topic": "product-security"
+    },
+    {
+      "id": "web-redhat-npm-2026",
+      "domain": "Supply Chain",
+      "subtype": "Supply Chain",
+      "title": "@redhat-cloud-services npm namespace compromise (32+ packages)",
+      "date": "2026-06",
+      "severity": "High",
+      "threat": "Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.",
+      "conditions": "Affects consumers of the affected scoped packages and downstream builds that pulled compromised versions.",
+      "mitigations": "Identify affected versions from the Red Hat advisory; pin to clean releases; rotate impacted credentials; verify package signatures/provenance; harden publishing with mandatory review and 2FA.",
+      "source_name": "Red Hat Security",
+      "source_type": "Vendor advisory",
+      "source_url": "https://access.redhat.com/security/vulnerabilities/RHSB-2026-006",
+      "needs_review": false,
+      "discovered_via": "manual",
+      "article_url": "https://access.redhat.com/security/vulnerabilities/RHSB-2026-006",
+      "scores": {
+        "newness": 10,
+        "novelty": 0,
+        "relevance": 0,
+        "composite": 3.0,
+        "scored_at": "2026-07-13T02:48:31+00:00"
+      },
+      "published": "2026-06",
+      "topic": "product-security"
+    }
+  ]
+}

@@ -35,27 +35,39 @@ def sort_key(entry: dict) -> tuple:
     return (-float(scores.get("composite", 0)), entry.get("date") or "", entry.get("title", ""))
 
 
+def prune_stale(entries: list[dict], conf: c.Config, now=None) -> tuple[list[dict], list[dict]]:
+    """Split entries into (fresh, stale) by the hard freshness window."""
+    fresh, stale = [], []
+    for e in entries:
+        (fresh if c.is_fresh(e, conf.max_age_days, now=now) else stale).append(e)
+    return fresh, stale
+
+
 def rerank_pool(track: str, conf: c.Config | None = None, now=None) -> dict:
     conf = conf or c.load_config()
     pool = c.load_pool(track)
-    pool["entries"] = sorted((score_entry(e, conf, now=now) for e in pool["entries"]), key=sort_key)
+    fresh, stale = prune_stale(pool["entries"], conf, now=now)
+    archived = c.archive_entries(stale)
+    if stale:
+        print(f"  pruned {len(stale)} stale from {track} (archived {archived})")
+    pool["entries"] = sorted((score_entry(e, conf, now=now) for e in fresh), key=sort_key)
     c.save_pool(track, pool)
     return pool
 
 
 def rerank_all(conf: c.Config | None = None, now=None) -> None:
     conf = conf or c.load_config()
-    for track in c.TRACK_DOMAINS:
+    for track in c.TOPICS:
         pool = rerank_pool(track, conf, now=now)
         print(f"reranked {track}: {len(pool['entries'])} entries")
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--track", choices=list(c.TRACK_DOMAINS), default=None)
+    ap.add_argument("--topic", choices=list(c.TOPICS), default=None)
     args = ap.parse_args()
-    if args.track:
-        rerank_pool(args.track)
+    if args.topic:
+        rerank_pool(args.topic)
     else:
         rerank_all()
     return 0

@@ -10,8 +10,9 @@
 # "AI Security" can still contribute a Web or Mobile item.
 # ---------------------------------------------------------------------------
 
-# Number of days an item may be old before it is dropped (last 6 months).
-max_age_days: 183
+# The hard freshness window (how old a resource may be) lives in config.yaml
+# as `max_age_days` — a single source of truth used by every ingestor and the
+# pool-pruning step. We track only the latest research.
 
 # ---------------------------------------------------------------------------
 # Twitter / X ingestion (via Agent Reach -> twitter-cli). Runs LOCALLY only —
@@ -20,12 +21,8 @@ max_age_days: 183
 # ---------------------------------------------------------------------------
 twitter:
   home_feed: true          # scan the burner's home timeline
-  accounts:                # curated high-signal accounts (twitter user-posts @handle)
-    - "kunchenguid"
-    - "simonw"
-    - "PortSwigger"
-    - "Unit42_Intel"
-    - "GoogleVRP"
+  # Curated X accounts now live in the ranked registry (data/sources.json,
+  # type: x_account) — add with `python scripts/add_source.py x_account @handle`.
   # Per-run caps live in config.yaml (limits.twitter_feed / twitter_user_posts).
 
 # LinkedIn is auth-walled; ad-hoc adds fall back to pasted text/file. Handled
@@ -41,134 +38,10 @@ linkedin:
 # ---------------------------------------------------------------------------
 github:
   min_stars: 40          # ignore repos below this (noise floor)
-  per_query: 8           # top-N per query by stars
-  max_age_days: 200      # only repos created within this window (bias to novel)
-  queries:
-    - query: "prompt injection LLM"
-      track: security
-      domain: "AI Security"
-    - query: "MCP server security scanner"
-      track: security
-      domain: "AI Security"
-    - query: "AI agent security guardrails"
-      track: security
-      domain: "AI Security"
-    - query: "web application security research exploit"
-      track: security
-      domain: "Web Application Security"
-    - query: "mobile android security research tool"
-      track: security
-      domain: "Mobile Security"
-    - query: "agent harness framework llm"
-      track: ai
-      domain: "Agents & Harnesses"
-    - query: "llm evaluation harness benchmark"
-      track: ai
-      domain: "Evaluation & Safety"
-    - query: "context engineering retrieval llm"
-      track: ai
-      domain: "Tooling & Infrastructure"
-
-feeds:
-  # ---- AI / LLM Security -------------------------------------------------
-  - name: "OWASP GenAI Security Project"
-    url: "https://genai.owasp.org/feed/"
-    type: "Standards body / consortium"
-    domains: ["AI Security"]
-    trust: "high"
-
-  - name: "Google Project Zero"
-    url: "https://googleprojectzero.blogspot.com/feeds/posts/default"
-    type: "Vendor research"
-    domains: ["AI Security", "Mobile Security", "Web Application Security"]
-    trust: "high"
-
-  - name: "Palo Alto Networks Unit 42"
-    url: "https://unit42.paloaltonetworks.com/feed/"
-    type: "Vendor research"
-    domains: ["AI Security", "Mobile Security", "Web Application Security"]
-    trust: "high"
-
-  - name: "Microsoft Security Blog"
-    url: "https://www.microsoft.com/en-us/security/blog/feed/"
-    type: "Vendor research"
-    domains: ["AI Security", "Web Application Security"]
-    trust: "high"
-
-  - name: "arXiv cs.CR (Cryptography and Security)"
-    url: "http://export.arxiv.org/rss/cs.CR"
-    type: "Academic preprints"
-    domains: ["AI Security", "Web Application Security", "Mobile Security"]
-    trust: "medium"
-
-  # ---- Web Application Security ------------------------------------------
-  - name: "PortSwigger Research"
-    url: "https://portswigger.net/research/rss"
-    type: "Vendor research"
-    domains: ["Web Application Security"]
-    trust: "high"
-
-  - name: "GitHub Security Lab"
-    url: "https://github.blog/tag/github-security-lab/feed/"
-    type: "Vendor research"
-    domains: ["Web Application Security"]
-    trust: "high"
-
-  - name: "Google Online Security Blog"
-    url: "https://security.googleblog.com/feeds/posts/default"
-    type: "Vendor research"
-    domains: ["Web Application Security", "Mobile Security", "AI Security"]
-    trust: "high"
-
-  - name: "OWASP Foundation Blog"
-    url: "https://owasp.org/blog/feed.xml"
-    type: "Standards body"
-    domains: ["Web Application Security"]
-    trust: "high"
-
-  # ---- Mobile Security ---------------------------------------------------
-  - name: "The Citizen Lab"
-    url: "https://citizenlab.ca/feed/"
-    type: "Academic / research lab"
-    domains: ["Mobile Security"]
-    trust: "high"
-
-  - name: "Quokka Research"
-    url: "https://www.quokka.io/blog/rss.xml"
-    type: "Vendor research"
-    domains: ["Mobile Security"]
-    trust: "medium"
-
-  - name: "Zimperium zLabs"
-    url: "https://www.zimperium.com/blog/feed/"
-    type: "Vendor research"
-    domains: ["Mobile Security"]
-    trust: "medium"
-
-  # ---- AI Research (non-security: agents, harnesses, models, tooling) -----
-  - name: "arXiv cs.AI (Artificial Intelligence)"
-    url: "http://export.arxiv.org/rss/cs.AI"
-    type: "Academic preprints"
-    domains: ["Models & Capabilities"]
-    trust: "medium"
-
-  - name: "arXiv cs.LG (Machine Learning)"
-    url: "http://export.arxiv.org/rss/cs.LG"
-    type: "Academic preprints"
-    domains: ["Models & Capabilities"]
-    trust: "medium"
-
-  - name: "Simon Willison's Weblog"
-    url: "https://simonwillison.net/atom/everything/"
-    type: "Practitioner blog"
-    domains: ["Tooling & Infrastructure"]
-    trust: "medium"
-
-  - name: "Anthropic News"
-    url: "https://www.anthropic.com/rss.xml"
-    type: "Model lab"
-    domains: ["Models & Capabilities"]
-    trust: "high"
+  per_query: 8           # top-N per query by stars (created within config max_age_days)
+  # Search queries and watched users now live in the ranked registry
+  # (data/sources.json, type: github_query / github_user) — add with
+  # `python scripts/add_source.py github_query "<query>"` or `github_user <name>`.
 
 # Keyword rules used to classify each item into a domain and a subtype.
 # First matching domain wins; subtype is the first subtype whose keywords match.
