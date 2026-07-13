@@ -114,6 +114,11 @@ def merge(
         vc.ground_entry(entry)
         if conf.curation.get("require_grounding", True) and not vc.fully_grounded(entry):
             entry["needs_review"] = True
+        # A low-authority source whose quotes we couldn't confirm is suspect → review.
+        gs = entry.get("grounding_score")
+        confirmed = gs is not None and gs >= 1.0
+        if c.credibility_of(entry) < conf.curation.get("min_credibility", 0) and not confirmed:
+            entry["needs_review"] = True
         entries = pools[entry["topic"]]["entries"]
         idx = match_index(entries, entry)
         if idx is None:

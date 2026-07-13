@@ -56,8 +56,9 @@
         "novelty": 80,
         "relevance": 90,
         "newness": 50,
-        "composite": 74.5,
-        "scored_at": "2026-07-13T07:16:20+00:00"
+        "composite": 71.75,
+        "scored_at": "2026-07-13T07:22:59+00:00",
+        "credibility": 55.0
       },
       "id": "better-models-worse-tools-sota-models-regress-on-23a5b69b6f",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
@@ -102,8 +103,9 @@
         "novelty": 55,
         "relevance": 75,
         "newness": 50,
-        "composite": 60.5,
-        "scored_at": "2026-07-13T07:16:20+00:00"
+        "composite": 59.75,
+        "scored_at": "2026-07-13T07:22:59+00:00",
+        "credibility": 55.0
       },
       "id": "gpt-5-6-luna-terra-sol-three-tiers-1m-context-ag-c37d1d22d0",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
@@ -151,8 +153,9 @@
         "novelty": 78,
         "relevance": 84,
         "newness": 10,
-        "composite": 59.7,
-        "scored_at": "2026-07-13T07:16:20+00:00"
+        "composite": 58.6,
+        "scored_at": "2026-07-13T07:22:59+00:00",
+        "credibility": 50.0
       },
       "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
       "retrieved_at": "2026-07-13T00:46:09+00:00",

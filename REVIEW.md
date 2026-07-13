@@ -10,12 +10,12 @@ _Nothing awaiting review._
 
 ## Product Security (1)
 
-- **[@redhat-cloud-services npm namespace compromise (32+ packages)](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)** · composite 3.0 · _not yet scored (no novelty/relevance — needs analysis)_
+- **[@redhat-cloud-services npm namespace compromise (32+ packages)](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)** · composite 10.0 · _not yet scored (no novelty/relevance — needs analysis)_
   Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
 
 ## AI Research (1)
 
-- **[GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims](https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything)** · composite 60.5 · _flagged needs_review (low confidence / novelty / relevance)_
+- **[GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims](https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything)** · composite 59.75 · _flagged needs_review (low confidence / novelty / relevance)_
   Evaluate the tiers on your own agentic task — per-token price means less now that reasoning-token counts dominate cost.
 
 ---

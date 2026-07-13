@@ -64,8 +64,9 @@
         "novelty": 82,
         "relevance": 88,
         "newness": 10,
-        "composite": 62.5,
-        "scored_at": "2026-07-13T07:16:20+00:00"
+        "composite": 64.75,
+        "scored_at": "2026-07-13T07:22:59+00:00",
+        "credibility": 75.0
       },
       "id": "openclaw-s-clawhub-skill-marketplace-an-agentic-798f5a7e0b",
       "retrieved_at": "2026-07-13T04:19:32+00:00",

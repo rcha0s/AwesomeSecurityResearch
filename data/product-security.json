@@ -55,8 +55,9 @@
         "novelty": 90,
         "relevance": 86,
         "newness": 50,
-        "composite": 76.6,
-        "scored_at": "2026-07-13T07:16:20+00:00"
+        "composite": 72.8,
+        "scored_at": "2026-07-13T07:22:59+00:00",
+        "credibility": 50.0
       },
       "title": "Phantom Squatting: attackers register the domains LLMs hallucinate",
       "retrieved_at": "2026-07-13T00:46:09+00:00",
@@ -110,8 +111,9 @@
         "novelty": 68,
         "relevance": 72,
         "newness": 50,
-        "composite": 64.0,
-        "scored_at": "2026-07-13T07:16:20+00:00"
+        "composite": 65.75,
+        "scored_at": "2026-07-13T07:22:59+00:00",
+        "credibility": 75.0
       },
       "id": "gigawiper-modular-destructive-malware-that-fakes-2b20f20b50",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
@@ -138,8 +140,9 @@
         "newness": 10,
         "novelty": 0,
         "relevance": 0,
-        "composite": 3.0,
-        "scored_at": "2026-07-13T07:16:20+00:00"
+        "composite": 10.0,
+        "scored_at": "2026-07-13T07:22:59+00:00",
+        "credibility": 50.0
       },
       "published": "2026-06",
       "topic": "product-security",

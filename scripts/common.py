@@ -153,7 +153,7 @@ class Config:
 def load_config(path: Path = CONFIG_FILE) -> Config:
     raw = load_yaml(path)
     weights = raw["weights"]
-    total = sum(weights.get(k, 0) for k in ("newness", "novelty", "relevance"))
+    total = sum(weights.get(k, 0) for k in ("newness", "novelty", "relevance", "credibility"))
     if abs(total - 1.0) > 0.001:
         raise ValueError(f"config weights must sum to 1.0 (got {total})")
     return Config(
@@ -399,20 +399,28 @@ def newness_score(date: str, half_life_days: float, now: datetime | None = None)
     return round(100 * math.exp(-age_days / max(1.0, half_life_days)))
 
 
+COMPOSITE_AXES = ("newness", "novelty", "relevance", "credibility")
+
+
 def composite_score(scores: dict, weights: dict[str, float]) -> float:
-    total = sum(
-        weights.get(axis, 0.0) * float(scores.get(axis, 0) or 0)
-        for axis in ("newness", "novelty", "relevance")
-    )
+    total = sum(weights.get(axis, 0.0) * float(scores.get(axis, 0) or 0) for axis in COMPOSITE_AXES)
     return round(total, 2)
 
 
+def credibility_of(entry: dict, default: float = 50.0) -> float:
+    """A finding's source authority (0-100) = its source registry rank; a neutral
+    default when the source is unknown (manual add / legacy)."""
+    rank = entry.get("source_rank")
+    return float(rank) if rank is not None else default
+
+
 def entry_composite(entry: dict, conf: Config) -> float:
-    """An entry's composite, recomputing decayed newness if it's missing."""
+    """An entry's composite, recomputing decayed newness + credibility if missing."""
     scores = dict(entry.get("scores") or {})
     if "composite" in scores:
         return float(scores["composite"])
     scores["newness"] = newness_score(best_date(entry) or "", conf.half_life_days)
+    scores.setdefault("credibility", credibility_of(entry))
     return composite_score(scores, conf.weights)
 
 

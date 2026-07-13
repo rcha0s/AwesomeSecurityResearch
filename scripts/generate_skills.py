@@ -34,12 +34,7 @@ def learnings_path() -> c.Path:
 
 
 def composite_of(entry: dict, conf: c.Config) -> float:
-    scores = entry.get("scores") or {}
-    if "composite" in scores:
-        return float(scores["composite"])
-    live = dict(scores)
-    live["newness"] = c.newness_score(entry.get("date") or "", conf.half_life_days)
-    return c.composite_score(live, conf.weights)
+    return c.entry_composite(entry, conf)  # shared: includes newness + credibility
 
 
 def skill_slug(entry: dict) -> str | None:

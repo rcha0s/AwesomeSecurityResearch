@@ -12,7 +12,7 @@ _Securing AI systems: harness & agent security, MCP, skill scanning, prompt inje
 
 **🔬 Latest research**
 
-- **[OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/)** · _Palo Alto Networks Unit 42_ · composite 62.5
+- **[OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/)** · _Palo Alto Networks Unit 42_ · composite 64.75
   Agent skill marketplaces are a critical, largely-untrusted link in the software supply chain — marketplace scanning alone does not make them safe.
   → **Do:** (harness) Vet and sandbox agent skills
 
@@ -32,10 +32,10 @@ _Securing products: application security, supply chain, cloud & infra, identity,
 
 **🔬 Latest research**
 
-- **[Phantom Squatting: attackers register the domains LLMs hallucinate](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/)** · _Palo Alto Networks Unit 42_ · composite 76.6
+- **[Phantom Squatting: attackers register the domains LLMs hallucinate](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/)** · _Palo Alto Networks Unit 42_ · composite 72.8
   LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
   → **Do:** (tool) Enumerate & monitor your brand's hallucinated domains
-- **[GigaWiper: modular destructive malware that fakes ransomware](https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware/)** · _Microsoft Security Blog_ · composite 64.0
+- **[GigaWiper: modular destructive malware that fakes ransomware](https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware/)** · _Microsoft Security Blog_ · composite 65.75
   Wiper malware is consolidating into modular platforms, and 'ransomware' may be undecryptable destruction in disguise — plan recovery accordingly.
   → **Do:** (takeaway) Assume fake-ransomware; harden recovery
 
@@ -53,10 +53,10 @@ _Practitioner AI: improving your harness, understanding, and architecture for us
 
 **🔬 Latest research**
 
-- **[Better Models, Worse Tools: SOTA models regress on non-native tool schemas](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything)** · _Simon Willison's Weblog_ · composite 74.5
+- **[Better Models, Worse Tools: SOTA models regress on non-native tool schemas](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything)** · _Simon Willison's Weblog_ · composite 71.75
   Newer ≠ better for YOUR tools: match your harness's tool schemas to what the target model was trained on.
   → **Do:** (harness) Offer model-matched edit tools
-- **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](https://github.com/omnigent-ai/omnigent)** · _omnigent-ai/omnigent_ · composite 59.7
+- **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](https://github.com/omnigent-ai/omnigent)** · _omnigent-ai/omnigent_ · composite 58.6
   The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
   → **Do:** (harness) Consider a meta-harness for multi-agent work
 

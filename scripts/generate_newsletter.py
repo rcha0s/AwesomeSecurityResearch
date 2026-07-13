@@ -22,12 +22,7 @@ TOP_TRENDS = 3  # emerging themes shown per topic
 
 
 def composite_of(entry: dict, conf: c.Config) -> float:
-    scores = entry.get("scores") or {}
-    if "composite" in scores:
-        return float(scores["composite"])
-    live = dict(scores)
-    live["newness"] = c.newness_score(c.best_date(entry) or "", conf.half_life_days)
-    return c.composite_score(live, conf.weights)
+    return c.entry_composite(entry, conf)  # shared: includes newness + credibility
 
 
 def research_block(entry: dict, conf: c.Config) -> list[str]:

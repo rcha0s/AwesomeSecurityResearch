@@ -54,6 +54,7 @@ def entry_scores(entry: dict, conf: c.Config) -> dict:
         scores["newness"] = c.newness_score(entry.get("date") or "", conf.half_life_days)
     scores.setdefault("novelty", 0)
     scores.setdefault("relevance", 0)
+    scores.setdefault("credibility", c.credibility_of(entry))
     if "composite" not in scores:
         scores["composite"] = c.composite_score(scores, conf.weights)
     return scores
@@ -81,7 +82,8 @@ def entry_relpath(entry: dict) -> str:
 def score_line(scores: dict) -> str:
     return (
         f"**Scores:** 🆕 Newness {scores['newness']} · ✨ Novelty {scores['novelty']} · "
-        f"🎯 Relevance {scores['relevance']} · **Composite {scores['composite']}**"
+        f"🎯 Relevance {scores['relevance']} · 🏛️ Credibility {round(scores.get('credibility', 50))} · "
+        f"**Composite {scores['composite']}**"
     )
 
 

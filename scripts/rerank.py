@@ -25,6 +25,7 @@ def score_entry(entry: dict, conf: c.Config, now=None) -> dict:
     scores["newness"] = c.newness_score(entry.get("date") or "", conf.half_life_days, now=now)
     scores.setdefault("novelty", 0)
     scores.setdefault("relevance", 0)
+    scores["credibility"] = c.credibility_of(entry)  # from the source registry rank
     scores["composite"] = c.composite_score(scores, conf.weights)
     scores["scored_at"] = c.utcnow_iso()
     return {**entry, "scores": scores}

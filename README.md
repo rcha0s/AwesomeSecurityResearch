@@ -8,7 +8,7 @@
 
 > The top curated findings published in the last 7 days — each links to its writeup here **and** the original source. For the full digest see the [📰 newsletter](NEWSLETTER.md).
 
-- **[GigaWiper: modular destructive malware that fakes ransomware](product-security/malware-wipers/2026-07-gigawiper-modular-destructive-malware-that-fakes-ransomware.md)** · Product Security · Jul 9, 2026 · composite **64.0** · [source ↗](https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware/)  
+- **[GigaWiper: modular destructive malware that fakes ransomware](product-security/malware-wipers/2026-07-gigawiper-modular-destructive-malware-that-fakes-ransomware.md)** · Product Security · Jul 9, 2026 · composite **65.75** · [source ↗](https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware/)  
   Wiper malware is consolidating into modular platforms, and 'ransomware' may be undecryptable destruction in disguise — plan recovery accordingly.
 
 ## 📚 The three databases

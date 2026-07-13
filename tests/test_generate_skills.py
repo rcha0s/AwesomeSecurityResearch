@@ -14,7 +14,8 @@ def _skill_entry(**over):
         subtype="Prompt Injection",
         title="Calendar input guard",
         source_url="https://a/cal",
-        # novelty+relevance alone clear the threshold regardless of newness/wall-clock
+        source_rank=100,  # credible source → high credibility axis
+        # novelty+relevance+credibility clear the composite threshold regardless of newness
         scores={"novelty": 100, "relevance": 100},
         actionable={
             "type": "skill",
