@@ -5,15 +5,17 @@ inclusion is deliberately high, and every finding must cite a real source.
 
 ## Two tracks
 
-Findings live in one of two growing pools (the source of truth):
+Findings live in one of three growing topic pools (the source of truth):
 
-- **Security** (`data/security.json`) — domains: `AI Security`, `Web Application
-  Security`, `Mobile Security`. Threats and defenses.
-- **AI** (`data/ai.json`) — domains: `Agents & Harnesses`, `Prompting & Context`,
-  `Models & Capabilities`, `Tooling & Infrastructure`, `Evaluation & Safety`.
-  Capabilities, how-tos, and harness learnings.
+- **AI Security** (`data/ai-security.json`) — securing AI: harness/agent security, MCP,
+  skill scanning, prompt injection, memory poisoning, model supply chain, LLM red-teaming.
+- **Product Security** (`data/product-security.json`) — appsec, supply chain, cloud/infra,
+  identity, mobile, plus red teaming and threat modeling (AI-assisted or not).
+- **AI Research** (`data/ai-research.json`) — *practitioner* AI: improving your harness,
+  understanding, or architecture for using LLMs/agents. Not model internals / ML-research.
 
-The rendered `README.md`, `security/`, `ai/`, `skills/`, and `LEARNINGS.md` are
+`domain` within a topic is a free-text sub-grouping label. The rendered `README.md`,
+`NEWSLETTER.md`, `TRENDS.md`, the three topic dirs, `skills/`, and `LEARNINGS.md` are
 **generated** — never hand-edit them. Edit the pools and regenerate.
 
 ## What belongs here

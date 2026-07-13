@@ -72,7 +72,7 @@ def build_candidate(entry: dict, feed: dict, rules: dict) -> dict | None:
         "date": dt.strftime("%Y-%m") if dt else None,
         "excerpt": excerpt,
         "raw_path": None,
-        "guess_track": c.track_for_domain(domain),
+        "guess_topic": c.topic_for_domain(domain),
         "guess_domain": domain,
         "guess_subtype": classify_subtype(blob, domain, rules),
         "source_id": feed.get("source_id"),
@@ -120,13 +120,13 @@ def main() -> int:
     if args.dry_run:
         print(f"\n(dry run) {len(candidates)} candidate(s) would be staged:")
         for cand in candidates:
-            print(f"   [{cand['guess_track']}/{cand['guess_domain']}] {cand['title']}")
+            print(f"   [{cand['guess_topic']}/{cand['guess_domain']}] {cand['title']}")
         return 0
 
     added = c.add_candidates(candidates)
     print(f"\nStaged {len(added)} new candidate(s) in {c.CANDIDATES_FILE.name}.")
     for cand in added:
-        print(f"   [{cand['guess_track']}/{cand['guess_domain']}] {cand['title']}")
+        print(f"   [{cand['guess_topic']}/{cand['guess_domain']}] {cand['title']}")
     return 0
 
 

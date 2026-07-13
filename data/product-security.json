@@ -1,10 +1,16 @@
 {
-  "schema_version": "2.0",
-  "track": "security",
+  "schema_version": "3.0",
+  "topic": "product-security",
+  "name": "Product Security",
   "domains": [
-    "AI Security",
-    "Web Application Security",
-    "Mobile Security"
+    "Application Security",
+    "Supply Chain & Dependencies",
+    "Cloud & Infrastructure",
+    "Identity & Access",
+    "Mobile Security",
+    "Threat Modeling & Red Teaming",
+    "Detection & Response",
+    "AI-Generated Code Risk"
   ],
   "entries": [
     {
@@ -15,8 +21,7 @@
       "date": "2026-07",
       "discovered_via": "rss",
       "id": "phantom-squatting-ai-hallucinated-domains-as-a-s-99acdb5c5d",
-      "track": "security",
-      "domain": "Web Application Security",
+      "domain": "Supply Chain",
       "subtype": "Supply Chain",
       "summary": "Unit 42 documented 'phantom squatting': LLMs consistently hallucinate web domains for legitimate brands, and adversaries register those nonexistent domains to intercept AI-generated traffic. Across 913 brands and 685,339 queries they found 13,229 malicious URLs and ~250,000 still-unregistered hallucinated domains — and predicted adversary registrations 18–51 days ahead.",
       "takeaway": "LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.",
@@ -49,16 +54,17 @@
         "relevance": 86,
         "newness": 51,
         "composite": 76.9,
-        "scored_at": "2026-07-13T01:05:11+00:00"
+        "scored_at": "2026-07-13T02:48:31+00:00"
       },
       "title": "Phantom Squatting: attackers register the domains LLMs hallucinate",
       "retrieved_at": "2026-07-13T00:46:09+00:00",
       "needs_review": false,
-      "published": "2026-06-30"
+      "published": "2026-06-30",
+      "topic": "product-security"
     },
     {
       "id": "web-redhat-npm-2026",
-      "domain": "Web Application Security",
+      "domain": "Supply Chain",
       "subtype": "Supply Chain",
       "title": "@redhat-cloud-services npm namespace compromise (32+ packages)",
       "date": "2026-06",
@@ -70,7 +76,6 @@
       "source_type": "Vendor advisory",
       "source_url": "https://access.redhat.com/security/vulnerabilities/RHSB-2026-006",
       "needs_review": false,
-      "track": "security",
       "discovered_via": "manual",
       "article_url": "https://access.redhat.com/security/vulnerabilities/RHSB-2026-006",
       "scores": {
@@ -78,10 +83,10 @@
         "novelty": 0,
         "relevance": 0,
         "composite": 3.0,
-        "scored_at": "2026-07-13T01:05:11+00:00"
+        "scored_at": "2026-07-13T02:48:31+00:00"
       },
-      "published": "2026-06"
+      "published": "2026-06",
+      "topic": "product-security"
     }
-  ],
-  "generated_note": "Curated entries are hand-reviewed. Auto-discovered entries (needs_review=true) are appended by scripts/aggregate.py from credible source feeds and should be triaged before promotion."
+  ]
 }

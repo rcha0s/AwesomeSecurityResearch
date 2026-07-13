@@ -1,35 +1,36 @@
 # Awesome Security & AI Research [![Awesome](https://cdn.jsdelivr.net/gh/sindresorhus/awesome@d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
-> An auto-updating, source-cited tracker of the most **teachable** security and AI research — scanned from X/Twitter, GitHub, articles, and RSS, then extracted, scored, and turned into actionable takeaways, skills, and harness improvements.
+> An auto-updating, source-cited tracker of the most **teachable** security and AI research — scanned from X/Twitter, GitHub, YouTube, articles, and RSS, then extracted, scored, and turned into actionable takeaways, skills, and harness improvements.
 
 **Only the latest research:** every entry was published within the last ~31 days. Older findings age out to [`data/archive.json`](data/archive.json) automatically.
 
-![Updated](https://img.shields.io/badge/updated-2026--07--13-blue) ![Findings](https://img.shields.io/badge/findings-3-success) ![Security](https://img.shields.io/badge/security-2-orange) ![AI](https://img.shields.io/badge/AI-1-purple) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
+![Updated](https://img.shields.io/badge/updated-2026--07--13-blue) ![Findings](https://img.shields.io/badge/findings-3-success) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
 
-Two growing knowledge directories:
+Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md) and [📈 Trends](TRENDS.md):
 
-- 🛡️ **[Security Research](security/README.md)** — 2 findings (AI, Web, Mobile).
-- 🤖 **[AI Research](ai/README.md)** — 1 findings (agents, harnesses, prompting, models, tooling, evaluation).
+- 🤖🛡️ **[AI Security](ai-security/README.md)** — 0 findings. Securing AI systems: harness & agent security, MCP, skill scanning, prompt injection, memory poisoning, model supply chain, LLM red-teaming.
+- 🛡️ **[Product Security](product-security/README.md)** — 2 findings. Securing products: application security, supply chain, cloud & infra, identity, mobile, plus red teaming and threat modeling (AI-assisted or not).
+- 🧠 **[AI Research](ai-research/README.md)** — 1 findings. Practitioner AI: improving your harness, understanding, and architecture for using LLMs/agents on real tasks. Not model internals or ML-research.
 - 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.
 
-## 🔝 Top learnings right now
+## 🔝 Top findings right now
 
-1. **[Phantom Squatting: attackers register the domains LLMs hallucinate](security/web-application-security/2026-07-phantom-squatting-attackers-register-the-domains-llms-halluc.md)** · security · composite **76.9**  
+1. **[Phantom Squatting: attackers register the domains LLMs hallucinate](product-security/supply-chain/2026-07-phantom-squatting-attackers-register-the-domains-llms-halluc.md)** · Product Security · composite **76.9**  
    LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
-1. **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](ai/agents-harnesses/2026-06-omnigent-an-open-source-meta-harness-over-claude-code-codex.md)** · ai · composite **59.7**  
+1. **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](ai-research/meta-harness/2026-06-omnigent-an-open-source-meta-harness-over-claude-code-codex.md)** · AI Research · composite **59.7**  
    The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
-1. **[@redhat-cloud-services npm namespace compromise (32+ packages)](security/web-application-security/2026-06-redhat-cloud-services-npm-namespace-compromise-32-packages.md)** · security · composite **3.0**  
+1. **[@redhat-cloud-services npm namespace compromise (32+ packages)](product-security/supply-chain/2026-06-redhat-cloud-services-npm-namespace-compromise-32-packages.md)** · Product Security · composite **3.0**  
    Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
 
 ## How it works
 
 ```
-X feed / LinkedIn / articles / RSS   → ingest + Jina Reader (clean text)
+X / GitHub / YouTube / articles / RSS  → ingest + Jina Reader (clean text)
   → analyze (extract lessons · score newness/novelty/relevance · derive action)
-  → merge into data/{security,ai}.json → rerank → render these directories
+  → merge into the 3 topic pools → rerank → render + newsletter + trends
 ```
 
-Add a single resource anytime: `python scripts/add.py <url>` then the `/add-resource` skill. Batch-scan your X feed with the `/research-scan` skill (self-paced via `/loop`).
+Add a single resource: `python scripts/add.py <url>` (`/add-resource`). Add a source to track: `python scripts/add_source.py …` (`/add-source`). Batch-scan with `/research-scan` (self-paced via `/loop`).
 
 ## License
 

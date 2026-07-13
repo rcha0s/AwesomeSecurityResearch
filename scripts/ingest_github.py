@@ -114,7 +114,7 @@ def repo_to_candidate(repo: dict, source: dict, fetch: bool, max_chars: int) -> 
         "excerpt": c.clean_summary(f"{desc} ({stars} stars)", 320),
         "raw_path": raw_path,
         "stars": stars,
-        "guess_track": c.track_for_domain(domains[0]) if domains else None,
+        "guess_topic": c.topic_for_domain(domains[0]) if domains else None,
         "guess_domain": domains[0] if domains else None,
         "guess_subtype": None,
         "source_id": source.get("id"),
@@ -169,7 +169,7 @@ def main() -> int:
     if args.dry_run:
         for cand in candidates:
             print(
-                f"   [{cand['guess_track']}/{cand['guess_domain']}] {cand['title']} "
+                f"   [{cand['guess_topic']}/{cand['guess_domain']}] {cand['title']} "
                 f"({cand['stars']} stars)"
             )
         return 0

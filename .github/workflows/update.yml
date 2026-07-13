@@ -13,8 +13,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "data/security.json"
-      - "data/ai.json"
+      - "data/*.json"
       - "scripts/**"
       - "config.yaml"
   workflow_dispatch: {}
@@ -40,9 +39,11 @@ jobs:
       - name: Re-rank pools
         run: python scripts/rerank.py
 
-      - name: Regenerate site + skills
+      - name: Regenerate site + trends + newsletter + skills
         run: |
           python scripts/generate_site.py
+          python scripts/trends.py
+          python scripts/generate_newsletter.py
           python scripts/generate_skills.py
 
       - name: Commit changes
@@ -50,7 +51,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add data/security.json data/ai.json data/archive.json README.md LEARNINGS.md security ai skills
+            git add data/*.json README.md NEWSLETTER.md TRENDS.md LEARNINGS.md \
+              ai-security product-security ai-research skills
             git commit -m "chore: render refresh ($(date -u +%Y-%m-%d))"
             git push
           else

@@ -1,6 +1,6 @@
 # @redhat-cloud-services npm namespace compromise (32+ packages)
 
-**Track:** Security  ·  **Domain:** Web Application Security  ·  **Subtype:** Supply Chain  
+**Topic:** Product Security  ·  **Domain:** Supply Chain  
 **Source:** [Red Hat Security](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)  ·  **Published:** Jun 2026  
 **Scores:** 🆕 Newness 10 · ✨ Novelty 0 · 🎯 Relevance 0 · **Composite 3.0**
 

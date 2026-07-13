@@ -26,58 +26,61 @@ def test_score_entry_defaults_missing_axes():
 
 
 def test_rerank_pool_sorts_by_composite(sandbox):
-    pool = c.load_pool("ai")
+    pool = c.load_pool("ai-research")
     pool["entries"] = [
         make_entry(title="low", source_url="https://a/1", scores={"novelty": 5, "relevance": 5}),
         make_entry(title="high", source_url="https://a/2", scores={"novelty": 95, "relevance": 95}),
     ]
-    c.save_pool("ai", pool)
-    out = rerank.rerank_pool("ai")
+    c.save_pool("ai-research", pool)
+    out = rerank.rerank_pool("ai-research")
     assert out["entries"][0]["title"] == "high"
     # persisted
-    assert c.load_pool("ai")["entries"][0]["title"] == "high"
+    assert c.load_pool("ai-research")["entries"][0]["title"] == "high"
 
 
-def test_rerank_all_scores_both_pools(sandbox):
-    for track, domain in (("ai", "Agents & Harnesses"), ("security", "AI Security")):
-        pool = c.load_pool(track)
-        pool["entries"] = [make_entry(track=track, domain=domain, source_url=f"https://a/{track}")]
-        c.save_pool(track, pool)
+def test_rerank_all_scores_pools(sandbox):
+    for topic, domain in (
+        ("ai-research", "Agents & Harnesses"),
+        ("ai-security", "Prompt Injection"),
+    ):
+        pool = c.load_pool(topic)
+        pool["entries"] = [make_entry(topic=topic, domain=domain, source_url=f"https://a/{topic}")]
+        c.save_pool(topic, pool)
     rerank.rerank_all()
-    for track in ("ai", "security"):
-        assert "composite" in c.load_pool(track)["entries"][0]["scores"]
+    for topic in ("ai-research", "ai-security"):
+        assert "composite" in c.load_pool(topic)["entries"][0]["scores"]
 
 
 def test_rerank_prunes_stale_to_archive(sandbox):
-    pool = c.load_pool("security")
+    pool = c.load_pool("ai-security")
     pool["entries"] = [
         make_entry(
-            track="security",
-            domain="AI Security",
+            topic="ai-security",
+            domain="Prompt Injection",
             title="fresh",
             source_url="https://a/fresh",
             published="2099-01-01",
         ),
         make_entry(
-            track="security",
-            domain="AI Security",
+            topic="ai-security",
+            domain="Prompt Injection",
             title="stale",
             source_url="https://a/stale",
             published="2000-01-01",
         ),
     ]
-    c.save_pool("security", pool)
-    rerank.rerank_pool("security")
-    live = [e["title"] for e in c.load_pool("security")["entries"]]
+    c.save_pool("ai-security", pool)
+    rerank.rerank_pool("ai-security")
+    live = [e["title"] for e in c.load_pool("ai-security")["entries"]]
     assert live == ["fresh"]
     archived = [e["title"] for e in c.load_json(c.ARCHIVE_FILE, default=[])]
     assert "stale" in archived
 
 
 def test_rerank_main_cli(sandbox, monkeypatch):
-    pool = c.load_pool("ai")
+    pool = c.load_pool("ai-research")
     pool["entries"] = [make_entry(source_url="https://a/cli")]
-    c.save_pool("ai", pool)
-    monkeypatch.setattr("sys.argv", ["rerank", "--track", "ai"])
+    c.save_pool("ai-research", pool)
+    monkeypatch.setattr("sys.argv", ["rerank", "--topic", "ai-research"])
     assert rerank.main() == 0
-    assert "composite" in c.load_pool("ai")["entries"][0]["scores"]
+    assert "composite" in c.load_pool("ai-research")["entries"][0]["scores"]

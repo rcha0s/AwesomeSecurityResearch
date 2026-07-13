@@ -92,7 +92,7 @@ def normalize_entry(entry: dict, conf: c.Config) -> dict:
 
 
 def merge(analyzed: list[dict], conf: c.Config) -> tuple[list[dict], list[str], set[str]]:
-    pools = {t: c.load_pool(t) for t in c.TRACK_DOMAINS}
+    pools = {t: c.load_pool(t) for t in c.TOPICS}
     merged: list[dict] = []
     errors: list[str] = []
     merged_urls: set[str] = set()
@@ -102,7 +102,7 @@ def merge(analyzed: list[dict], conf: c.Config) -> tuple[list[dict], list[str], 
             errors.append(f"{raw.get('title', '?')[:50]}: {'; '.join(problems)}")
             continue
         entry = normalize_entry(raw, conf)
-        entries = pools[entry["track"]]["entries"]
+        entries = pools[entry["topic"]]["entries"]
         idx = match_index(entries, entry)
         if idx is None:
             entries.append(entry)
@@ -112,8 +112,8 @@ def merge(analyzed: list[dict], conf: c.Config) -> tuple[list[dict], list[str], 
         for k in ("source_url", "article_url"):
             if entry.get(k):
                 merged_urls.add(c.normalize_url(entry[k]))
-    for track, pool in pools.items():
-        c.save_pool(track, pool)
+    for topic, pool in pools.items():
+        c.save_pool(topic, pool)
     return merged, errors, merged_urls
 
 
@@ -141,10 +141,10 @@ def main() -> int:
 
     merged, errors, merged_urls = merge(analyzed, conf)
     print(f"Merged {len(merged)} entr(y/ies) into the pools.")
-    for track in c.TRACK_DOMAINS:
-        flagged = sum(1 for m in merged if m["track"] == track and m.get("needs_review"))
-        count = sum(1 for m in merged if m["track"] == track)
-        print(f"  {track}: {count} merged ({flagged} flagged needs_review)")
+    for topic in c.TOPICS:
+        flagged = sum(1 for m in merged if m["topic"] == topic and m.get("needs_review"))
+        count = sum(1 for m in merged if m["topic"] == topic)
+        print(f"  {topic}: {count} merged ({flagged} flagged needs_review)")
     if errors:
         print(f"\nSkipped {len(errors)} invalid entr(y/ies):", file=sys.stderr)
         for err in errors:

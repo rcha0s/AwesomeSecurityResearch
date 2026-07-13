@@ -1,12 +1,14 @@
 {
-  "schema_version": "2.0",
-  "track": "ai",
+  "schema_version": "3.0",
+  "topic": "ai-research",
+  "name": "AI Research",
   "domains": [
     "Agents & Harnesses",
     "Prompting & Context",
-    "Models & Capabilities",
     "Tooling & Infrastructure",
-    "Evaluation & Safety"
+    "Evaluation",
+    "Architecture & Optimization",
+    "Models & Capabilities"
   ],
   "entries": [
     {
@@ -18,8 +20,7 @@
       "date": "2026-06",
       "discovered_via": "github",
       "id": "omnigent-ai-omnigent-b26281bf0e",
-      "track": "ai",
-      "domain": "Agents & Harnesses",
+      "domain": "Meta-Harness",
       "subtype": "Meta-Harness",
       "summary": "Omnigent is an open-source meta-harness: a common orchestration layer over Claude Code, Codex, Cursor, OpenCode, Pi and custom agents. You swap or combine harnesses without rewriting, enforce policies and sandboxing, and drive sessions from terminal, browser, or phone.",
       "takeaway": "The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.",
@@ -52,13 +53,13 @@
         "relevance": 84,
         "newness": 10,
         "composite": 59.7,
-        "scored_at": "2026-07-13T01:05:11+00:00"
+        "scored_at": "2026-07-13T02:48:31+00:00"
       },
       "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
       "retrieved_at": "2026-07-13T00:46:09+00:00",
       "needs_review": false,
-      "published": "2026-06"
+      "published": "2026-06",
+      "topic": "ai-research"
     }
-  ],
-  "generated_note": "AI research learnings (agents, harnesses, prompting, models, tooling, evaluation). Grown by the /research-scan and /add-resource skills."
+  ]
 }

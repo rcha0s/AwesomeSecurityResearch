@@ -87,7 +87,7 @@ def video_to_candidate(v: dict, source: dict) -> dict | None:
         "date": published[:7] if published else None,
         "excerpt": desc or title,
         "raw_path": None,
-        "guess_track": None,
+        "guess_topic": None,
         "guess_domain": None,
         "guess_subtype": None,
         "source_id": source.get("id"),

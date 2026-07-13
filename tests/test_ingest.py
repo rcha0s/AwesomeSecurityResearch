@@ -22,13 +22,13 @@ def test_aggregate_classifies_tracks():
         {"name": "F", "type": "blog", "domains": ["Agents & Harnesses"]},
         rules,
     )
-    assert ai["guess_track"] == "ai" and ai["guess_domain"] == "Agents & Harnesses"
+    assert ai["guess_topic"] == "ai-research" and ai["guess_domain"] == "Agents & Harnesses"
     sec = aggregate.build_candidate(
         {"link": "https://x/b", "title": "request smuggling desync", "summary": "waf bypass"},
         {"name": "G", "type": "v", "domains": ["Web Application Security"]},
         rules,
     )
-    assert sec["guess_track"] == "security"
+    assert sec["guess_topic"] == "product-security"
 
 
 def test_parse_tweets_shape_tolerant():
@@ -96,11 +96,11 @@ def test_add_build_candidate(sandbox):
         title="My title",
         author="Jane",
         date="2026-07",
-        track="ai",
+        topic="ai-research",
     )
     cand = add.build_candidate(args, "Body text about agents.")
     assert cand["discovered_via"] == "linkedin"
-    assert cand["guess_track"] == "ai"
+    assert cand["guess_topic"] == "ai-research"
     assert cand["title"] == "My title"
     assert cand["raw_path"] is not None
 
@@ -130,7 +130,7 @@ def test_add_resolve_text_variants(tmp_path):
 
 def test_add_main_stages(sandbox, monkeypatch):
     monkeypatch.setattr(
-        "sys.argv", ["add", "--text", "agents body", "--title", "T", "--track", "ai"]
+        "sys.argv", ["add", "--text", "agents body", "--title", "T", "--topic", "ai-research"]
     )
     assert add.main() == 0
     assert len(c.load_candidates()) == 1

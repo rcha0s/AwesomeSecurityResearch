@@ -12,25 +12,24 @@ def sandbox(tmp_path, monkeypatch):
     """Redirect all pool/candidate/output paths into a temp dir with empty pools."""
     data = tmp_path / "data"
     data.mkdir()
-    pools = {"security": data / "security.json", "ai": data / "ai.json"}
+    pools = {t: data / f"{t}.json" for t in common.TOPICS}
     monkeypatch.setattr(common, "ROOT", tmp_path)
     monkeypatch.setattr(common, "DATA_DIR", data)
-    monkeypatch.setattr(common, "SECURITY_POOL", pools["security"])
-    monkeypatch.setattr(common, "AI_POOL", pools["ai"])
     monkeypatch.setattr(common, "POOL_FILES", pools)
     monkeypatch.setattr(common, "CANDIDATES_FILE", data / "candidates.json")
     monkeypatch.setattr(common, "ANALYSIS_OUT", data / "analysis_out.json")
+    monkeypatch.setattr(common, "ARCHIVE_FILE", data / "archive.json")
     monkeypatch.setattr(common, "RAW_DIR", data / "_raw")
     monkeypatch.setattr(sources_registry, "REGISTRY_FILE", data / "sources.json")
-    common.save_pool("security", common.empty_pool("security"))
-    common.save_pool("ai", common.empty_pool("ai"))
+    for topic in common.TOPICS:
+        common.save_pool(topic, common.empty_pool(topic))
     return tmp_path
 
 
 def make_entry(**over) -> dict:
     """A valid analyzed entry; override any field via kwargs."""
     entry = {
-        "track": "ai",
+        "topic": "ai-research",
         "domain": "Agents & Harnesses",
         "subtype": "Orchestration",
         "title": "Compacting tool outputs cuts agent tokens",

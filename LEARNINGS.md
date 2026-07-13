@@ -5,19 +5,19 @@
 ## 📈 Ranked findings
 
 ### Phantom Squatting: attackers register the domains LLMs hallucinate · `76.9`
-- **Track:** security / Web Application Security
+- **Topic:** product-security / Supply Chain
 - **Takeaway:** LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
 - **Action (tool):** Enumerate & monitor your brand's hallucinated domains — Query LLMs for your brand's URLs/packages at scale, then pre-register or block-list the hallucinated ones and monitor for adversary registration.
 - **Source:** [Palo Alto Networks Unit 42](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/)
 
 ### Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor · `59.7`
-- **Track:** ai / Agents & Harnesses
+- **Topic:** ai-research / Meta-Harness
 - **Takeaway:** The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
 - **Action (harness):** Consider a meta-harness for multi-agent work — Evaluate an orchestration layer (like Omnigent) when running multiple coding agents, so policy/sandboxing/routing live in one place instead of per-agent.
 - **Source:** [omnigent-ai/omnigent](https://github.com/omnigent-ai/omnigent)
 
 ### @redhat-cloud-services npm namespace compromise (32+ packages) · `3.0`
-- **Track:** security / Web Application Security
+- **Topic:** product-security / Supply Chain
 - **Takeaway:** Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
 - **Source:** [Red Hat Security](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)
 

@@ -57,17 +57,17 @@ def rerank_pool(track: str, conf: c.Config | None = None, now=None) -> dict:
 
 def rerank_all(conf: c.Config | None = None, now=None) -> None:
     conf = conf or c.load_config()
-    for track in c.TRACK_DOMAINS:
+    for track in c.TOPICS:
         pool = rerank_pool(track, conf, now=now)
         print(f"reranked {track}: {len(pool['entries'])} entries")
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--track", choices=list(c.TRACK_DOMAINS), default=None)
+    ap.add_argument("--topic", choices=list(c.TOPICS), default=None)
     args = ap.parse_args()
-    if args.track:
-        rerank_pool(args.track)
+    if args.topic:
+        rerank_pool(args.topic)
     else:
         rerank_all()
     return 0

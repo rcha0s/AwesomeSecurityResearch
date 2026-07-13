@@ -47,23 +47,21 @@ def test_match_index_by_url_and_title():
 def test_merge_routes_and_flags_low_confidence(sandbox):
     conf = c.load_config()
     analyzed = [
-        make_entry(track="ai", domain="Agents & Harnesses", source_url="https://a/ai"),
+        make_entry(topic="ai-research", domain="Agents & Harnesses", source_url="https://a/ai"),
         make_entry(
-            track="security",
-            domain="AI Security",
+            topic="ai-security",
+            domain="Prompt Injection",
             subtype="Prompt Injection",
             title="Calendar prompt injection",
             source_url="https://a/sec",
             lessons=[{"point": "risky", "confidence": 0.2}],
         ),
-        make_entry(
-            track="ai", domain="AI Security", source_url="https://a/bad"
-        ),  # invalid domain/track
+        make_entry(topic="nope", domain="x", source_url="https://a/bad"),  # invalid domain/track
     ]
     merged, errors, _ = m.merge(analyzed, conf)
     assert len(merged) == 2 and len(errors) == 1
-    assert len(c.load_pool("ai")["entries"]) == 1
-    sec = c.load_pool("security")["entries"]
+    assert len(c.load_pool("ai-research")["entries"]) == 1
+    sec = c.load_pool("ai-security")["entries"]
     assert sec[0]["needs_review"] is True  # low confidence flagged
 
 
@@ -92,19 +90,21 @@ def test_curation_gate_flags_low_novelty(sandbox):
 
 def test_merge_is_idempotent(sandbox):
     conf = c.load_config()
-    analyzed = [make_entry(track="security", domain="AI Security", source_url="https://a/dup")]
+    analyzed = [
+        make_entry(topic="ai-security", domain="Prompt Injection", source_url="https://a/dup")
+    ]
     m.merge(analyzed, conf)
     m.merge(analyzed, conf)
-    assert len(c.load_pool("security")["entries"]) == 1
+    assert len(c.load_pool("ai-security")["entries"]) == 1
 
 
 def test_main_merges_and_reranks(sandbox):
     c.save_json(
         c.ANALYSIS_OUT,
-        [make_entry(track="ai", domain="Agents & Harnesses", source_url="https://a/main")],
+        [make_entry(topic="ai-research", domain="Agents & Harnesses", source_url="https://a/main")],
     )
     assert m.main() == 0
-    entries = c.load_pool("ai")["entries"]
+    entries = c.load_pool("ai-research")["entries"]
     assert len(entries) == 1 and "composite" in entries[0]["scores"]
 
 

@@ -87,11 +87,10 @@ def test_composite_score_weights():
 
 def test_validate_entry_ok_and_errors():
     assert c.validate_entry(make_entry()) == []
-    assert any("missing" in e for e in c.validate_entry({"track": "ai"}))
-    assert any("not valid" in e for e in c.validate_entry(make_entry(domain="AI Security")))
-    assert any(
-        "unknown track" in e for e in c.validate_entry(make_entry(track="bogus", domain="x"))
-    )
+    assert any("missing" in e for e in c.validate_entry({"topic": "ai-research"}))
+    # domain is free-text now — any string is valid
+    assert c.validate_entry(make_entry(domain="Any Free Domain")) == []
+    assert any("unknown topic" in e for e in c.validate_entry(make_entry(topic="nope")))
     bad = make_entry(actionable={"type": "nope"})
     assert any("actionable.type" in e for e in c.validate_entry(bad))
 
@@ -113,11 +112,11 @@ def test_add_candidates_dedup(sandbox):
 
 
 def test_add_candidates_skips_pooled(sandbox):
-    pool = c.load_pool("security")
+    pool = c.load_pool("ai-security")
     pool["entries"].append(
-        make_entry(track="security", domain="AI Security", source_url="https://a.com/known")
+        make_entry(topic="ai-security", domain="Prompt Injection", source_url="https://a.com/known")
     )
-    c.save_pool("security", pool)
+    c.save_pool("ai-security", pool)
     assert (
         c.add_candidates([{"id": "n", "title": "New", "source_url": "https://a.com/known"}]) == []
     )

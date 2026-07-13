@@ -7,8 +7,7 @@
     "date": "2026-05",
     "discovered_via": "rss",
     "id": "memory-is-a-feature-it-is-also-an-attack-surface-cca67f7490",
-    "track": "security",
-    "domain": "AI Security",
+    "domain": "Memory & Context Poisoning",
     "subtype": "Memory & Context Poisoning",
     "summary": "OWASP's ASI06 (Memory & Context Poisoning) is illustrated by Cisco's 'MemoryTrap' vulnerability in Claude Code: a routine workflow (clone repo → approve an npm install) let a payload reach persistent memory, global hooks config, and the system-prompt layer — turning a one-time action into prompt injection that persists across sessions, projects, and reboots.",
     "takeaway": "Agent memory/persistence is a first-class attack surface: untrusted input carried forward becomes durable, trusted instruction.",
@@ -46,7 +45,8 @@
     "title": "MemoryTrap: persistent memory poisoning in AI coding agents (OWASP ASI06)",
     "retrieved_at": "2026-07-13T00:46:09+00:00",
     "needs_review": false,
-    "published": "2026-05-14"
+    "published": "2026-05-14",
+    "topic": "ai-security"
   },
   {
     "source_url": "https://projectzero.google/2026/05/pixel-10-exploit.html",
@@ -56,8 +56,7 @@
     "date": "2026-05",
     "discovered_via": "rss",
     "id": "a-0-click-exploit-chain-for-the-pixel-10-when-a-c350610bca",
-    "track": "security",
-    "domain": "Mobile Security",
+    "domain": "Spyware / Zero-Day",
     "subtype": "Spyware / Zero-Day",
     "summary": "Google Project Zero published a 0-click exploit chain targeting the Pixel 10 ('When a Door Closes, a Window Opens'), continuing its deep-dive series on modern Android/Pixel exploitation and the mitigations that shape real-world attack chains.",
     "takeaway": "0-click chains remain viable on flagship, hardened devices; defense-in-depth and rapid patching still matter most.",
@@ -90,7 +89,8 @@
     "title": "Project Zero: a 0-click exploit chain for the Pixel 10",
     "retrieved_at": "2026-07-13T00:46:09+00:00",
     "needs_review": false,
-    "published": "2026-05"
+    "published": "2026-05",
+    "topic": "product-security"
   },
   {
     "source_url": "https://github.com/PrismorSec/prismor",
@@ -101,8 +101,7 @@
     "date": "2026-02",
     "discovered_via": "github",
     "id": "prismorsec-prismor-0bce7e4063",
-    "track": "security",
-    "domain": "AI Security",
+    "domain": "Agentic AI / MCP",
     "subtype": "Agentic AI / MCP",
     "summary": "Prismor is a runtime firewall for AI agents: it intercepts an agent's tool calls before they execute and blocks dangerous commands, secret leakage, and rogue actions. It represents a shift from static agent auditing to runtime enforcement at the tool-call boundary.",
     "takeaway": "The strongest control point for agent safety is the tool-call boundary — enforce policy at call time, not just in the prompt.",
@@ -140,7 +139,8 @@
     "title": "Prismor: a runtime firewall that blocks rogue AI-agent tool calls",
     "retrieved_at": "2026-07-13T00:46:09+00:00",
     "needs_review": false,
-    "published": "2026-02"
+    "published": "2026-02",
+    "topic": "ai-security"
   },
   {
     "source_url": "https://github.com/praetorian-inc/augustus",
@@ -151,8 +151,7 @@
     "date": "2026-02",
     "discovered_via": "github",
     "id": "praetorian-inc-augustus-c9c523c4b2",
-    "track": "security",
-    "domain": "AI Security",
+    "domain": "LLM Security Testing",
     "subtype": "LLM Security Testing",
     "summary": "Augustus (Praetorian) is a single-binary Go LLM vulnerability scanner that tests models against 210+ adversarial probes — prompt injection, jailbreaks, encoding exploits, data extraction — across 28 providers. Unlike research tools (garak, promptfoo), it is built for production security testing with concurrency, rate limiting, and retry logic.",
     "takeaway": "LLM red-teaming is becoming an operational, CI-ready discipline — run a probe suite against every model/prompt change, not just at launch.",
@@ -190,7 +189,8 @@
     "title": "Augustus: a production LLM vulnerability scanner (210+ probes)",
     "retrieved_at": "2026-07-13T00:46:09+00:00",
     "needs_review": false,
-    "published": "2026-02"
+    "published": "2026-02",
+    "topic": "ai-security"
   },
   {
     "source_url": "http://security.googleblog.com/2026/04/ai-threats-in-wild-current-state-of.html",
@@ -200,8 +200,7 @@
     "date": "2026-04",
     "discovered_via": "rss",
     "id": "ai-threats-in-the-wild-the-current-state-of-prom-f7b3d9da35",
-    "track": "security",
-    "domain": "AI Security",
+    "domain": "Prompt Injection",
     "subtype": "Prompt Injection",
     "summary": "Google's Security team reports on the current real-world state of prompt injection on the web — moving the conversation from lab demos to observed in-the-wild indirect prompt-injection against browsing/agentic systems.",
     "takeaway": "Indirect prompt injection is now an operational threat, not a theoretical one; design agents assuming hostile web content.",
@@ -233,7 +232,8 @@
     "title": "Prompt injection in the wild: Google on the current state",
     "retrieved_at": "2026-07-13T00:46:09+00:00",
     "needs_review": false,
-    "published": "2026-04"
+    "published": "2026-04",
+    "topic": "ai-security"
   },
   {
     "source_url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2025",
@@ -243,8 +243,7 @@
     "date": "2026-02",
     "discovered_via": "rss",
     "id": "top-10-web-hacking-techniques-of-2025-cddbe440d3",
-    "track": "security",
-    "domain": "Web Application Security",
+    "domain": "Annual Roundup",
     "subtype": "Annual Roundup",
     "summary": "PortSwigger's 19th annual community-powered ranking of the most innovative web security research of 2025, selected from 63 nominations by community vote plus an expert panel. James Kettle's 'HTTP/1.1 Must Die: the desync endgame' was a finalist.",
     "takeaway": "The single best reading list for web-security researchers each year — a curated map of the techniques that will define the next cycle of attacks.",
@@ -281,7 +280,8 @@
     "title": "PortSwigger's Top 10 Web Hacking Techniques of 2025",
     "retrieved_at": "2026-07-13T00:46:09+00:00",
     "needs_review": false,
-    "published": "2026-02-05"
+    "published": "2026-02-05",
+    "topic": "product-security"
   },
   {
     "source_url": "http://security.googleblog.com/2026/04/bringing-rust-to-pixel-baseband.html",
@@ -291,8 +291,7 @@
     "date": "2026-04",
     "discovered_via": "rss",
     "id": "bringing-rust-to-the-pixel-baseband-ecfc893b29",
-    "track": "security",
-    "domain": "Mobile Security",
+    "domain": "Platform / OS",
     "subtype": "Platform / OS",
     "summary": "Google is rewriting parts of the Pixel cellular baseband in Rust, bringing memory safety to one of the most attractive and hard-to-reach remote attack surfaces on a phone.",
     "takeaway": "Memory-safe languages are reaching the lowest, most security-critical layers — the baseband — meaningfully shrinking remote attack surface.",
@@ -325,11 +324,12 @@
     "title": "Google brings Rust (memory safety) to the Pixel baseband",
     "retrieved_at": "2026-07-13T00:46:09+00:00",
     "needs_review": false,
-    "published": "2026-04"
+    "published": "2026-04",
+    "topic": "product-security"
   },
   {
     "id": "ai-mcp-supply-chain-2026",
-    "domain": "AI Security",
+    "domain": "Agentic AI / MCP",
     "subtype": "Agentic AI / MCP",
     "title": "Systemic MCP implementation flaw exposes up to ~200k instances",
     "date": "2026-05",
@@ -341,7 +341,6 @@
     "source_type": "Vendor research / consortium",
     "source_url": "https://genai.owasp.org/2026/04/14/owasp-genai-exploit-round-up-report-q1-2026/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://genai.owasp.org/2026/04/14/owasp-genai-exploit-round-up-report-q1-2026/",
     "scores": {
@@ -351,11 +350,12 @@
       "composite": 6.0,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-04-14"
+    "published": "2026-04-14",
+    "topic": "ai-security"
   },
   {
     "id": "web-npm-typosquat-secrets-2026",
-    "domain": "Web Application Security",
+    "domain": "Supply Chain",
     "subtype": "Supply Chain",
     "title": "Typosquatted npm packages steal cloud and CI/CD secrets",
     "date": "2026-05",
@@ -367,7 +367,6 @@
     "source_type": "Vendor research",
     "source_url": "https://www.microsoft.com/en-us/security/blog/2026/05/28/typosquatted-npm-packages-used-steal-cloud-ci-cd-secrets/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://www.microsoft.com/en-us/security/blog/2026/05/28/typosquatted-npm-packages-used-steal-cloud-ci-cd-secrets/",
     "scores": {
@@ -377,11 +376,12 @@
       "composite": 6.0,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-05-28"
+    "published": "2026-05-28",
+    "topic": "product-security"
   },
   {
     "id": "ai-agent-registry-poisoning-2026",
-    "domain": "AI Security",
+    "domain": "Agentic AI / Supply Chain",
     "subtype": "Agentic AI / Supply Chain",
     "title": "AI agent skill registry poisoned at scale (ClawHub)",
     "date": "2026-03",
@@ -393,7 +393,6 @@
     "source_type": "Industry consortium report",
     "source_url": "https://genai.owasp.org/2026/04/14/owasp-genai-exploit-round-up-report-q1-2026/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://genai.owasp.org/2026/04/14/owasp-genai-exploit-round-up-report-q1-2026/",
     "scores": {
@@ -403,11 +402,12 @@
       "composite": 1.5,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-04-14"
+    "published": "2026-04-14",
+    "topic": "ai-security"
   },
   {
     "id": "web-axios-npm-2026",
-    "domain": "Web Application Security",
+    "domain": "Supply Chain",
     "subtype": "Supply Chain",
     "title": "Axios npm package compromised (100M+ weekly downloads)",
     "date": "2026-03",
@@ -419,7 +419,6 @@
     "source_type": "Vendor + government advisory",
     "source_url": "https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager",
     "scores": {
@@ -429,11 +428,12 @@
       "composite": 1.5,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-04-20"
+    "published": "2026-04-20",
+    "topic": "product-security"
   },
   {
     "id": "ai-indirect-pi-wild-2026",
-    "domain": "AI Security",
+    "domain": "Prompt Injection",
     "subtype": "Prompt Injection",
     "title": "First large-scale indirect prompt injection attacks observed in the wild",
     "date": "2026-03",
@@ -445,7 +445,6 @@
     "source_type": "Vendor research",
     "source_url": "https://unit42.paloaltonetworks.com/monitoring-npm-supply-chain-attacks/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://unit42.paloaltonetworks.com/monitoring-npm-supply-chain-attacks/",
     "scores": {
@@ -455,11 +454,12 @@
       "composite": 1.5,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-03"
+    "published": "2026-03",
+    "topic": "ai-security"
   },
   {
     "id": "mobile-qualcomm-zeroday-2026",
-    "domain": "Mobile Security",
+    "domain": "Spyware / Zero-Day",
     "subtype": "Spyware / Zero-Day",
     "title": "Qualcomm zero-day (CVE-2026-21385) in March 2026 Android update",
     "date": "2026-03",
@@ -471,7 +471,6 @@
     "source_type": "Vendor advisory / analysis",
     "source_url": "https://www.vervali.com/blog/android-malware-statistics-2026-threat-landscape-ios-comparison-and-detection-trends/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://www.vervali.com/blog/android-malware-statistics-2026-threat-landscape-ios-comparison-and-detection-trends/",
     "scores": {
@@ -481,11 +480,12 @@
       "composite": 1.5,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-03"
+    "published": "2026-03",
+    "topic": "product-security"
   },
   {
     "id": "mobile-hardcoded-aws-creds-2026",
-    "domain": "Mobile Security",
+    "domain": "Insecure Storage / Cryptography",
     "subtype": "Insecure Storage / Cryptography",
     "title": "50+ mobile apps ship hardcoded AWS credentials",
     "date": "2026-02",
@@ -497,7 +497,6 @@
     "source_type": "Vendor research report",
     "source_url": "https://www.quokka.io/blog/the-state-of-mobile-app-security-2026-report-findings",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://www.quokka.io/blog/the-state-of-mobile-app-security-2026-report-findings",
     "scores": {
@@ -507,11 +506,12 @@
       "composite": 0.9,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-02"
+    "published": "2026-02",
+    "topic": "product-security"
   },
   {
     "id": "web-ai-authored-code-risk-2026",
-    "domain": "Web Application Security",
+    "domain": "AI-Generated Code Risk",
     "subtype": "AI-Generated Code Risk",
     "title": "AI-authored code is a leading source of new web-app vulnerabilities",
     "date": "2026-02",
@@ -523,7 +523,6 @@
     "source_type": "Vendor research",
     "source_url": "https://cycode.com/blog/application-security-vulnerabilities/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://cycode.com/blog/application-security-vulnerabilities/",
     "scores": {
@@ -533,11 +532,12 @@
       "composite": 0.9,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-02"
+    "published": "2026-02",
+    "topic": "product-security"
   },
   {
     "id": "mobile-hardcoded-crypto-keys-2026",
-    "domain": "Mobile Security",
+    "domain": "Insecure Storage / Cryptography",
     "subtype": "Insecure Storage / Cryptography",
     "title": "Hardcoded cryptographic keys in 47.8% of Android and 17.6% of iOS apps",
     "date": "2026-02",
@@ -549,7 +549,6 @@
     "source_type": "Vendor research report",
     "source_url": "https://www.quokka.io/blog/the-state-of-mobile-app-security-2026-report-findings",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://www.quokka.io/blog/the-state-of-mobile-app-security-2026-report-findings",
     "scores": {
@@ -559,11 +558,12 @@
       "composite": 0.9,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-02"
+    "published": "2026-02",
+    "topic": "product-security"
   },
   {
     "id": "ai-mcp-tool-poisoning-2026",
-    "domain": "AI Security",
+    "domain": "Agentic AI / MCP",
     "subtype": "Agentic AI / MCP",
     "title": "MCP tool poisoning attacks (TPAs) via hidden tool-description metadata",
     "date": "2026-02",
@@ -575,7 +575,6 @@
     "source_type": "Vendor research",
     "source_url": "https://checkmarx.com/zero-post/11-emerging-ai-security-risks-with-mcp-model-context-protocol/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://checkmarx.com/zero-post/11-emerging-ai-security-risks-with-mcp-model-context-protocol/",
     "scores": {
@@ -585,11 +584,12 @@
       "composite": 0.9,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-02"
+    "published": "2026-02",
+    "topic": "ai-security"
   },
   {
     "id": "ai-rag-poisoning-2026",
-    "domain": "AI Security",
+    "domain": "RAG / Data Poisoning",
     "subtype": "RAG / Data Poisoning",
     "title": "RAG poisoning via injected malicious documents in the retrieval corpus",
     "date": "2026-02",
@@ -601,7 +601,6 @@
     "source_type": "Industry analysis",
     "source_url": "https://tokenmix.ai/blog/llm-security-news-2026-attacks-defenses-updates",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://tokenmix.ai/blog/llm-security-news-2026-attacks-defenses-updates",
     "scores": {
@@ -611,11 +610,12 @@
       "composite": 0.9,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-02"
+    "published": "2026-02",
+    "topic": "ai-security"
   },
   {
     "id": "mobile-legacy-cve-exposure-2026",
-    "domain": "Mobile Security",
+    "domain": "Legacy CVE Exposure",
     "subtype": "Legacy CVE Exposure",
     "title": "Shipped apps carry years-old Critical CVEs in bundled components",
     "date": "2026-02",
@@ -627,7 +627,6 @@
     "source_type": "Vendor research report",
     "source_url": "https://www.quokka.io/blog/the-state-of-mobile-app-security-2026-report-findings",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://www.quokka.io/blog/the-state-of-mobile-app-security-2026-report-findings",
     "scores": {
@@ -637,11 +636,12 @@
       "composite": 0.9,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-02"
+    "published": "2026-02",
+    "topic": "product-security"
   },
   {
     "id": "web-cl0-desync-smuggling",
-    "domain": "Web Application Security",
+    "domain": "Request Smuggling / Desync",
     "subtype": "Request Smuggling / Desync",
     "title": "CL.0 and browser-powered desync request smuggling",
     "date": "2025-12",
@@ -653,7 +653,6 @@
     "source_type": "Vendor research",
     "source_url": "https://portswigger.net/research/browser-powered-desync-attacks",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://portswigger.net/research/browser-powered-desync-attacks",
     "scores": {
@@ -663,11 +662,12 @@
       "composite": 0.3,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2025-12"
+    "published": "2025-12",
+    "topic": "product-security"
   },
   {
     "id": "web-waffled-waf-bypass",
-    "domain": "Web Application Security",
+    "domain": "WAF Bypass",
     "subtype": "WAF Bypass",
     "title": "WAFFLED: parsing discrepancies bypass web application firewalls",
     "date": "2025-12",
@@ -679,7 +679,6 @@
     "source_type": "Academic research",
     "source_url": "https://arxiv.org/pdf/2503.10846",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://arxiv.org/pdf/2503.10846",
     "scores": {
@@ -689,11 +688,12 @@
       "composite": 0.3,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2025-12"
+    "published": "2025-12",
+    "topic": "product-security"
   },
   {
     "id": "ai-image-prompt-injection-2026",
-    "domain": "AI Security",
+    "domain": "Prompt Injection",
     "subtype": "Prompt Injection",
     "title": "Image-based prompt injection hijacks multimodal LLMs",
     "date": "2026-01",
@@ -705,7 +705,6 @@
     "source_type": "Industry consortium research",
     "source_url": "https://labs.cloudsecurityalliance.org/research/csa-research-note-image-prompt-injection-multimodal-llm-2026/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://labs.cloudsecurityalliance.org/research/csa-research-note-image-prompt-injection-multimodal-llm-2026/",
     "scores": {
@@ -715,11 +714,12 @@
       "composite": 0.3,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-01"
+    "published": "2026-01",
+    "topic": "ai-security"
   },
   {
     "id": "ai-system-prompt-extraction-2026",
-    "domain": "AI Security",
+    "domain": "Information Disclosure",
     "subtype": "Information Disclosure",
     "title": "System-prompt extraction remains broadly effective",
     "date": "2026-01",
@@ -731,7 +731,6 @@
     "source_type": "Industry analysis",
     "source_url": "https://tokenmix.ai/blog/llm-security-news-2026-attacks-defenses-updates",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://tokenmix.ai/blog/llm-security-news-2026-attacks-defenses-updates",
     "scores": {
@@ -741,11 +740,12 @@
       "composite": 0.3,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2026-01"
+    "published": "2026-01",
+    "topic": "ai-security"
   },
   {
     "id": "mobile-landfall-samsung-zeroday",
-    "domain": "Mobile Security",
+    "domain": "Spyware / Zero-Day",
     "subtype": "Spyware / Zero-Day",
     "title": "LANDFALL spyware exploited Samsung zero-day (CVE-2025-21042)",
     "date": "2025-11",
@@ -757,7 +757,6 @@
     "source_type": "Vendor research",
     "source_url": "https://unit42.paloaltonetworks.com/landfall-is-new-commercial-grade-android-spyware/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://unit42.paloaltonetworks.com/landfall-is-new-commercial-grade-android-spyware/",
     "scores": {
@@ -767,11 +766,12 @@
       "composite": 0.0,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2025-11"
+    "published": "2025-11",
+    "topic": "product-security"
   },
   {
     "id": "web-owasp-2025-supply-chain-category",
-    "domain": "Web Application Security",
+    "domain": "Supply Chain",
     "subtype": "Supply Chain",
     "title": "New OWASP category: Software Supply Chain Failures (A03)",
     "date": "2025-11",
@@ -783,7 +783,6 @@
     "source_type": "Standards body",
     "source_url": "https://owasp.org/www-project-top-ten/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://owasp.org/www-project-top-ten/",
     "scores": {
@@ -793,11 +792,12 @@
       "composite": 0.0,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2025-11"
+    "published": "2025-11",
+    "topic": "product-security"
   },
   {
     "id": "web-owasp-2025-bac-ssrf",
-    "domain": "Web Application Security",
+    "domain": "Access Control",
     "subtype": "Access Control",
     "title": "OWASP Top 10:2025 — Broken Access Control (#1) now subsumes SSRF",
     "date": "2025-11",
@@ -809,7 +809,6 @@
     "source_type": "Standards body",
     "source_url": "https://owasp.org/www-project-top-ten/",
     "needs_review": false,
-    "track": "security",
     "discovered_via": "manual",
     "article_url": "https://owasp.org/www-project-top-ten/",
     "scores": {
@@ -819,7 +818,8 @@
       "composite": 0.0,
       "scored_at": "2026-07-13T00:46:09+00:00"
     },
-    "published": "2025-11"
+    "published": "2025-11",
+    "topic": "product-security"
   },
   {
     "source_url": "https://github.com/agentscope-ai/PawBench",
@@ -830,8 +830,7 @@
     "date": "2026-05",
     "discovered_via": "github",
     "id": "agentscope-ai-pawbench-2caeb55853",
-    "track": "ai",
-    "domain": "Evaluation & Safety",
+    "domain": "Evals",
     "subtype": "Evals",
     "summary": "PawBench is a benchmark for evaluating LLM × harness performance — measuring not just the model but the model-plus-harness system, reflecting that agent capability depends heavily on the surrounding scaffold.",
     "takeaway": "Evaluate the model-plus-harness as a unit; the harness is a first-class variable in agent performance.",
@@ -863,11 +862,11 @@
     "title": "PawBench: benchmarking LLM x harness performance",
     "retrieved_at": "2026-07-13T00:46:09+00:00",
     "needs_review": false,
-    "published": "2026-05"
+    "published": "2026-05",
+    "topic": "ai-research"
   },
   {
-    "track": "security",
-    "domain": "AI Security",
+    "domain": "Orchestration",
     "subtype": "Orchestration",
     "title": "stale",
     "source_url": "https://a/stale",
@@ -895,6 +894,7 @@
       "agents",
       "context"
     ],
-    "published": "2000-01-01"
+    "published": "2000-01-01",
+    "topic": "ai-security"
   }
 ]

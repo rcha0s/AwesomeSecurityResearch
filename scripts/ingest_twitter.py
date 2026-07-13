@@ -144,7 +144,7 @@ def tweet_to_candidate(tweet: dict, fetch: bool) -> dict | None:
         "date": date,
         "excerpt": tw["text"][:320],
         "raw_path": raw_path,
-        "guess_track": None,
+        "guess_topic": None,
         "guess_domain": None,
         "guess_subtype": None,
         "source_id": (tweet.get("_source") or {}).get("id"),
