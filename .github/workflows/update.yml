@@ -39,11 +39,12 @@ jobs:
       - name: Re-rank pools
         run: python scripts/rerank.py
 
-      - name: Regenerate site + trends + newsletter + skills
+      - name: Regenerate site + trends + newsletter + review + skills
         run: |
           python scripts/generate_site.py
           python scripts/trends.py
           python scripts/generate_newsletter.py
+          python scripts/generate_review.py
           python scripts/generate_skills.py
 
       - name: Commit changes
@@ -51,7 +52,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add data/*.json README.md NEWSLETTER.md TRENDS.md LEARNINGS.md \
+            git add data/*.json README.md NEWSLETTER.md TRENDS.md REVIEW.md LEARNINGS.md \
               ai-security product-security ai-research skills
             git commit -m "chore: render refresh ($(date -u +%Y-%m-%d))"
             git push

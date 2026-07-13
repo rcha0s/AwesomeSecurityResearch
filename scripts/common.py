@@ -151,8 +151,12 @@ class Config:
 
 def load_config(path: Path = CONFIG_FILE) -> Config:
     raw = load_yaml(path)
+    weights = raw["weights"]
+    total = sum(weights.get(k, 0) for k in ("newness", "novelty", "relevance"))
+    if abs(total - 1.0) > 0.001:
+        raise ValueError(f"config weights must sum to 1.0 (got {total})")
     return Config(
-        weights=raw["weights"],
+        weights=weights,
         half_life_days=float(raw["half_life_days"]),
         skill_composite_threshold=float(raw["skill_composite_threshold"]),
         confidence_min=float(raw["confidence_min"]),
@@ -358,6 +362,33 @@ def composite_score(scores: dict, weights: dict[str, float]) -> float:
         for axis in ("newness", "novelty", "relevance")
     )
     return round(total, 2)
+
+
+def entry_composite(entry: dict, conf: Config) -> float:
+    """An entry's composite, recomputing decayed newness if it's missing."""
+    scores = dict(entry.get("scores") or {})
+    if "composite" in scores:
+        return float(scores["composite"])
+    scores["newness"] = newness_score(best_date(entry) or "", conf.half_life_days)
+    return composite_score(scores, conf.weights)
+
+
+def is_curated(entry: dict, conf: Config) -> bool:
+    """True if the finding belongs in the public curated view (topic pages +
+    newsletter). Everything else — flagged needs_review OR below the composite
+    floor — is held in the REVIEW.md queue (still in the pool, just not shown)."""
+    if entry.get("needs_review"):
+        return False
+    return entry_composite(entry, conf) >= conf.curation.get("min_composite", 0)
+
+
+def review_reason(entry: dict, conf: Config) -> str:
+    """Why an entry is in the review queue (for REVIEW.md)."""
+    if entry.get("needs_review"):
+        return "flagged needs_review (low confidence / novelty / relevance)"
+    return (
+        f"composite {entry_composite(entry, conf)} < floor {conf.curation.get('min_composite', 0)}"
+    )
 
 
 # --- Schema validation -----------------------------------------------------

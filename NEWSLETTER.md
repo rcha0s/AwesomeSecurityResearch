@@ -33,8 +33,6 @@ _Securing products: application security, supply chain, cloud & infra, identity,
 - **[Phantom Squatting: attackers register the domains LLMs hallucinate](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/)** · _Palo Alto Networks Unit 42_ · composite 76.9
   LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
   → **Do:** (tool) Enumerate & monitor your brand's hallucinated domains
-- **[@redhat-cloud-services npm namespace compromise (32+ packages)](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)** · _Red Hat Security_ · composite 3.0
-  Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
 
 **📈 Emerging trends**
 

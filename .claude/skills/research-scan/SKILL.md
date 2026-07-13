@@ -73,8 +73,11 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
    python scripts/generate_site.py        # README.md + ai-security/ product-security/ ai-research/
    python scripts/trends.py               # data/trends.json + TRENDS.md (emerging themes)
    python scripts/generate_newsletter.py  # NEWSLETTER.md (rolling, 3 topic sections)
+   python scripts/generate_review.py      # REVIEW.md (non-vetted queue)
    python scripts/generate_skills.py      # skills/<slug>/SKILL.md + LEARNINGS.md
    ```
+   Only **vetted** findings (not `needs_review`, composite ≥ `curation.min_composite`) appear on
+   the topic pages/newsletter; borderline ones land in `REVIEW.md` for a human to promote.
 
 6. **Commit (direct-PR mode).** Create a branch, commit the regenerated pools + site
    (never commit `data/candidates.json`, `data/_raw/`, `data/analysis_out.json`, or

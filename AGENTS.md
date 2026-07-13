@@ -36,9 +36,11 @@ scripts/rerank.py         # decay + composite + sort + prune stale → archive
 scripts/generate_site.py  # README.md + the 3 topic trees + per-entry pages
 scripts/trends.py         # data/trends.json + TRENDS.md (emerging themes)
 scripts/generate_newsletter.py # NEWSLETTER.md (rolling, 3 topic sections)
-scripts/generate_skills.py# skills/<slug>/SKILL.md + LEARNINGS.md
+scripts/generate_review.py# REVIEW.md (non-vetted queue: needs_review or below composite floor)
+scripts/generate_skills.py# skills/<slug>/SKILL.md + LEARNINGS.md (vetted only)
 .claude/skills/           # /research-scan /add-resource /add-source — the LLM stages
-README.md · NEWSLETTER.md · TRENDS.md · LEARNINGS.md · ai-security/ product-security/ ai-research/ skills/  # GENERATED
+README.md · NEWSLETTER.md · TRENDS.md · REVIEW.md · LEARNINGS.md · ai-security/ product-security/ ai-research/ skills/  # GENERATED
+# Curated view (topic pages + newsletter) shows only VETTED findings; the rest wait in REVIEW.md.
 ```
 
 ## How to run

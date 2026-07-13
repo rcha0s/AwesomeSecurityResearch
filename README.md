@@ -2,15 +2,15 @@
 
 > An auto-updating, source-cited tracker of the most **teachable** security and AI research — scanned from X/Twitter, GitHub, YouTube, articles, and RSS, then extracted, scored, and turned into actionable takeaways, skills, and harness improvements.
 
-**Only the latest research:** every entry was published within the last ~31 days. Older findings age out to [`data/archive.json`](data/archive.json) automatically.
+**Only the latest research:** every entry was published within the last ~31 days. Older findings age out to [`data/archive.json`](data/archive.json) automatically. Only **vetted** findings are shown; borderline ones wait in the [review queue](REVIEW.md).
 
-![Updated](https://img.shields.io/badge/updated-2026--07--13-blue) ![Findings](https://img.shields.io/badge/findings-3-success) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
+![Updated](https://img.shields.io/badge/updated-2026--07--13-blue) ![Vetted findings](https://img.shields.io/badge/vetted-2-success) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
 
-Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md) and [📈 Trends](TRENDS.md):
+Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md), [📈 Trends](TRENDS.md), and [🔍 Review queue](REVIEW.md):
 
-- 🤖🛡️ **[AI Security](ai-security/README.md)** — 0 findings. Securing AI systems: harness & agent security, MCP, skill scanning, prompt injection, memory poisoning, model supply chain, LLM red-teaming.
-- 🛡️ **[Product Security](product-security/README.md)** — 2 findings. Securing products: application security, supply chain, cloud & infra, identity, mobile, plus red teaming and threat modeling (AI-assisted or not).
-- 🧠 **[AI Research](ai-research/README.md)** — 1 findings. Practitioner AI: improving your harness, understanding, and architecture for using LLMs/agents on real tasks. Not model internals or ML-research.
+- 🤖🛡️ **[AI Security](ai-security/README.md)** — 0 vetted findings. Securing AI systems: harness & agent security, MCP, skill scanning, prompt injection, memory poisoning, model supply chain, LLM red-teaming.
+- 🛡️ **[Product Security](product-security/README.md)** — 1 vetted findings. Securing products: application security, supply chain, cloud & infra, identity, mobile, plus red teaming and threat modeling (AI-assisted or not).
+- 🧠 **[AI Research](ai-research/README.md)** — 1 vetted findings. Practitioner AI: improving your harness, understanding, and architecture for using LLMs/agents on real tasks. Not model internals or ML-research.
 - 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.
 
 ## 🔝 Top findings right now
@@ -19,8 +19,6 @@ Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md) and [�
    LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
 1. **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](ai-research/meta-harness/2026-06-omnigent-an-open-source-meta-harness-over-claude-code-codex.md)** · AI Research · composite **59.7**  
    The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
-1. **[@redhat-cloud-services npm namespace compromise (32+ packages)](product-security/supply-chain/2026-06-redhat-cloud-services-npm-namespace-compromise-32-packages.md)** · Product Security · composite **3.0**  
-   Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
 
 ## How it works
 

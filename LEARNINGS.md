@@ -16,11 +16,6 @@
 - **Action (harness):** Consider a meta-harness for multi-agent work — Evaluate an orchestration layer (like Omnigent) when running multiple coding agents, so policy/sandboxing/routing live in one place instead of per-agent.
 - **Source:** [omnigent-ai/omnigent](https://github.com/omnigent-ai/omnigent)
 
-### @redhat-cloud-services npm namespace compromise (32+ packages) · `3.0`
-- **Topic:** product-security / Supply Chain
-- **Takeaway:** Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
-- **Source:** [Red Hat Security](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)
-
 
 ---
 
