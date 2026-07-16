@@ -118,6 +118,10 @@ def _entry_meta(entry: dict, scores: dict) -> list[str]:
     ]
     if entry.get("tags"):
         meta.append("**Tags:** " + ", ".join(f"`{t}`" for t in entry["tags"]))
+    corr = entry.get("corroborating_sources") or []
+    if corr:
+        links = ", ".join(f"[{s.get('name') or 'source'}]({s.get('url','')})" for s in corr)
+        meta.append(f"**Also reported by:** {links} _(+{len(corr)} corroborating)_")
     verified = entry.get("verified")
     if verified is True:
         line = "**Verification:** ✓ independently verified"
@@ -189,9 +193,11 @@ def render_index_block(entry: dict, conf: c.Config) -> str:
     scores = entry_scores(entry, conf)
     takeaway = entry.get("takeaway") or entry.get("summary") or entry.get("threat") or ""
     flag = " · ⚠️ _review_" if entry.get("needs_review") else ""
+    n_corr = len(entry.get("corroborating_sources") or [])
+    corr = f" · 🔗 +{n_corr} sources" if n_corr else ""
     return (
         f"- **[{entry.get('title','Untitled')}]({entry_relpath(entry)})** "
-        f"· composite **{scores['composite']}** · {fmt_published(entry)}{flag}  \n"
+        f"· composite **{scores['composite']}** · {fmt_published(entry)}{corr}{flag}  \n"
         f"  {c.clean_summary(takeaway, 200)}  \n"
         f"  _[{entry.get('source_name','source')}]({entry.get('source_url','')})_"
     )

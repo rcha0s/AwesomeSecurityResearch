@@ -115,6 +115,39 @@ def test_curation_gate_flags_low_novelty(sandbox):
     assert by_url["https://a/novel"]["needs_review"] is False
 
 
+def test_corroboration_from_second_source(sandbox):
+    conf = c.load_config()
+    a = make_entry(
+        topic="ai-security",
+        domain="MCP",
+        title="MCP tool poisoning wave",
+        source_url="https://siteA.com/mcp",
+        source_name="Site A",
+    )
+    # same story (same title), DIFFERENT source -> corroboration, not a 2nd entry
+    b = make_entry(
+        topic="ai-security",
+        domain="MCP",
+        title="MCP tool poisoning wave",
+        source_url="https://siteB.com/mcp",
+        source_name="Site B",
+    )
+    m.merge([a], conf)
+    m.merge([b], conf)
+    entries = c.load_pool("ai-security")["entries"]
+    assert len(entries) == 1  # one canonical entry
+    corr = entries[0]["corroborating_sources"]
+    assert len(corr) == 1 and corr[0]["name"] == "Site B"
+    assert c.credibility_of(entries[0]) == 55  # 50 base + 1 corroborating source * 5
+
+
+def test_reconcile_same_source_updates(sandbox):
+    existing = make_entry(source_url="https://a/x", source_name="A", summary="old")
+    updated = make_entry(source_url="https://a/x", source_name="A", summary="new")
+    out = m.reconcile(existing, updated)
+    assert out["summary"] == "new" and out["corroborating_sources"] == []
+
+
 def test_merge_is_idempotent(sandbox):
     conf = c.load_config()
     analyzed = [

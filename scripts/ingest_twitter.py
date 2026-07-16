@@ -94,7 +94,9 @@ def _tweet_links(t: dict, text: str) -> list[str]:
         if isinstance(u, dict):
             links.append(u.get("expanded_url") or u.get("url") or "")
     links = [u for u in links if u] or c.extract_urls(text)
-    return [u for u in links if "twitter.com" not in u and "x.com" not in u]
+    external = [u for u in links if "twitter.com" not in u and "x.com" not in u]
+    # Resolve shorteners (t.co/…) so a tweet-linked article de-dups with its RSS permalink.
+    return [c.resolve_redirects(u) for u in external]
 
 
 def normalize_tweet(t: dict) -> dict:

@@ -236,6 +236,44 @@ def clean_source_url(url: str) -> str:
     return f"{base}?{'&'.join(kept)}" if kept else base
 
 
+# Link shorteners whose URLs we resolve to the final destination at ingest, so
+# the same article via a tweet (t.co/…) and via RSS (the permalink) de-dup.
+SHORTENER_HOSTS = (
+    "t.co",
+    "bit.ly",
+    "buff.ly",
+    "lnkd.in",
+    "ow.ly",
+    "goo.gl",
+    "tinyurl.com",
+    "trib.al",
+    "dlvr.it",
+    "ift.tt",
+    "hubs.ly",
+    "spr.ly",
+)
+
+
+def resolve_redirects(url: str, timeout: int = 12) -> str:
+    """If `url` is a known shortener, follow redirects to the final URL (network,
+    best-effort). Returns the original URL unchanged on any failure or non-shortener."""
+    host = re.sub(r"^https?://(www\.)?", "", (url or "").lower()).split("/", 1)[0]
+    if host not in SHORTENER_HOSTS:
+        return url
+    import requests  # local import keeps offline unit tests import-clean
+
+    try:
+        resp = requests.head(
+            url,
+            allow_redirects=True,
+            timeout=timeout,
+            headers={"User-Agent": "AwesomeSecurityResearch/1.0"},
+        )
+        return resp.url or url
+    except Exception:  # noqa: BLE001 - resolution is best-effort
+        return url
+
+
 def slugify(text: str, limit: int = 60) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", (text or "").lower()).strip("-")
     return slug[:limit].strip("-") or "item"
@@ -407,11 +445,18 @@ def composite_score(scores: dict, weights: dict[str, float]) -> float:
     return round(total, 2)
 
 
+CORROBORATION_BONUS = 5  # credibility points per independent corroborating source
+CORROBORATION_CAP = 4  # …up to this many sources
+
+
 def credibility_of(entry: dict, default: float = 50.0) -> float:
-    """A finding's source authority (0-100) = its source registry rank; a neutral
-    default when the source is unknown (manual add / legacy)."""
+    """A finding's source authority (0-100): its source registry rank, plus a
+    bonus for each independent source that corroborates the same story (a finding
+    3 sources report is more trustworthy). Neutral default for unknown sources."""
     rank = entry.get("source_rank")
-    return float(rank) if rank is not None else default
+    base = float(rank) if rank is not None else default
+    corr = min(len(entry.get("corroborating_sources") or []), CORROBORATION_CAP)
+    return min(100.0, base + corr * CORROBORATION_BONUS)
 
 
 def entry_composite(entry: dict, conf: Config) -> float:

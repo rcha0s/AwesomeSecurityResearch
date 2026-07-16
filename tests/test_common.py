@@ -96,6 +96,19 @@ def test_credibility_of_from_source_rank():
     assert c.credibility_of({}) == 50.0  # unknown source -> neutral default
 
 
+def test_credibility_corroboration_bonus():
+    two = [{"url": "https://a"}, {"url": "https://b"}]
+    assert c.credibility_of({"source_rank": 60, "corroborating_sources": two}) == 70.0  # +2*5
+    # capped at 100
+    many = [{"url": f"https://{i}"} for i in range(10)]
+    assert c.credibility_of({"source_rank": 95, "corroborating_sources": many}) == 100.0
+
+
+def test_resolve_redirects_skips_non_shortener():
+    # a non-shortener URL is returned unchanged with no network call
+    assert c.resolve_redirects("https://blog.example.com/post") == "https://blog.example.com/post"
+
+
 def test_validate_entry_ok_and_errors():
     assert c.validate_entry(make_entry()) == []
     assert any("missing" in e for e in c.validate_entry({"topic": "ai-research"}))
