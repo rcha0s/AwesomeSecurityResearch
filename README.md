@@ -49,6 +49,7 @@ X / GitHub / YouTube / LinkedIn / articles / RSS   (ranked source registry)
 | Track a new source | `python scripts/add_source.py <type> <handle> --topics …` (or the `/add-source` skill) — X user, blog, newsletter, GitHub user/query, YouTube |
 | Capture one article now | `python scripts/add.py <url>` then the `/add-resource` skill — returns summary + takeaway + action and files it |
 | Run a full scan | the `/research-scan` skill (self-pace with `/loop 12h /research-scan`) |
+| Run it daily on autopilot | `powershell -File scripts/install_daily_scan.ps1` — a Scheduled Task ingests, runs Claude headless to analyze+verify, and opens a PR each day (never auto-merges). Remove with `-Uninstall`. |
 | Regenerate the site | `rerank.py` → `generate_site.py` → `trends.py` → `generate_newsletter.py` → `generate_review.py` → `generate_skills.py` |
 
 **Setup** (Agent Reach + burner X account in WSL2, one-time): see [PUBLISH.md](PUBLISH.md). **Contributing / how findings are structured:** [CONTRIBUTING.md](CONTRIBUTING.md). **Automation & dev workflow:** [AGENTS.md](AGENTS.md).

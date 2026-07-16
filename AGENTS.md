@@ -59,7 +59,35 @@ python scripts/add.py "<url>"          # ad-hoc; --text/--file fallback for Link
 python scripts/merge_analysis.py
 python scripts/generate_site.py
 python scripts/generate_skills.py
+
+# New source ingestors (Windows Python, no cookies):
+python scripts/ingest_github.py --max 5
+python scripts/ingest_ghsa.py --max 25    # reviewed supply-chain advisories (gh)
+python scripts/ingest_hn.py --max 6       # Hacker News velocity signal
 ```
+
+## Daily automation (unattended scan -> PR)
+
+A Windows Scheduled Task runs the whole pipeline once a day and opens a PR for
+review — it never auto-merges and never pushes to `main`.
+
+```powershell
+# Install (daily 08:00) / custom time / remove
+powershell -ExecutionPolicy Bypass -File scripts\install_daily_scan.ps1
+powershell -ExecutionPolicy Bypass -File scripts\install_daily_scan.ps1 -At 07:30
+powershell -ExecutionPolicy Bypass -File scripts\install_daily_scan.ps1 -Uninstall
+Start-ScheduledTask -TaskName 'AwesomeSecurityResearch-DailyScan'   # run now
+```
+
+- `scripts/daily_scan.ps1` — ingests (rss/github/ghsa/hn + twitter via WSL,
+  best-effort), then runs `claude -p` headless with `scripts/daily_scan_prompt.md`
+  to analyze -> independently verify -> merge -> render, then commits on
+  `scan/<date>` and opens a PR. Logs to `scripts/logs/daily_scan_<date>.log`.
+- Headless Claude runs with `--permission-mode acceptEdits` + an explicit
+  `--allowedTools` list (NOT `--dangerously-skip-permissions`). If a tool prompts
+  and stalls the unattended run, widen `permissions.allow` in Claude settings.
+- The curation gate still holds weak/ungrounded findings in `REVIEW.md`; only
+  genuinely novel, grounded, verified items land in the curated view.
 
 ## How to validate a change end-to-end
 

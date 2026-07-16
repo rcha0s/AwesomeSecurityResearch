@@ -361,6 +361,9 @@ def _how_to_use() -> list[str]:
         "| Capture one article now | `python scripts/add.py <url>` then the `/add-resource` skill "
         "— returns summary + takeaway + action and files it |",
         "| Run a full scan | the `/research-scan` skill (self-pace with `/loop 12h /research-scan`) |",
+        "| Run it daily on autopilot | `powershell -File scripts/install_daily_scan.ps1` — a Scheduled "
+        "Task ingests, runs Claude headless to analyze+verify, and opens a PR each day (never "
+        "auto-merges). Remove with `-Uninstall`. |",
         "| Regenerate the site | `rerank.py` → `generate_site.py` → `trends.py` → "
         "`generate_newsletter.py` → `generate_review.py` → `generate_skills.py` |",
         "",
