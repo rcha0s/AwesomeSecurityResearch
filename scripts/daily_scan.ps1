@@ -23,14 +23,31 @@ Log "=== daily scan $stamp starting in $repo ==="
 # 1) Sync main and start a dated scan branch (idempotent per day). ------------
 try {
     git fetch origin --quiet
+    $branch = "scan/$stamp"
+    # NEVER clobber an existing branch. If today's scan branch already exists
+    # (locally or on the remote), a scan already ran or someone is working on it —
+    # bail rather than delete it. This is the safe default; `git branch -D` here
+    # once destroyed in-progress local work.
+    git show-ref --verify --quiet "refs/heads/$branch"
+    $localExists = ($LASTEXITCODE -eq 0)
+    git show-ref --verify --quiet "refs/remotes/origin/$branch"
+    $remoteExists = ($LASTEXITCODE -eq 0)
+    if ($localExists -or $remoteExists) {
+        Log "branch $branch already exists (local=$localExists remote=$remoteExists) - skipping to avoid clobber."
+        exit 0
+    }
+    # Guard against running on top of uncommitted work in the primary tree.
+    if (git status --porcelain) { Log "working tree not clean - refusing to run."; exit 1 }
     git checkout main --quiet
     git merge --ff-only origin/main --quiet
-    $branch = "scan/$stamp"
-    git rev-parse --verify $branch 2>$null | Out-Null
-    if ($LASTEXITCODE -eq 0) { git branch -D $branch --quiet }
     git checkout -b $branch --quiet
     Log "on branch $branch"
 } catch { Log "GIT SETUP FAILED: $_"; exit 1 }
+
+# From here on, native tools (python/git/gh/wsl) write progress to stderr, which
+# under -ErrorActionPreference Stop PowerShell 5.1 wraps as a terminating error
+# (spurious 'Traceback' failures). Switch to Continue; we check outcomes explicitly.
+$ErrorActionPreference = "Continue"
 
 # 2) Ingest candidates (best-effort; a failing source never aborts the run). ---
 $py = "python"
