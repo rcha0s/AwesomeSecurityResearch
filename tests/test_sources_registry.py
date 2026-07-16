@@ -32,6 +32,16 @@ def test_signal_bumps_rank():
     assert big["rank"] > plain["rank"]
 
 
+def test_signal_score_no_cliff_at_one_follower():
+    # a lone follower/star must not score BELOW an unknown source (log10(1)=0 bug)
+    assert sr.signal_score({"signals": {}}) == 50.0  # unknown -> neutral
+    assert sr.signal_score({"signals": {"followers": 1}}) == 50.0  # floored, not 0
+    assert sr.signal_score({"signals": {"followers": 0}}) == 50.0
+    # genuine reach still bumps above neutral, monotonically
+    big = sr.signal_score({"signals": {"followers": 500000}})
+    assert big > 50.0 and big <= 100.0
+
+
 def test_hit_rate_moves_rank(sandbox):
     src = sr.new_source("rss", "https://a/feed", tier="medium")
     sr.add_source(src)

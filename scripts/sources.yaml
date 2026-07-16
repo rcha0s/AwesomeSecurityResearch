@@ -43,6 +43,32 @@ github:
   # (data/sources.json, type: github_query / github_user) — add with
   # `python scripts/add_source.py github_query "<query>"` or `github_user <name>`.
 
+# ---------------------------------------------------------------------------
+# Hacker News discovery (via the keyless Algolia API). A velocity signal: it
+# surfaces a wave breaking hours-to-days before it reaches a curated feed. Only
+# stories that keyword-match a topic AND clear the points floor are staged;
+# novelty/curation is judged at analysis time. Runs on Windows or WSL (network).
+# ---------------------------------------------------------------------------
+hackernews:
+  min_points: 40        # story score floor (noise gate)
+  per_query: 6          # top-N per query
+  queries:
+    - "prompt injection"
+    - "LLM security"
+    - "MCP server"
+    - "AI agent security"
+    - "supply chain attack"
+    - "npm malware"
+
+# ---------------------------------------------------------------------------
+# GitHub Advisory Database (GHSA) discovery (via authed `gh api /advisories`).
+# Human-reviewed supply-chain disclosures — the dependency/package attack
+# surface an appsec reader must track. Runs on Windows or WSL (needs `gh`).
+# ---------------------------------------------------------------------------
+ghsa:
+  enabled: true
+  per_run: 20           # newest reviewed advisories to pull per run
+
 # Keyword rules used to classify each item into a domain and a subtype.
 # First matching domain wins; subtype is the first subtype whose keywords match.
 classification:

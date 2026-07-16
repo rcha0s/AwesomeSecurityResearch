@@ -708,5 +708,198 @@
     "active": true,
     "notes": "github search",
     "strict": false
+  },
+  {
+    "id": "rss:https-blog-trailofbits-com-feed",
+    "type": "rss",
+    "handle": "https://blog.trailofbits.com/feed/",
+    "name": "Trail of Bits",
+    "url": "https://blog.trailofbits.com/feed/",
+    "topics": [
+      "product-security",
+      "ai-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-16",
+    "active": true,
+    "notes": "Vendor research"
+  },
+  {
+    "id": "rss:https-snyk-io-blog-feed",
+    "type": "rss",
+    "handle": "https://snyk.io/blog/feed/",
+    "name": "Snyk Blog",
+    "url": "https://snyk.io/blog/feed/",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "strict": false,
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-16",
+    "active": true,
+    "notes": "Vendor research (supply chain)"
+  },
+  {
+    "id": "rss:https-embracethered-com-blog-index-xml",
+    "type": "rss",
+    "handle": "https://embracethered.com/blog/index.xml",
+    "name": "Embrace The Red",
+    "url": "https://embracethered.com/blog/index.xml",
+    "topics": [
+      "ai-security"
+    ],
+    "domains": [
+      "AI Security"
+    ],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-16",
+    "active": true,
+    "notes": "Practitioner AI red-teaming"
+  },
+  {
+    "id": "rss:https-www-chainguard-dev-unchained-rss-xml",
+    "type": "rss",
+    "handle": "https://www.chainguard.dev/unchained/rss.xml",
+    "name": "Chainguard Unchained",
+    "url": "https://www.chainguard.dev/unchained/rss.xml",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "strict": false,
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-16",
+    "active": true,
+    "notes": "Vendor research (supply chain)"
+  },
+  {
+    "id": "rss:https-labs-watchtowr-com-rss",
+    "type": "rss",
+    "handle": "https://labs.watchtowr.com/rss/",
+    "name": "watchTowr Labs",
+    "url": "https://labs.watchtowr.com/rss/",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-16",
+    "active": true,
+    "notes": "Offensive research"
+  },
+  {
+    "id": "rss:https-blog-assetnote-io-feed-xml",
+    "type": "rss",
+    "handle": "https://blog.assetnote.io/feed.xml",
+    "name": "Assetnote Research",
+    "url": "https://blog.assetnote.io/feed.xml",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-16",
+    "active": true,
+    "notes": "Offensive research"
+  },
+  {
+    "id": "rss:https-semgrep-dev-blog-rss",
+    "type": "rss",
+    "handle": "https://semgrep.dev/blog/rss",
+    "name": "Semgrep Blog",
+    "url": "https://semgrep.dev/blog/rss",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "strict": false,
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-16",
+    "active": true,
+    "notes": "Vendor research (SAST/appsec)"
+  },
+  {
+    "id": "rss:https-blog-projectdiscovery-io-rss",
+    "type": "rss",
+    "handle": "https://blog.projectdiscovery.io/rss/",
+    "name": "ProjectDiscovery Blog",
+    "url": "https://blog.projectdiscovery.io/rss/",
+    "topics": [
+      "product-security"
+    ],
+    "domains": [
+      "Web Application Security"
+    ],
+    "strict": false,
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-16",
+    "active": true,
+    "notes": "Offensive tooling research"
   }
 ]
