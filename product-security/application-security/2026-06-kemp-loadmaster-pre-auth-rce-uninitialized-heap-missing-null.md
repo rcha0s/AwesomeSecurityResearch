@@ -16,9 +16,9 @@ A one-function patch to `escape_quotes()` in Kemp LoadMaster revealed a pre-auth
 
 ## What to learn
 
-- The whole bug is a missing null terminator: the escaped buffer wasn't null-terminated, so a formatting call runs off the end into adjacent heap memory. — _"the escaped buffer was not null-terminated"_ ✅
-- Out-of-bounds read becomes injection when the neighboring freed chunk holds an un-escaped payload with no null byte — the sanitizer is bypassed by reading past where it stopped. — _"That means if an adjacent freed heap chunk contains an unescaped command injection payload"_ ✅
-- Attacker-controlled heap layout is the exploit primitive: spraying many JSON key/value pairs places the payload chunk exactly where the OOB read lands. — _"This gives us a useful heap-spraying primitive by adding lots of JSON key/value pairs."_ ✅
+- The whole bug is a missing null terminator: the escaped buffer wasn't null-terminated, so a formatting call runs off the end into adjacent heap memory. — _"the escaped buffer was not null-terminated"_
+- Out-of-bounds read becomes injection when the neighboring freed chunk holds an un-escaped payload with no null byte — the sanitizer is bypassed by reading past where it stopped. — _"That means if an adjacent freed heap chunk contains an unescaped command injection payload"_
+- Attacker-controlled heap layout is the exploit primitive: spraying many JSON key/value pairs places the payload chunk exactly where the OOB read lands. — _"This gives us a useful heap-spraying primitive by adding lots of JSON key/value pairs."_
 
 ## Threat · Conditions · Mitigations
 

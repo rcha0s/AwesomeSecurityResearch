@@ -17,9 +17,9 @@ Attackers backdoored five @asyncapi npm versions that execute at module-load (im
 
 ## What to learn
 
-- The payload runs at import time, not install time — so the standard --ignore-scripts defense is irrelevant; the trigger is require()/import, not a lifecycle hook. — _"Because the trigger is an import rather than an install script"_ ✅
-- Hook-focused scanners miss this entirely because the packages declare no preinstall/postinstall hooks at all. — _"Security tooling that focuses on preinstall/postinstall auditing will not flag these packages."_ ✅
-- Trusted publishing / provenance did NOT prevent the attack: valid OIDC attestations were produced from unauthorized commits, so a green provenance check is not proof of a trustworthy release. — _"The attestations accurately identified the legitimate repositories, commits, and workflows that created the packages, even though the triggering commits were unauthorized."_ ✅
+- The payload runs at import time, not install time — so the standard --ignore-scripts defense is irrelevant; the trigger is require()/import, not a lifecycle hook. — _"Because the trigger is an import rather than an install script"_
+- Hook-focused scanners miss this entirely because the packages declare no preinstall/postinstall hooks at all. — _"Security tooling that focuses on preinstall/postinstall auditing will not flag these packages."_
+- Trusted publishing / provenance did NOT prevent the attack: valid OIDC attestations were produced from unauthorized commits, so a green provenance check is not proof of a trustworthy release. — _"The attestations accurately identified the legitimate repositories, commits, and workflows that created the packages, even though the triggering commits were unauthorized."_
 
 ## Threat · Conditions · Mitigations
 

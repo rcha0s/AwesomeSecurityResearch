@@ -136,10 +136,10 @@ def _entry_meta(entry: dict, scores: dict) -> list[str]:
 
 
 def _grounding_mark(les: dict) -> str:
-    grounded = les.get("grounded")
-    if grounded is True:
-        return " ✅"
-    if grounded is False:
+    # Only surface a FAILED grounding — a verified quote stays clean, since the
+    # entry header already carries one "✓ independently verified" line. A ✅ on
+    # every quote is just noise on a TL;DR.
+    if les.get("grounded") is False:
         return " ⚠️ _(excerpt not found in source)_"
     return ""
 

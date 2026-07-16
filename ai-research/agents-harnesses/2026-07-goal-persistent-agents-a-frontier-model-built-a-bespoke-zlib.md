@@ -16,9 +16,9 @@ Pointed at a specific bug class in well-audited zlib via a persistent `/goal` �
 
 ## What to learn
 
-- A persistent goal that survives compaction lets the agent hold scope end-to-end and pick its own strategy — here it chose dynamic fuzzing over static review without being told to. — _"judged static review to be a poor use of tokens, and decided the higher value path was to build fuzz tooling to dynamically test the code"_ ✅
-- Reportability discipline is what turns agent output into signal: without strict validity rules baked into the goal, the agent produces confident noise. — _"the agent will generate mountains of noise with high confidence"_ ✅
-- The model triaged its own findings — it logged a real-but-unreachable crash as noise and moved on rather than escalating it. — _"the model logged it as unreachable and moved on"_ ✅
+- A persistent goal that survives compaction lets the agent hold scope end-to-end and pick its own strategy — here it chose dynamic fuzzing over static review without being told to. — _"judged static review to be a poor use of tokens, and decided the higher value path was to build fuzz tooling to dynamically test the code"_
+- Reportability discipline is what turns agent output into signal: without strict validity rules baked into the goal, the agent produces confident noise. — _"the agent will generate mountains of noise with high confidence"_
+- The model triaged its own findings — it logged a real-but-unreachable crash as noise and moved on rather than escalating it. — _"the model logged it as unreachable and moved on"_
 
 ## Actionable leverage
 

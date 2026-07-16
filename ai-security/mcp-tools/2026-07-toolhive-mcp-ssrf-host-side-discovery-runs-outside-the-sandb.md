@@ -16,9 +16,9 @@ ToolHive isolates every MCP server in a container, but its remote-auth discovery
 
 ## What to learn
 
-- A security control that runs outside the boundary it protects doesn't count: the discovery code executes in the host process, before the per-server container sandbox. — _"This discovery code runs host-side, in the ToolHive process, before and outside that per-server container sandbox."_ ✅
-- The SSRF was actively waved through: maintainers added `#nosec G704` suppressions asserting the URL was 'internal config', a premise that contradicts the project's own 'MCP server is untrusted' threat model. — _"The maintainers saw the taint-analysis warning on these requests and waved it through on a trust assumption that contradicts the project's design."_ ✅
-- Validating only the initial URL is not enough — the redirect target must be re-validated, because an HTTPS metadata URL can 302 to an internal http address. — _"Re-validating the redirect target, not only the initial URL, is the load-bearing part"_ ✅
+- A security control that runs outside the boundary it protects doesn't count: the discovery code executes in the host process, before the per-server container sandbox. — _"This discovery code runs host-side, in the ToolHive process, before and outside that per-server container sandbox."_
+- The SSRF was actively waved through: maintainers added `#nosec G704` suppressions asserting the URL was 'internal config', a premise that contradicts the project's own 'MCP server is untrusted' threat model. — _"The maintainers saw the taint-analysis warning on these requests and waved it through on a trust assumption that contradicts the project's design."_
+- Validating only the initial URL is not enough — the redirect target must be re-validated, because an HTTPS metadata URL can 302 to an internal http address. — _"Re-validating the redirect target, not only the initial URL, is the load-bearing part"_
 
 ## Threat · Conditions · Mitigations
 

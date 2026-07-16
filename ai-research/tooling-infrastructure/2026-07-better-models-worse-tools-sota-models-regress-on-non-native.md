@@ -15,8 +15,8 @@ Armin (building the Pi harness) found newer Claude models (Opus 4.8, Sonnet 5) i
 
 ## What to learn
 
-- A SOTA model can be WORSE at a custom tool schema than its older siblings if it was RL-trained on a different harness's tools — _"the SOTA models of the family are worse at this specific tool schema than their older siblings"_ ✅
-- Align tool formats to the model — Claude is trained on str-replace edits, OpenAI on apply_patch — _"trained (presumably via Reinforcement Learning) to better use the edit tools that are baked into Claude Code"_ ✅
+- A SOTA model can be WORSE at a custom tool schema than its older siblings if it was RL-trained on a different harness's tools — _"the SOTA models of the family are worse at this specific tool schema than their older siblings"_
+- Align tool formats to the model — Claude is trained on str-replace edits, OpenAI on apply_patch — _"trained (presumably via Reinforcement Learning) to better use the edit tools that are baked into Claude Code"_
 
 ## Actionable leverage
 
