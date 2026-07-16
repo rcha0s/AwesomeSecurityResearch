@@ -94,7 +94,9 @@ def _tweet_links(t: dict, text: str) -> list[str]:
         if isinstance(u, dict):
             links.append(u.get("expanded_url") or u.get("url") or "")
     links = [u for u in links if u] or c.extract_urls(text)
-    return [u for u in links if "twitter.com" not in u and "x.com" not in u]
+    external = [u for u in links if "twitter.com" not in u and "x.com" not in u]
+    # Resolve shorteners (t.co/…) so a tweet-linked article de-dups with its RSS permalink.
+    return [c.resolve_redirects(u) for u in external]
 
 
 def normalize_tweet(t: dict) -> dict:
@@ -115,7 +117,7 @@ def normalize_tweet(t: dict) -> dict:
     }
 
 
-def tweet_to_candidate(tweet: dict, fetch: bool) -> dict | None:
+def tweet_to_candidate(tweet: dict, fetch: bool, max_chars: int = 20000) -> dict | None:
     tw = normalize_tweet(tweet)
     if not tw["text"] and not tw["links"]:
         return None
@@ -127,7 +129,7 @@ def tweet_to_candidate(tweet: dict, fetch: bool) -> dict | None:
     raw_path = None
     if fetch and tw["links"]:
         try:
-            raw_path = c.write_raw(cand_id, c.fetch_readable(article_url))
+            raw_path = c.write_raw(cand_id, c.fetch_readable(article_url, max_chars=max_chars))
         except Exception as exc:  # noqa: BLE001 - network best-effort
             print(f"   ! fetch failed for {article_url}: {exc}", file=sys.stderr)
     return {
@@ -204,8 +206,13 @@ def main() -> int:
         return 1
 
     tweets = collect_tweets(cfg, limits)
+    max_chars = limits.get("article_chars", 20000)
     candidates = [
-        cand for cand in (tweet_to_candidate(t, fetch=not args.no_fetch) for t in tweets) if cand
+        cand
+        for cand in (
+            tweet_to_candidate(t, fetch=not args.no_fetch, max_chars=max_chars) for t in tweets
+        )
+        if cand
     ]
     print(f"\nParsed {len(candidates)} candidate tweet(s).")
 

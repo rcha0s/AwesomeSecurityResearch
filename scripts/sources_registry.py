@@ -60,12 +60,15 @@ def tier_score(tier: str) -> float:
 
 
 def signal_score(source: dict) -> float:
-    """Log-scaled 0-100 from the best available reach signal; 50 if none."""
+    """Log-scaled 0-100 from the best available reach signal; 50 (neutral) if none.
+    Reach is only ever a *bump*: a known-but-small following is floored at the
+    neutral 50, never scored below an unknown source (log10 of a small count is
+    tiny — a single follower would otherwise score 0, worse than 'no signal')."""
     sig = source.get("signals") or {}
     best = max([int(sig.get(k, 0) or 0) for k in ("followers", "stars", "subscribers")] or [0])
     if best <= 0:
         return 50.0
-    return min(100.0, 20.0 * math.log10(best))
+    return max(50.0, min(100.0, 20.0 * math.log10(best)))
 
 
 def hit_rate_score(source: dict) -> float:

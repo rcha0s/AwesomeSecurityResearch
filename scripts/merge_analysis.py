@@ -51,6 +51,33 @@ def entry_confidence(entry: dict) -> float:
     return min(confs) if confs else 1.0
 
 
+def reconcile(existing: dict, new: dict) -> dict:
+    """Fold a matched entry into an existing one. Same source ⇒ in-place update.
+    Different source telling the same story ⇒ corroboration: keep the existing
+    entry canonical and record the other source (raises its credibility)."""
+    same_source = c.normalize_url(new.get("source_url", "")) == c.normalize_url(
+        existing.get("source_url", "")
+    )
+    corr = list(existing.get("corroborating_sources") or [])
+    if same_source:
+        return {
+            **existing,
+            **new,
+            "id": existing.get("id") or new.get("id"),
+            "corroborating_sources": corr,
+        }
+    nu = c.normalize_url(new.get("source_url", ""))
+    if nu and all(c.normalize_url(s.get("url", "")) != nu for s in corr):
+        corr.append(
+            {
+                "name": new.get("source_name"),
+                "url": new.get("source_url"),
+                "published": new.get("published"),
+            }
+        )
+    return {**existing, "corroborating_sources": corr}
+
+
 def match_index(entries: list[dict], entry: dict) -> int | None:
     urls = {
         c.normalize_url(entry.get(k, ""))
@@ -128,7 +155,7 @@ def merge(
             entries.append(entry)
             newly_added.append(entry)
         else:
-            entries[idx] = {**entries[idx], **entry, "id": entries[idx].get("id", entry["id"])}
+            entries[idx] = reconcile(entries[idx], entry)
         merged.append(entry)
         for k in ("source_url", "article_url"):
             if entry.get(k):

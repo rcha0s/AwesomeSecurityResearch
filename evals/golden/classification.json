@@ -1,0 +1,86 @@
+[
+  {
+    "id": "g01",
+    "title": "Indirect prompt injection via calendar invites",
+    "summary": "An attacker embeds hidden instructions in an event body that the assistant executes.",
+    "expected_topic": "ai-security",
+    "expected_domain": "AI Security"
+  },
+  {
+    "id": "g02",
+    "title": "MCP tool poisoning in agentic workflows",
+    "summary": "A malicious MCP server returns crafted tool output that hijacks the agent.",
+    "expected_topic": "ai-security",
+    "expected_domain": "AI Security"
+  },
+  {
+    "id": "g03",
+    "title": "Jailbreak bypasses LLM safety filters",
+    "summary": "A multi-turn jailbreak defeats the model's refusal training.",
+    "expected_topic": "ai-security",
+    "expected_domain": "AI Security"
+  },
+  {
+    "id": "g04",
+    "title": "HTTP request smuggling desync attack on a reverse proxy",
+    "summary": "A CL.0 desync lets an attacker poison other users' responses.",
+    "expected_topic": "product-security",
+    "expected_domain": "Web Application Security"
+  },
+  {
+    "id": "g05",
+    "title": "Stored XSS in a popular CMS plugin",
+    "summary": "Unsanitized markup in comments leads to persistent cross-site scripting.",
+    "expected_topic": "product-security",
+    "expected_domain": "Web Application Security"
+  },
+  {
+    "id": "g06",
+    "title": "npm supply chain typosquat campaign steals tokens",
+    "summary": "Dozens of malicious dependency packages exfiltrate CI secrets.",
+    "expected_topic": "product-security",
+    "expected_domain": "Web Application Security"
+  },
+  {
+    "id": "g07",
+    "title": "Android spyware exploits a zero-day in a baseband driver",
+    "summary": "Commercial spyware chains a zero-click bug to compromise the phone.",
+    "expected_topic": "product-security",
+    "expected_domain": "Mobile Security"
+  },
+  {
+    "id": "g08",
+    "title": "iOS baseband vulnerability enables remote code execution",
+    "summary": "A memory bug in the iPhone modem firmware is remotely reachable.",
+    "expected_topic": "product-security",
+    "expected_domain": "Mobile Security"
+  },
+  {
+    "id": "g09",
+    "title": "Multi-agent orchestration harness for coding tasks",
+    "summary": "A supervisor coordinates worker agents with structured tool use.",
+    "expected_topic": "ai-research",
+    "expected_domain": "Agents & Harnesses"
+  },
+  {
+    "id": "g10",
+    "title": "Context engineering for long context windows",
+    "summary": "Compaction and retrieval keep the context window focused across turns.",
+    "expected_topic": "ai-research",
+    "expected_domain": "Prompting & Context"
+  },
+  {
+    "id": "g11",
+    "title": "New reasoning model benchmark results",
+    "summary": "A reasoning model tops the benchmark on multi-step planning.",
+    "expected_topic": "ai-research",
+    "expected_domain": "Models & Capabilities"
+  },
+  {
+    "id": "g12",
+    "title": "Vector database for retrieval pipeline serving",
+    "summary": "An embedding store powers a low-latency retrieval pipeline for search.",
+    "expected_topic": "ai-research",
+    "expected_domain": "Tooling & Infrastructure"
+  }
+]

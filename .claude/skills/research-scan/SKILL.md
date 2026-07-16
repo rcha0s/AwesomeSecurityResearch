@@ -22,11 +22,18 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
      ~/.venvs/asr/bin/python scripts/ingest_twitter.py --max 20
      ~/.venvs/asr/bin/python scripts/aggregate.py'
    ```
-   RSS-only (`aggregate.py`) also runs fine on Windows Python. If ingest reports Agent
-   Reach unhealthy, the cookies likely expired — refresh the burner's `auth_token`+`ct0`
-   into `~/.agent-reach/twitter.env` — and continue with RSS only.
+   The other ingestors run fine on Windows Python (no WSL, no cookies) and should also
+   run each scan for breadth:
+   ```bash
+   python scripts/aggregate.py       # RSS/Atom + newsletter feeds (the registry)
+   python scripts/ingest_github.py   # trending/novel repos (needs `gh` authed)
+   python scripts/ingest_ghsa.py     # reviewed supply-chain advisories (needs `gh` authed)
+   python scripts/ingest_hn.py       # Hacker News velocity signal (keyless, network)
+   ```
+   If Twitter ingest reports Agent Reach unhealthy, the cookies likely expired — refresh the
+   burner's `auth_token`+`ct0` into `~/.agent-reach/twitter.env` — and continue with the rest.
    Note: the burner's **home feed is often low-signal** (algorithmic timeline); the
-   high-signal material comes from the curated `twitter.accounts` in `sources.yaml`.
+   high-signal material comes from the curated `x_account` sources in the registry.
 
 2. **Read the candidates.** Load `data/candidates.json`. For each candidate, read its
    `raw_path` file under `data/_raw/` for the full article text. If `raw_path` is null

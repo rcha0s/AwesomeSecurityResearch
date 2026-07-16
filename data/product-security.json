@@ -54,9 +54,9 @@
       "scores": {
         "novelty": 90,
         "relevance": 86,
-        "newness": 50,
-        "composite": 72.8,
-        "scored_at": "2026-07-13T07:22:59+00:00",
+        "newness": 43,
+        "composite": 71.05,
+        "scored_at": "2026-07-16T04:30:05+00:00",
         "credibility": 50.0
       },
       "title": "Phantom Squatting: attackers register the domains LLMs hallucinate",
@@ -110,9 +110,9 @@
       "scores": {
         "novelty": 68,
         "relevance": 72,
-        "newness": 50,
-        "composite": 65.75,
-        "scored_at": "2026-07-13T07:22:59+00:00",
+        "newness": 43,
+        "composite": 64.0,
+        "scored_at": "2026-07-16T04:30:05+00:00",
         "credibility": 75.0
       },
       "id": "gigawiper-modular-destructive-malware-that-fakes-2b20f20b50",
@@ -137,11 +137,11 @@
       "discovered_via": "manual",
       "article_url": "https://access.redhat.com/security/vulnerabilities/RHSB-2026-006",
       "scores": {
-        "newness": 10,
+        "newness": 8,
         "novelty": 0,
         "relevance": 0,
-        "composite": 10.0,
-        "scored_at": "2026-07-13T07:22:59+00:00",
+        "composite": 9.5,
+        "scored_at": "2026-07-16T04:30:05+00:00",
         "credibility": 50.0
       },
       "published": "2026-06",
