@@ -7,7 +7,9 @@
 
 > **Takeaway —** The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
 
-## Summary
+## TL;DR
+
+_The gist, not every detail — read the [full source](https://github.com/omnigent-ai/omnigent) for the complete write-up._
 
 Omnigent is an open-source meta-harness: a common orchestration layer over Claude Code, Codex, Cursor, OpenCode, Pi and custom agents. You swap or combine harnesses without rewriting, enforce policies and sandboxing, and drive sessions from terminal, browser, or phone.
 

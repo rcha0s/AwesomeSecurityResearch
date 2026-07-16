@@ -57,11 +57,78 @@
         "relevance": 90,
         "newness": 43,
         "composite": 70.0,
-        "scored_at": "2026-07-16T04:30:05+00:00",
+        "scored_at": "2026-07-16T07:43:12+00:00",
         "credibility": 55.0
       },
       "id": "better-models-worse-tools-sota-models-regress-on-23a5b69b6f",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
+      "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "ai-research",
+      "domain": "Agents & Harnesses",
+      "title": "Goal-persistent agents: a frontier model built a bespoke zlib fuzzing lab in a day",
+      "source_url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/",
+      "article_url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/",
+      "published": "2026-07-02",
+      "date": "2026-07",
+      "discovered_via": "rss",
+      "source_id": "rss:https-blog-trailofbits-com-feed",
+      "source_rank": 75.0,
+      "source_topics": [
+        "product-security",
+        "ai-security"
+      ],
+      "raw_path": "data/_raw/gpt-5-5-cyber-built-a-zlib-fuzzing-lab-in-a-day-e849fb2340.txt",
+      "summary": "Pointed at a specific bug class in well-audited zlib via a persistent `/goal` — but not told how — a frontier model decided static review was low value, built fuzz harnesses across a dozen entrypoints with ASan/UBSan and variant builds, and surfaced findings now in coordinated disclosure. The load-bearing harness detail was a strict definition of a reportable finding — it self-rejected an unreachable crash as noise and kept going. (Single-source vendor field report on a not-yet-public model.)",
+      "lessons": [
+        {
+          "point": "A persistent goal that survives compaction lets the agent hold scope end-to-end and pick its own strategy — here it chose dynamic fuzzing over static review without being told to.",
+          "excerpt": "judged static review to be a poor use of tokens, and decided the higher value path was to build fuzz tooling to dynamically test the code",
+          "confidence": 0.96,
+          "grounded": true
+        },
+        {
+          "point": "Reportability discipline is what turns agent output into signal: without strict validity rules baked into the goal, the agent produces confident noise.",
+          "excerpt": "the agent will generate mountains of noise with high confidence",
+          "confidence": 0.95,
+          "grounded": true
+        },
+        {
+          "point": "The model triaged its own findings — it logged a real-but-unreachable crash as noise and moved on rather than escalating it.",
+          "excerpt": "the model logged it as unreachable and moved on",
+          "confidence": 0.95,
+          "grounded": true
+        }
+      ],
+      "takeaway": "When you hand an agent a durable goal plus strict 'what counts as a real finding' rules, it will plan multi-step tooling and self-filter noise — the rules, not the model alone, are what make the output actionable.",
+      "tags": [
+        "agents",
+        "goal-persistence",
+        "fuzzing",
+        "evals",
+        "ai-for-security"
+      ],
+      "actionable": {
+        "type": "harness",
+        "title": "Pair a durable goal with explicit reportability criteria",
+        "detail": "For autonomous security/analysis agents, encode the objective so it persists across turns/compactions AND specify hard validity rules (what is reachable, in-scope, and reportable) inside the goal — this is what suppresses high-confidence noise and lets the agent self-reject weak findings.",
+        "skill_slug": "goal-persistent-agent-tasking"
+      },
+      "scores": {
+        "novelty": 60,
+        "relevance": 88,
+        "newness": 43,
+        "credibility": 75.0,
+        "composite": 66.4,
+        "scored_at": "2026-07-16T07:43:12+00:00"
+      },
+      "prior_art": "LLM-driven vuln discovery (Google's Big Sleep / OSS-Fuzz-gen, XBOW) is prior work; the novel practitioner delta is the emphasis on goal-persistence-across-compaction plus baked-in reportability rules as the mechanism that makes the loop high-signal.",
+      "verified": true,
+      "verify_note": "Independent verifier: single-source vendor report; softened 'found real bugs' to 'findings in disclosure' and noted it was directed at a bug class.",
+      "id": "goal-persistent-agents-a-frontier-model-built-a-759122f879",
+      "retrieved_at": "2026-07-16T07:43:12+00:00",
       "needs_review": false,
       "grounding_score": 1.0
     },
@@ -107,7 +174,7 @@
         "relevance": 84,
         "newness": 8,
         "composite": 58.1,
-        "scored_at": "2026-07-16T04:30:05+00:00",
+        "scored_at": "2026-07-16T07:43:12+00:00",
         "credibility": 50.0
       },
       "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
@@ -156,7 +223,7 @@
         "relevance": 75,
         "newness": 43,
         "composite": 58.0,
-        "scored_at": "2026-07-16T04:30:05+00:00",
+        "scored_at": "2026-07-16T07:43:12+00:00",
         "credibility": 55.0
       },
       "id": "gpt-5-6-luna-terra-sol-three-tiers-1m-context-ag-c37d1d22d0",

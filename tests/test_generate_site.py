@@ -55,7 +55,7 @@ def test_legacy_entry_renders_without_scores(sandbox):
 def test_ai_entry_with_summary_no_threat(sandbox):
     conf = c.load_config()
     page = g.render_entry_page(make_entry(), conf)
-    assert "## Summary" in page
+    assert "## TL;DR" in page  # entries are condensed TL;DR gists
     assert "Threat · Conditions" not in page  # no threat on AI-research entry
 
 

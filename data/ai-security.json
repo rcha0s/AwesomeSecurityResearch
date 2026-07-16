@@ -14,6 +14,138 @@
   ],
   "entries": [
     {
+      "topic": "ai-security",
+      "domain": "MCP & Tools",
+      "title": "ToolHive MCP SSRF: host-side discovery runs outside the sandbox it enforces",
+      "source_url": "https://github.com/advisories/GHSA-pr64-jmmf-jp54",
+      "article_url": "https://github.com/advisories/GHSA-pr64-jmmf-jp54",
+      "published": "2026-07-15",
+      "date": "2026-07",
+      "discovered_via": "github",
+      "source_id": null,
+      "source_rank": 70.0,
+      "source_topics": [],
+      "raw_path": "data/_raw/ghsa-pr64-jmmf-jp54-a26b1e27fa.txt",
+      "summary": "ToolHive isolates every MCP server in a container, but its remote-auth discovery code runs host-side, outside that sandbox, and follows a server-controlled `WWW-Authenticate: resource_metadata` URL (and its redirects) with no private-IP guard. A malicious remote MCP server can 302 the host to 169.254.169.254; where AWS IMDSv1 is enabled that returns IAM credentials directly, and on IMDSv2/GCP the reachable impact is the broader internal-GET surface — either way the exact reach the container sandbox exists to deny.",
+      "lessons": [
+        {
+          "point": "A security control that runs outside the boundary it protects doesn't count: the discovery code executes in the host process, before the per-server container sandbox.",
+          "excerpt": "This discovery code runs host-side, in the ToolHive process, before and outside that per-server container sandbox.",
+          "confidence": 0.98,
+          "grounded": true
+        },
+        {
+          "point": "The SSRF was actively waved through: maintainers added `#nosec G704` suppressions asserting the URL was 'internal config', a premise that contradicts the project's own 'MCP server is untrusted' threat model.",
+          "excerpt": "The maintainers saw the taint-analysis warning on these requests and waved it through on a trust assumption that contradicts the project's design.",
+          "confidence": 0.97,
+          "grounded": true
+        },
+        {
+          "point": "Validating only the initial URL is not enough — the redirect target must be re-validated, because an HTTPS metadata URL can 302 to an internal http address.",
+          "excerpt": "Re-validating the redirect target, not only the initial URL, is the load-bearing part",
+          "confidence": 0.98,
+          "grounded": true
+        }
+      ],
+      "threat": "A remote MCP server the victim intentionally connects to can drive the host to issue arbitrary internal GETs and, on AWS IMDSv1, exfiltrate IAM credentials.",
+      "conditions": "User adds/runs a malicious or compromised remote MCP server via the normal `thv run --remote-auth` workflow; no user targeting of an internal address needed.",
+      "mitigations": "Wrap discovery clients with the existing IsPrivateIP dialer guard, set CheckRedirect to reject cross-host/scheme-downgrade redirects, and re-validate every redirect hop — not just the first URL.",
+      "takeaway": "Put SSRF guards on every outbound client that touches untrusted input, re-validate redirect targets, and never suppress a taint warning on a 'trusted config' premise your threat model calls untrusted.",
+      "tags": [
+        "mcp",
+        "ssrf",
+        "agent-security",
+        "cloud-metadata",
+        "sandbox-escape"
+      ],
+      "actionable": {
+        "type": "harness",
+        "title": "SSRF-guard every host-side fetch in an agent/MCP runtime",
+        "detail": "For any outbound request whose URL derives from a tool/server response, enforce a private-IP dialer deny-list AND a CheckRedirect that re-applies it to each hop; treat `#nosec`/lint suppressions on such sinks as findings to review against the threat model, not settled decisions."
+      },
+      "scores": {
+        "novelty": 78,
+        "relevance": 85,
+        "newness": 43,
+        "credibility": 70.0,
+        "composite": 70.15,
+        "scored_at": "2026-07-16T07:43:12+00:00"
+      },
+      "prior_art": "Classic cloud-metadata SSRF (169.254.169.254) is well known; the novel delta is the MCP-specific vector — a control running host-side, outside the very container sandbox the tool advertises, reached purely through a server's auth-discovery response.",
+      "verified": true,
+      "verify_note": "Independent verifier: lessons supported; qualified IAM-cred read to AWS IMDSv1 (IMDSv2/GCP = internal-GET surface).",
+      "id": "toolhive-mcp-ssrf-host-side-discovery-runs-outsi-2efcb63df1",
+      "retrieved_at": "2026-07-16T07:43:12+00:00",
+      "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "ai-security",
+      "domain": "Skill Supply Chain",
+      "title": "Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)",
+      "source_url": "https://arxiv.org/abs/2607.13987",
+      "article_url": "https://arxiv.org/abs/2607.13987",
+      "published": "2026-07-16",
+      "date": "2026-07",
+      "discovered_via": "rss",
+      "source_id": "rss:http-export-arxiv-org-rss-cs-cr",
+      "source_rank": 55.0,
+      "source_topics": [
+        "ai-security",
+        "product-security"
+      ],
+      "raw_path": "data/_raw/agent-skill-security-threat-models-attacks-defen-4da2735c8a.txt",
+      "summary": "Reusable agent 'skills' are a new supply-chain unit, but security work has mostly looked at prompt injection and runtime execution. SkillSec-Eval maps threats across the whole skill lifecycle — repository admission, semantic retrieval, planner selection, execution, and skill evolution — and, over 327 real skills, shows vulnerabilities appear at stages well before execution.",
+      "lessons": [
+        {
+          "point": "Skill security today is scoped too narrowly — it fixates on prompt injection and runtime, leaving the rest of the skill lifecycle unexamined.",
+          "excerpt": "existing security research primarily focuses on prompt injection and runtime execution, leaving security risks throughout the broader skill lifecycle largely unexplored",
+          "confidence": 0.95,
+          "grounded": true
+        },
+        {
+          "point": "A useful threat model spans five lifecycle stages, so a skill scanner should check admission, retrieval, and planner-selection risks, not only execution.",
+          "excerpt": "a threat taxonomy spanning repository admission, semantic retrieval, planner selection, execution, and skill evolution",
+          "confidence": 0.95,
+          "grounded": true
+        },
+        {
+          "point": "Empirically, across 327 real-world skills, vulnerabilities show up at multiple stages beyond execution — so lifecycle-aware analysis is needed, not just a runtime guard.",
+          "excerpt": "vulnerabilities arise at multiple lifecycle stages beyond execution",
+          "confidence": 0.94,
+          "grounded": true
+        }
+      ],
+      "takeaway": "When you scan or admit agent skills, cover the whole lifecycle (admission, retrieval, planner selection, evolution) — a runtime-only check misses where most of the risk actually lives.",
+      "tags": [
+        "agent-skills",
+        "skill-scanning",
+        "supply-chain",
+        "threat-modeling",
+        "evals"
+      ],
+      "actionable": {
+        "type": "tool",
+        "title": "Lifecycle-aware skill scanning",
+        "detail": "Extend a skill/marketplace scanner beyond runtime: check repository-admission provenance, semantic-retrieval poisoning (does a crafted description win retrieval?), planner-selection hijacking, and skill-evolution drift between approved and current versions."
+      },
+      "scores": {
+        "novelty": 72,
+        "relevance": 80,
+        "newness": 43,
+        "credibility": 55.0,
+        "composite": 64.6,
+        "scored_at": "2026-07-16T07:43:12+00:00"
+      },
+      "prior_art": "OpenClaw/ClawHub agentic supply-chain and MCP tool-poisoning work cover parts of this; the novel delta is the explicit lifecycle taxonomy (five stages) plus an empirical study over 327 real skills rather than a single attack demo.",
+      "verified": true,
+      "verify_note": "Independent verifier: all three lessons match the abstract; no fabricated attack/defense specifics.",
+      "id": "agent-skill-security-is-a-lifecycle-problem-not-097f176061",
+      "retrieved_at": "2026-07-16T07:43:12+00:00",
+      "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
       "source_url": "https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/",
       "article_url": "https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/",
       "source_name": "Palo Alto Networks Unit 42",
@@ -65,12 +197,80 @@
         "relevance": 88,
         "newness": 8,
         "composite": 64.25,
-        "scored_at": "2026-07-16T04:30:05+00:00",
+        "scored_at": "2026-07-16T07:43:12+00:00",
         "credibility": 75.0
       },
       "id": "openclaw-s-clawhub-skill-marketplace-an-agentic-798f5a7e0b",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
       "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "ai-security",
+      "domain": "MCP & Tools",
+      "title": "Treat MCP tool descriptions as system prompts: silent re-trust poisoning",
+      "source_url": "https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/",
+      "article_url": "https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/",
+      "published": "2026-06-30",
+      "date": "2026-06",
+      "discovered_via": "rss",
+      "source_id": "rss:https-www-microsoft-com-en-us-security-blog-feed",
+      "source_rank": 75.0,
+      "source_topics": [
+        "ai-security",
+        "product-security"
+      ],
+      "raw_path": "data/_raw/securing-ai-agents-when-ai-tools-move-from-readi-3a2d3197b2.txt",
+      "summary": "Once agents move from reading to acting, a poisoned MCP tool description turns prompt injection into an action. An approved third-party tool's description is silently modified to tell the agent to collect and exfiltrate data; because metadata updates don't re-trigger approval, the poisoned instructions go live with no review, and every individual agent action looks legitimate.",
+      "lessons": [
+        {
+          "point": "MCP mixes instructions and data in the same channel, so editing a tool's description reprograms the agent as effectively as editing its system prompt.",
+          "excerpt": "The MCP blends instructions (tool descriptions) with data, so a change to a tool's metadata can redirect the agent's behavior as effectively as a change to its system prompt.",
+          "confidence": 0.96,
+          "grounded": true
+        },
+        {
+          "point": "The dangerous gap is 'silent re-trust' (Microsoft's term): in configurations where a tool's description change doesn't re-trigger the approval workflow, poisoned instructions become active without review.",
+          "excerpt": "In configurations where description changes do not trigger a re-approval workflow, the updated instructions become active without additional review.",
+          "confidence": 0.95,
+          "grounded": true
+        },
+        {
+          "point": "The vulnerability is the trust boundary between systems, not any one system — each action (approved tool, inherited permissions, allowlisted endpoint) is individually legitimate.",
+          "excerpt": "The vulnerability is not in any single system; it is in the trust boundary between them",
+          "confidence": 0.95,
+          "grounded": true
+        }
+      ],
+      "threat": "An upstream tool maintainer modifies a tool description to redirect an agent into collecting and exfiltrating data, with no prompt, credential, or user action involved.",
+      "mitigations": "Change-review tool descriptions like system prompts; require re-approval on metadata changes; disable 'Allow all' tools; human-in-the-loop for high-impact actions; apply least agency, not just least privilege.",
+      "takeaway": "Version and change-review every MCP tool description as if it were a system prompt, and force re-approval whenever tool metadata changes.",
+      "tags": [
+        "mcp",
+        "tool-poisoning",
+        "prompt-injection",
+        "agent-security",
+        "supply-chain"
+      ],
+      "actionable": {
+        "type": "takeaway",
+        "title": "Gate MCP tool-metadata changes behind re-approval",
+        "detail": "Pin tool-description hashes for production agents and require an explicit re-approval (and imperative-language scan) whenever a server's tool description changes — do not let dynamic metadata updates silently re-trust."
+      },
+      "scores": {
+        "novelty": 50,
+        "relevance": 84,
+        "newness": 8,
+        "credibility": 75.0,
+        "composite": 53.45,
+        "scored_at": "2026-07-16T07:43:12+00:00"
+      },
+      "prior_art": "Invariant Labs' April 2025 MCP tool-poisoning disclosure and OWASP's ASI02/ASI04 categories; this piece is a practical defender playbook on that known class, with the 'silent re-trust' on dynamic metadata as the sharpest incremental point.",
+      "verified": true,
+      "verify_note": "Independent verifier: derivative Microsoft playbook on the known Invariant-Labs/OWASP tool-poisoning class; novelty lowered — held for review.",
+      "id": "treat-mcp-tool-descriptions-as-system-prompts-si-bef4e855af",
+      "retrieved_at": "2026-07-16T07:43:12+00:00",
+      "needs_review": true,
       "grounding_score": 1.0
     }
   ]

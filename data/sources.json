@@ -94,10 +94,10 @@
     "tier": "high",
     "signals": {},
     "stats": {
-      "ingested": 1,
-      "curated": 1
+      "ingested": 3,
+      "curated": 2
     },
-    "rank": 77.5,
+    "rank": 76.8,
     "added": "2026-07-13",
     "active": true,
     "notes": "Vendor research",
@@ -121,10 +121,10 @@
     "tier": "medium",
     "signals": {},
     "stats": {
-      "ingested": 0,
-      "curated": 0
+      "ingested": 1,
+      "curated": 1
     },
-    "rank": 55.0,
+    "rank": 57.5,
     "added": "2026-07-13",
     "active": true,
     "notes": "Academic preprints",
@@ -726,10 +726,10 @@
     "tier": "high",
     "signals": {},
     "stats": {
-      "ingested": 0,
-      "curated": 0
+      "ingested": 1,
+      "curated": 1
     },
-    "rank": 75.0,
+    "rank": 77.5,
     "added": "2026-07-16",
     "active": true,
     "notes": "Vendor research"
@@ -822,10 +822,10 @@
     "tier": "high",
     "signals": {},
     "stats": {
-      "ingested": 0,
-      "curated": 0
+      "ingested": 1,
+      "curated": 1
     },
-    "rank": 75.0,
+    "rank": 77.5,
     "added": "2026-07-16",
     "active": true,
     "notes": "Offensive research"
