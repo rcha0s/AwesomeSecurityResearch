@@ -2,7 +2,7 @@
 
 **Topic:** AI Research  ·  **Domain:** Tooling & Infrastructure  
 **Source:** [Simon Willison's Weblog](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything)  ·  **Published:** Jul 4, 2026  ·  **Retrieved:** 2026-07-13  
-**Scores:** 🆕 Newness 51 · ✨ Novelty 80 · 🎯 Relevance 90 · **Composite 74.8**  
+**Scores:** 🆕 Newness 50 · ✨ Novelty 80 · 🎯 Relevance 90 · 🏛️ Credibility 55 · **Composite 71.75**  
 **Tags:** `harness`, `tool-use`, `agents`, `claude-code`, `architecture`
 
 > **Takeaway —** Newer ≠ better for YOUR tools: match your harness's tool schemas to what the target model was trained on.
@@ -13,8 +13,8 @@ Armin (building the Pi harness) found newer Claude models (Opus 4.8, Sonnet 5) i
 
 ## What to learn
 
-- A SOTA model can be WORSE at a custom tool schema than its older siblings if it was RL-trained on a different harness's tools — _"the SOTA models of the family are worse at this specific tool schema than their older siblings"_
-- Align tool formats to the model — Claude is trained on str-replace edits, OpenAI on apply_patch — _"Claude's edit tool uses search and replace... OpenAI's Codex uses an apply_patch mechanism instead"_
+- A SOTA model can be WORSE at a custom tool schema than its older siblings if it was RL-trained on a different harness's tools — _"the SOTA models of the family are worse at this specific tool schema than their older siblings"_ ✅
+- Align tool formats to the model — Claude is trained on str-replace edits, OpenAI on apply_patch — _"trained (presumably via Reinforcement Learning) to better use the edit tools that are baked into Claude Code"_ ✅
 
 ## Actionable leverage
 

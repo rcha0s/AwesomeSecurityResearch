@@ -2,7 +2,7 @@
 
 **Topic:** AI Security  ·  **Domain:** Harness & Agent Security  
 **Source:** [Palo Alto Networks Unit 42](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/)  ·  **Published:** Jun 23, 2026  ·  **Retrieved:** 2026-07-13  
-**Scores:** 🆕 Newness 10 · ✨ Novelty 82 · 🎯 Relevance 88 · **Composite 62.5**  
+**Scores:** 🆕 Newness 10 · ✨ Novelty 82 · 🎯 Relevance 88 · 🏛️ Credibility 75 · **Composite 64.75**  
 **Tags:** `agent-security`, `skill-scanning`, `supply-chain`, `agentic-threats`, `unit42`
 
 > **Takeaway —** Agent skill marketplaces are a critical, largely-untrusted link in the software supply chain — marketplace scanning alone does not make them safe.
@@ -13,9 +13,9 @@ Unit 42 found five evasive malicious 'skills' persisting on ClawHub — the mark
 
 ## What to learn
 
-- Agent skills are broad-access packages; the marketplace is a supply-chain link to treat as untrusted — _"markdown-driven packages with broad local system access, making ClawHub a critical link in the agentic software supply chain"_
-- Malware evades marketplace scanners with simple tricks (oversized files exceed scan thresholds) — _"inflated file size to exceed scanner thresholds, bypassing both ClawScan and VirusTotal detection"_
-- New 'agentic' threat classes are emerging — affiliate injection and front-running done at agent runtime — _"runtime agentic affiliate injection and agentic front-running. Both are novel techniques"_
+- Agent skills are broad-access packages; the marketplace is a supply-chain link to treat as untrusted — _"markdown-driven packages with broad local system access, making ClawHub a critical link in the agentic software supply chain"_ ✅
+- Malware evades marketplace scanners with simple tricks (oversized files exceed scan thresholds) — _"inflated file size to exceed scanner thresholds, bypassing both ClawScan and VirusTotal detection"_ ✅
+- New 'agentic' threat classes are emerging — affiliate injection and front-running done at agent runtime — _"runtime agentic affiliate injection and agentic front-running. Both are novel techniques"_ ✅
 
 ## Actionable leverage
 

@@ -3,18 +3,23 @@
 # so scoring/behaviour can be tuned without touching code.
 # ---------------------------------------------------------------------------
 
-# Ranking weights — must sum to 1.0. Applied to the three 0-100 score axes to
-# produce each entry's composite score.
+# Ranking weights — must sum to 1.0. Applied to the 0-100 score axes to produce
+# each entry's composite score.
 weights:
-  newness: 0.30    # how recently the finding was published (time-decayed)
-  novelty: 0.35    # how new the idea is versus what is already in the pool
-  relevance: 0.35  # how useful/teachable it is for the track's audience
+  newness: 0.25     # how recently the finding was published (time-decayed)
+  novelty: 0.30     # how new the idea is versus what is already in the pool
+  relevance: 0.30   # how useful/teachable it is for the track's audience
+  credibility: 0.15 # authority of the source (its registry rank)
 
 # HARD freshness window (days). We track only the latest research: anything
 # whose source was published more than this many days ago is never ingested,
 # and existing pool entries that age past it are pruned to data/archive.json
 # (preserved, but no longer shown in the live tracker). "About a month."
 max_age_days: 31
+
+# The README "this week" snapshot shows only curated findings published within
+# this many days (the newsletter still covers the full max_age_days window).
+snapshot_days: 7
 
 # Newness decay: newness = 100 * exp(-age_days / half_life_days).
 # A finding loses half its newness score every `half_life_days` days. Kept short
@@ -38,6 +43,12 @@ curation:
   min_relevance: 55    # must be directly useful to the track's expert audience
   min_composite: 20    # curated view floor — below this a finding stays in REVIEW.md,
                        # not the topic pages/newsletter (catches unscored/legacy noise)
+  require_grounding: true  # a lesson excerpt that isn't found in the source ⇒ needs_review
+                           # (protects the pool from hallucinated/paraphrased quotes)
+  min_credibility: 45      # a low-authority source (registry rank below this) whose excerpts
+                           # aren't grounded ⇒ needs_review (trust must be earned or verified)
+  require_verification: true  # a finding the independent verifier pass REFUTED (verified=false)
+                              # ⇒ needs_review. Un-verified (verified absent) is not penalized.
 
 # Per-run ingestion caps (bound cost/ban-risk of a single scan).
 limits:

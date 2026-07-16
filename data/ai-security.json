@@ -32,17 +32,20 @@
         {
           "point": "Agent skills are broad-access packages; the marketplace is a supply-chain link to treat as untrusted",
           "excerpt": "markdown-driven packages with broad local system access, making ClawHub a critical link in the agentic software supply chain",
-          "confidence": 0.9
+          "confidence": 0.9,
+          "grounded": true
         },
         {
           "point": "Malware evades marketplace scanners with simple tricks (oversized files exceed scan thresholds)",
           "excerpt": "inflated file size to exceed scanner thresholds, bypassing both ClawScan and VirusTotal detection",
-          "confidence": 0.9
+          "confidence": 0.9,
+          "grounded": true
         },
         {
           "point": "New 'agentic' threat classes are emerging — affiliate injection and front-running done at agent runtime",
           "excerpt": "runtime agentic affiliate injection and agentic front-running. Both are novel techniques",
-          "confidence": 0.85
+          "confidence": 0.85,
+          "grounded": true
         }
       ],
       "tags": [
@@ -61,12 +64,14 @@
         "novelty": 82,
         "relevance": 88,
         "newness": 10,
-        "composite": 62.5,
-        "scored_at": "2026-07-13T04:19:32+00:00"
+        "composite": 64.75,
+        "scored_at": "2026-07-13T07:22:59+00:00",
+        "credibility": 75.0
       },
       "id": "openclaw-s-clawhub-skill-marketplace-an-agentic-798f5a7e0b",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
-      "needs_review": false
+      "needs_review": false,
+      "grounding_score": 1.0
     }
   ]
 }

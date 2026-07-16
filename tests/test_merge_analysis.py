@@ -65,6 +65,33 @@ def test_merge_routes_and_flags_low_confidence(sandbox):
     assert sec[0]["needs_review"] is True  # low confidence flagged
 
 
+def test_low_credibility_unverified_flagged(sandbox):
+    conf = c.load_config()
+    # low-authority source (rank 20) whose excerpt can't be confirmed -> review
+    low = make_entry(
+        topic="ai-security",
+        domain="MCP",
+        source_url="https://a/low",
+        source_rank=20,
+        scores={"novelty": 90, "relevance": 90},
+    )
+    merged, _, _, _ = m.merge([low], conf)  # sandbox stubs grounding -> unverifiable
+    assert merged[0]["needs_review"] is True
+
+
+def test_high_credibility_not_flagged(sandbox):
+    conf = c.load_config()
+    high = make_entry(
+        topic="ai-security",
+        domain="MCP",
+        source_url="https://a/high",
+        source_rank=90,
+        scores={"novelty": 90, "relevance": 90},
+    )
+    merged, _, _, _ = m.merge([high], conf)
+    assert merged[0]["needs_review"] is False
+
+
 def test_curation_gate_flags_low_novelty(sandbox):
     conf = c.load_config()
     # high confidence but derivative (low novelty) → held as needs_review

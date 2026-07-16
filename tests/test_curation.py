@@ -19,11 +19,57 @@ def test_is_curated_gate():
     assert not c.is_curated(low, conf)
 
 
+def test_is_curated_respects_verification():
+    conf = c.load_config()
+    base = dict(scores={"novelty": 80, "relevance": 80}, grounding_score=1.0)
+    assert c.is_curated(make_entry(verified=True, **base), conf)
+    assert not c.is_curated(make_entry(verified=False, **base), conf)  # refuted
+    assert c.is_curated(make_entry(**base), conf)  # not-yet-verified is not penalized
+    assert "failed independent verification" in c.review_reason(make_entry(verified=False), conf)
+
+
+def test_merge_flags_refuted(sandbox):
+    import merge_analysis as m
+
+    conf = c.load_config()
+    refuted = make_entry(
+        topic="ai-security",
+        domain="MCP",
+        source_url="https://a/r",
+        source_rank=90,
+        scores={"novelty": 90, "relevance": 90},
+        verified=False,
+    )
+    merged, _, _, _ = m.merge([refuted], conf)
+    assert merged[0]["needs_review"] is True
+
+
+def test_is_curated_rejects_ungrounded():
+    conf = c.load_config()
+    good = make_entry(scores={"novelty": 80, "relevance": 80}, grounding_score=1.0)
+    bad = make_entry(scores={"novelty": 80, "relevance": 80}, grounding_score=0.5)
+    unverifiable = make_entry(scores={"novelty": 80, "relevance": 80}, grounding_score=None)
+    assert c.is_curated(good, conf)
+    assert not c.is_curated(bad, conf)  # a bad quote drops it to review
+    assert c.is_curated(unverifiable, conf)  # unverifiable != ungrounded
+
+
+def test_is_curated_rejects_unscored_even_if_fresh():
+    """An unscored but recent entry must NOT be curated on newness alone."""
+    conf = c.load_config()
+    unscored = make_entry(published="2099-01-01", scores={})  # future -> high newness
+    unscored.pop("scores", None)
+    assert not c.is_scored(unscored)
+    assert not c.is_curated(unscored, conf)
+    assert "not yet scored" in c.review_reason(unscored, conf)
+
+
 def test_review_reason():
     conf = c.load_config()
     assert "needs_review" in c.review_reason(make_entry(needs_review=True), conf)
+    # scored but below the composite floor -> "floor" reason
     assert "floor" in c.review_reason(
-        make_entry(date="2020-01", scores={"novelty": 0, "relevance": 0}), conf
+        make_entry(date="2020-01", scores={"novelty": 5, "relevance": 5}), conf
     )
 
 

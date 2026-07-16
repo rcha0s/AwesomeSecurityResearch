@@ -10,7 +10,7 @@ _1 vetted findings · updated 2026-07-13 · ranked by composite · latest 31 day
 
 ## Harness & Agent Security
 
-- **[OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](harness-agent-security/2026-06-openclaw-s-clawhub-skill-marketplace-an-agentic-supply-chain.md)** · composite **62.5** · Jun 23, 2026  
+- **[OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](harness-agent-security/2026-06-openclaw-s-clawhub-skill-marketplace-an-agentic-supply-chain.md)** · composite **64.75** · Jun 23, 2026  
   Agent skill marketplaces are a critical, largely-untrusted link in the software supply chain — marketplace scanning alone does not make them safe.  
   _[Palo Alto Networks Unit 42](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/)_
 

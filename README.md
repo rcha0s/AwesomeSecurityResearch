@@ -1,43 +1,65 @@
 # Awesome Security & AI Research [![Awesome](https://cdn.jsdelivr.net/gh/sindresorhus/awesome@d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
-> An auto-updating, source-cited tracker of the most **teachable** security and AI research — scanned from X/Twitter, GitHub, YouTube, articles, and RSS, then extracted, scored, and turned into actionable takeaways, skills, and harness improvements.
+> An auto-updating, source-cited tracker of the most **teachable** security and AI research. It scans a ranked set of sources (X, GitHub, YouTube, blogs, newsletters, RSS), extracts the transferable lesson + a concrete action from each, curates hard, and files it into three rolling databases — **AI Security**, **Product Security**, and **AI Research** (practitioner).
 
-**Only the latest research:** every entry was published within the last ~31 days. Older findings age out to [`data/archive.json`](data/archive.json) automatically. Only **vetted** findings are shown; borderline ones wait in the [review queue](REVIEW.md).
+![Updated](https://img.shields.io/badge/updated-2026--07--13-blue) ![Vetted findings](https://img.shields.io/badge/vetted-5-success) ![Window](https://img.shields.io/badge/window-last_31_days-orange) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
 
-![Updated](https://img.shields.io/badge/updated-2026--07--13-blue) ![Vetted findings](https://img.shields.io/badge/vetted-5-success) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
+## 📸 This week's snapshot
 
-Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md), [📈 Trends](TRENDS.md), and [🔍 Review queue](REVIEW.md):
+> The top curated findings published in the last 7 days — each links to its writeup here **and** the original source. For the full digest see the [📰 newsletter](NEWSLETTER.md).
+
+- **[GigaWiper: modular destructive malware that fakes ransomware](product-security/malware-wipers/2026-07-gigawiper-modular-destructive-malware-that-fakes-ransomware.md)** · Product Security · Jul 9, 2026 · composite **65.75** · [source ↗](https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware/)  
+  Wiper malware is consolidating into modular platforms, and 'ransomware' may be undecryptable destruction in disguise — plan recovery accordingly.
+
+## 📚 The three databases
 
 - 🤖🛡️ **[AI Security](ai-security/README.md)** — 1 vetted findings. Securing AI systems: harness & agent security, MCP, skill scanning, prompt injection, memory poisoning, model supply chain, LLM red-teaming.
 - 🛡️ **[Product Security](product-security/README.md)** — 2 vetted findings. Securing products: application security, supply chain, cloud & infra, identity, mobile, plus red teaming and threat modeling (AI-assisted or not).
 - 🧠 **[AI Research](ai-research/README.md)** — 2 vetted findings. Practitioner AI: improving your harness, understanding, and architecture for using LLMs/agents on real tasks. Not model internals or ML-research.
-- 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.
 
-## 🔝 Top findings right now
-
-1. **[Phantom Squatting: attackers register the domains LLMs hallucinate](product-security/supply-chain/2026-07-phantom-squatting-attackers-register-the-domains-llms-halluc.md)** · Product Security · composite **76.9**  
-   LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
-1. **[Better Models, Worse Tools: SOTA models regress on non-native tool schemas](ai-research/tooling-infrastructure/2026-07-better-models-worse-tools-sota-models-regress-on-non-native.md)** · AI Research · composite **74.8**  
-   Newer ≠ better for YOUR tools: match your harness's tool schemas to what the target model was trained on.
-1. **[GigaWiper: modular destructive malware that fakes ransomware](product-security/malware-wipers/2026-07-gigawiper-modular-destructive-malware-that-fakes-ransomware.md)** · Product Security · composite **64.3**  
-   Wiper malware is consolidating into modular platforms, and 'ransomware' may be undecryptable destruction in disguise — plan recovery accordingly.
-1. **[OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](ai-security/harness-agent-security/2026-06-openclaw-s-clawhub-skill-marketplace-an-agentic-supply-chain.md)** · AI Security · composite **62.5**  
-   Agent skill marketplaces are a critical, largely-untrusted link in the software supply chain — marketplace scanning alone does not make them safe.
-1. **[Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor](ai-research/meta-harness/2026-06-omnigent-an-open-source-meta-harness-over-claude-code-codex.md)** · AI Research · composite **59.7**  
-   The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
+Also generated every run: [📰 Newsletter](NEWSLETTER.md) (daily snapshot) · [📈 Trends](TRENDS.md) (emerging themes) · [🔍 Review queue](REVIEW.md) (not-yet-vetted) · [📓 Learnings](LEARNINGS.md) (takeaways + generated skills).
 
 ## How it works
 
 ```
-X / GitHub / YouTube / articles / RSS  → ingest + Jina Reader (clean text)
-  → analyze (extract lessons · score newness/novelty/relevance · derive action)
-  → merge into the 3 topic pools → rerank → render + newsletter + trends
+X / GitHub / YouTube / LinkedIn / articles / RSS   (ranked source registry)
+  └─ ingest + Jina Reader (clean text)      → data/candidates.json
+     └─ analyze  (extract teachable lessons · score newness/novelty/relevance
+                  · derive an actionable takeaway/skill/harness idea)
+        └─ curate (vetted-only gate) → merge into the 3 topic pools → re-rank
+           └─ render  README · topic pages · newsletter · trends · review · skills
 ```
 
-Add a single resource: `python scripts/add.py <url>` (`/add-resource`). Add a source to track: `python scripts/add_source.py …` (`/add-source`). Batch-scan with `/research-scan` (self-paced via `/loop`).
+- **Latest only.** Findings older than ~31 days age out to [`data/archive.json`](data/archive.json); the *snapshot* above is the last 7 days.
+- **Vetted-only.** A finding is shown only if it isn't flagged for review and clears the composite floor; the rest wait in [REVIEW.md](REVIEW.md). Nothing is deleted.
+- **Ranked sources.** Approved sources live in a registry and self-rank by how often they yield *curated* findings (tier + reach + hit-rate).
+- **Emerging trends.** Tagged findings are clustered over time to surface waves early ([TRENDS.md](TRENDS.md)).
+
+## How to use this repo
+
+| I want to… | Do this |
+| --- | --- |
+| Read the latest, curated | Skim the snapshot above → open a topic database or [the newsletter](NEWSLETTER.md) |
+| Track a new source | `python scripts/add_source.py <type> <handle> --topics …` (or the `/add-source` skill) — X user, blog, newsletter, GitHub user/query, YouTube |
+| Capture one article now | `python scripts/add.py <url>` then the `/add-resource` skill — returns summary + takeaway + action and files it |
+| Run a full scan | the `/research-scan` skill (self-pace with `/loop 12h /research-scan`) |
+| Regenerate the site | `rerank.py` → `generate_site.py` → `trends.py` → `generate_newsletter.py` → `generate_review.py` → `generate_skills.py` |
+
+**Setup** (Agent Reach + burner X account in WSL2, one-time): see [PUBLISH.md](PUBLISH.md). **Contributing / how findings are structured:** [CONTRIBUTING.md](CONTRIBUTING.md). **Automation & dev workflow:** [AGENTS.md](AGENTS.md).
+
+## Repo layout
+
+```
+data/{ai-security,product-security,ai-research}.json  the 3 rolling pools (source of truth)
+data/archive.json · data/sources.json                 aged-out findings · ranked sources
+scripts/                                               ingest · analyze-merge · rank · render
+.claude/skills/                                        /research-scan /add-resource /add-source
+ai-security/ product-security/ ai-research/            rendered per-topic pages (generated)
+README.md NEWSLETTER.md TRENDS.md REVIEW.md LEARNINGS.md   generated — do not hand-edit
+```
 
 ## License
 
-Curated content under [CC BY 4.0](LICENSE); scripts under MIT. Linked research remains the property of its original authors — every finding cites its source.
+Curated content under [CC BY 4.0](LICENSE); scripts under MIT. Linked research remains the property of its original authors — every finding cites its original source.
 
 <sub>Generated by <code>scripts/generate_site.py</code> on 2026-07-13. Edit the pools in <code>data/</code> and regenerate — do not hand-edit rendered files.</sub>

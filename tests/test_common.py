@@ -85,6 +85,17 @@ def test_composite_score_weights():
     assert c.composite_score(scores, {"newness": 0.3, "novelty": 0.35, "relevance": 0.35}) == 30.0
 
 
+def test_composite_includes_credibility():
+    w = {"newness": 0.25, "novelty": 0.3, "relevance": 0.3, "credibility": 0.15}
+    assert c.composite_score({"credibility": 100}, w) == 15.0
+    assert c.composite_score({"credibility": 0}, w) == 0.0
+
+
+def test_credibility_of_from_source_rank():
+    assert c.credibility_of({"source_rank": 80}) == 80.0
+    assert c.credibility_of({}) == 50.0  # unknown source -> neutral default
+
+
 def test_validate_entry_ok_and_errors():
     assert c.validate_entry(make_entry()) == []
     assert any("missing" in e for e in c.validate_entry({"topic": "ai-research"}))

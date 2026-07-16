@@ -22,12 +22,7 @@ TOP_TRENDS = 3  # emerging themes shown per topic
 
 
 def composite_of(entry: dict, conf: c.Config) -> float:
-    scores = entry.get("scores") or {}
-    if "composite" in scores:
-        return float(scores["composite"])
-    live = dict(scores)
-    live["newness"] = c.newness_score(c.best_date(entry) or "", conf.half_life_days)
-    return c.composite_score(live, conf.weights)
+    return c.entry_composite(entry, conf)  # shared: includes newness + credibility
 
 
 def research_block(entry: dict, conf: c.Config) -> list[str]:
@@ -77,12 +72,13 @@ def build(conf: c.Config, now: str) -> str:
     all_trends = c.load_json(c.DATA_DIR / "trends.json", default={}) or {}
     total = sum(len(c.load_pool(t)["entries"]) for t in c.TOPICS)
     out = [
-        "# 📰 Security & AI Research — Latest Issue",
+        f"# 📰 Security & AI Research — Daily Snapshot ({now})",
         "",
-        f"> The most teachable security and AI research from the last {conf.max_age_days} days, "
-        "curated and source-cited. Three tracks: AI Security, Product Security, AI Research.",
+        f"> A daily-refreshed digest of the most teachable, **vetted** security and AI research "
+        f"from the last {conf.max_age_days} days, curated and source-cited. Three tracks: "
+        "AI Security, Product Security, AI Research.",
         "",
-        f"**Issue {now}** · {total} findings this window · "
+        f"{total} vetted findings in window · [← home](README.md) · "
         "[full trends](TRENDS.md) · [all learnings](LEARNINGS.md)",
         "",
         "---",

@@ -147,12 +147,13 @@ class Config:
     limits: dict[str, int]
     curation: dict[str, float]
     max_age_days: int
+    snapshot_days: int
 
 
 def load_config(path: Path = CONFIG_FILE) -> Config:
     raw = load_yaml(path)
     weights = raw["weights"]
-    total = sum(weights.get(k, 0) for k in ("newness", "novelty", "relevance"))
+    total = sum(weights.get(k, 0) for k in ("newness", "novelty", "relevance", "credibility"))
     if abs(total - 1.0) > 0.001:
         raise ValueError(f"config weights must sum to 1.0 (got {total})")
     return Config(
@@ -163,6 +164,7 @@ def load_config(path: Path = CONFIG_FILE) -> Config:
         limits=raw.get("limits", {}),
         curation=raw.get("curation", {}),
         max_age_days=int(raw.get("max_age_days", 31)),
+        snapshot_days=int(raw.get("snapshot_days", 7)),
     )
 
 
@@ -250,6 +252,47 @@ def clean_summary(raw: str, limit: int = 320) -> str:
     if len(text) > limit:
         text = text[:limit].rsplit(" ", 1)[0] + "…"
     return text
+
+
+# Fold typographic unicode so a verbatim quote isn't rejected over a dash/curly quote.
+_PUNCT_FOLD = str.maketrans(
+    {
+        "–": "-",
+        "—": "-",
+        "−": "-",  # en/em dash, minus
+        "‘": "'",
+        "’": "'",
+        "‚": "'",
+        "′": "'",  # curly singles / prime
+        "“": '"',
+        "”": '"',
+        "„": '"',
+        "″": '"',  # curly doubles
+        " ": " ",
+        "​": "",
+        " ": " ",  # nbsp, zero/thin spaces
+    }
+)
+
+
+def normalize_text(s: str) -> str:
+    """Lowercase, fold typographic punctuation, and collapse whitespace — so a
+    verbatim quote grounds even if the source uses en-dashes or curly quotes."""
+    s = (s or "").translate(_PUNCT_FOLD).replace("…", "...")
+    return re.sub(r"\s+", " ", s.lower()).strip()
+
+
+def is_grounded(excerpt: str, source_text: str, threshold: float = 0.85) -> bool:
+    """True if `excerpt` genuinely appears in `source_text` — verbatim after
+    normalization, or a near-verbatim longest-common-substring (tolerates minor
+    punctuation/whitespace). A paraphrased or invented 'quote' fails this."""
+    ne, ns = normalize_text(excerpt), normalize_text(source_text)
+    if not ne or not ns:
+        return False
+    if ne in ns:
+        return True
+    match = SequenceMatcher(None, ne, ns).find_longest_match(0, len(ne), 0, len(ns))
+    return match.size >= threshold * len(ne)
 
 
 def title_similar(a: str, b: str, threshold: float = 0.87) -> bool:
@@ -356,39 +399,67 @@ def newness_score(date: str, half_life_days: float, now: datetime | None = None)
     return round(100 * math.exp(-age_days / max(1.0, half_life_days)))
 
 
+COMPOSITE_AXES = ("newness", "novelty", "relevance", "credibility")
+
+
 def composite_score(scores: dict, weights: dict[str, float]) -> float:
-    total = sum(
-        weights.get(axis, 0.0) * float(scores.get(axis, 0) or 0)
-        for axis in ("newness", "novelty", "relevance")
-    )
+    total = sum(weights.get(axis, 0.0) * float(scores.get(axis, 0) or 0) for axis in COMPOSITE_AXES)
     return round(total, 2)
 
 
+def credibility_of(entry: dict, default: float = 50.0) -> float:
+    """A finding's source authority (0-100) = its source registry rank; a neutral
+    default when the source is unknown (manual add / legacy)."""
+    rank = entry.get("source_rank")
+    return float(rank) if rank is not None else default
+
+
 def entry_composite(entry: dict, conf: Config) -> float:
-    """An entry's composite, recomputing decayed newness if it's missing."""
+    """An entry's composite, recomputing decayed newness + credibility if missing."""
     scores = dict(entry.get("scores") or {})
     if "composite" in scores:
         return float(scores["composite"])
     scores["newness"] = newness_score(best_date(entry) or "", conf.half_life_days)
+    scores.setdefault("credibility", credibility_of(entry))
     return composite_score(scores, conf.weights)
+
+
+def is_scored(entry: dict) -> bool:
+    """True if the entry was actually analyzed (has a novelty or relevance score).
+    An unscored entry must never reach the curated view on recency (newness) alone."""
+    scores = entry.get("scores") or {}
+    return bool(float(scores.get("novelty", 0) or 0) or float(scores.get("relevance", 0) or 0))
 
 
 def is_curated(entry: dict, conf: Config) -> bool:
     """True if the finding belongs in the public curated view (topic pages +
-    newsletter). Everything else — flagged needs_review OR below the composite
-    floor — is held in the REVIEW.md queue (still in the pool, just not shown)."""
-    if entry.get("needs_review"):
+    newsletter). Everything else — flagged needs_review, unscored, ungrounded, OR
+    below the composite floor — is held in the REVIEW.md queue (still in the pool)."""
+    if entry.get("needs_review") or not is_scored(entry):
         return False
+    if conf.curation.get("require_verification", True) and entry.get("verified") is False:
+        return False  # the independent verifier refuted it
+    if conf.curation.get("require_grounding", True):
+        gs = entry.get("grounding_score")
+        if gs is not None and gs < 1.0:  # verified a source and found a bad quote
+            return False
     return entry_composite(entry, conf) >= conf.curation.get("min_composite", 0)
 
 
 def review_reason(entry: dict, conf: Config) -> str:
     """Why an entry is in the review queue (for REVIEW.md)."""
+    if entry.get("verified") is False:
+        note = entry.get("verify_note") or "the independent verifier refuted a claim/score"
+        return f"failed independent verification — {note}"
+    gs = entry.get("grounding_score")
+    if gs is not None and gs < 1.0:
+        return f"ungrounded excerpt — only {int(gs * 100)}% of quotes verified against the source"
     if entry.get("needs_review"):
         return "flagged needs_review (low confidence / novelty / relevance)"
-    return (
-        f"composite {entry_composite(entry, conf)} < floor {conf.curation.get('min_composite', 0)}"
-    )
+    if not is_scored(entry):
+        return "not yet scored (no novelty/relevance — needs analysis)"
+    floor = conf.curation.get("min_composite", 0)
+    return f"composite {entry_composite(entry, conf)} < floor {floor}"
 
 
 # --- Schema validation -----------------------------------------------------

@@ -38,8 +38,9 @@ def test_generate_site_builds_trees_and_pages(sandbox):
     ai_pages = list((sandbox / "ai-research" / c.domain_slug("Agents & Harnesses")).glob("*.md"))
     sec_pages = list((sandbox / "ai-security" / c.domain_slug("Injection")).glob("*.md"))
     assert ai_pages and sec_pages
-    landing = (sandbox / "README.md").read_text(encoding="utf-8")
-    assert "Top findings" in landing
+    readme = (sandbox / "README.md").read_text(encoding="utf-8")
+    assert "This week's snapshot" in readme
+    assert "How to use this repo" in readme  # robust docs README
 
 
 def test_legacy_entry_renders_without_scores(sandbox):
@@ -62,3 +63,13 @@ def test_entry_scores_tolerant_of_missing():
     conf = c.load_config()
     s = g.entry_scores({"date": "2026-07"}, conf)
     assert {"newness", "novelty", "relevance", "composite"} <= s.keys()
+
+
+def test_week_snapshot_only_recent(sandbox):
+    conf = c.load_config()
+    in_week = make_entry(title="recent-item", source_url="https://a/r", published="2099-01-05")
+    ancient = make_entry(title="ancient-item", source_url="https://a/o", published="2000-01-01")
+    lines = "\n".join(g._week_snapshot([in_week, ancient], conf))
+    assert "This week's snapshot" in lines
+    assert "recent-item" in lines and "source ↗" in lines  # links to the source article
+    assert "ancient-item" not in lines  # outside the snapshot window

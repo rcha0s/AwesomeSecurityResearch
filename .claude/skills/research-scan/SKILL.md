@@ -53,23 +53,37 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
      harness | tool | other. Choose whatever genuinely fits: a reusable **skill** (set a
      kebab `skill_slug`), a **harness** improvement, a **tool** idea, or just a
      **takeaway**. `detail` should be concrete enough to act on.
-   - **scores** — `{novelty, relevance}` each 0-100 (newness is computed deterministically):
-     - **novelty**: how new the *idea* is vs. what is already in the pools. Skim the
-       existing titles/summaries in `data/security.json` + `data/ai.json` first; near-
-       duplicates score low.
-     - **relevance**: usefulness to the track's audience — Security = a defender/researcher;
-       AI = an agent/harness builder. Directly-applicable, generalizable findings score high.
+   - **scores** — `{novelty, relevance}` each 0-100 (newness + credibility are computed):
+     - **novelty is a claim-level "delta vs prior art", NOT text similarity.** First state the
+       finding's core *claim* (the specific technique/mechanism/result/implementation). Then
+       skim the existing entries in `data/{ai-security,product-security,ai-research}.json` +
+       recent `data/archive.json` for the nearest ones, and judge how much is genuinely new
+       versus known prior work. Can't name an equivalent → high; a variation of something known
+       → mid; a restatement/duplicate → low. Put the closest prior work in a `prior_art` field.
+     - **relevance**: usefulness to the topic's audience (AI Security = a defender; Product
+       Security = an appsec/red-team engineer; AI Research = a harness/agent builder).
    - Security findings may also include `threat`/`conditions`/`mitigations`.
 
-4. **Emit** `data/analysis_out.json` — a JSON list of the analyzed entries (each a full
-   schema-v2 entry: at minimum `track, domain, subtype, title, source_url`, plus the fields
-   above; carry over `article_url, tweet_url, author, date, published, discovered_via,
-   source_id, source_rank, source_topics` from the candidate). Carrying `source_id` is what
-   lets `merge_analysis.py` credit the source's hit-rate when your finding is curated.
+4. **Independent verification (adversarial second pass).** For each shortlisted finding, spawn a
+   FRESH subagent (the Task tool) given ONLY the raw source text + the extracted claims — do NOT
+   give it your scores. Prompt it to **refute**: (a) is every lesson actually supported by the
+   source? (b) independently re-judge novelty as claim-level delta-vs-prior-art (name the closest
+   prior work). (c) re-judge relevance. Then reconcile:
+   - if the verifier refutes a claim, or its novelty is much lower than yours (disagreement),
+     set `verified: false` and a short `verify_note` — the merge gate sends it to REVIEW.md;
+   - otherwise set `verified: true`, take the **lower** of the two novelty scores, and record
+     `prior_art`. This makes the score an independent judgment, not a self-grade.
 
-5. **Merge + rerank + render:**
+5. **Emit** `data/analysis_out.json` — a JSON list of analyzed entries (each: at minimum
+   `topic, domain, title, source_url`, plus the fields above incl. `verified`, `prior_art`;
+   carry over `article_url, tweet_url, author, date, published, raw_path, discovered_via,
+   source_id, source_rank, source_topics` from the candidate). `source_id` lets
+   `merge_analysis.py` credit the source's hit-rate; `raw_path` lets it ground the excerpts.
+
+6. **Merge + rerank + render:**
    ```bash
-   python scripts/merge_analysis.py       # validate, dedup, route by topic, flag, rerank
+   python scripts/merge_analysis.py       # validate, dedup, route by topic, GROUND excerpts, flag, rerank
+   python scripts/verify_citations.py     # re-verify every lesson excerpt vs its source (persist grounding)
    python scripts/generate_site.py        # README.md + ai-security/ product-security/ ai-research/
    python scripts/trends.py               # data/trends.json + TRENDS.md (emerging themes)
    python scripts/generate_newsletter.py  # NEWSLETTER.md (rolling, 3 topic sections)
@@ -79,10 +93,10 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
    Only **vetted** findings (not `needs_review`, composite ≥ `curation.min_composite`) appear on
    the topic pages/newsletter; borderline ones land in `REVIEW.md` for a human to promote.
 
-6. **Commit (direct-PR mode).** Create a branch, commit the regenerated pools + site
+7. **Commit (direct-PR mode).** Create a branch, commit the regenerated pools + site
    (never commit `data/candidates.json`, `data/_raw/`, `data/analysis_out.json`, or
    cookies), and open a PR. Then print a **run summary**: candidates ingested, entries
-   merged per track, how many flagged needs_review, and the top movers by composite.
+   merged per topic, how many flagged needs_review, and the top movers by composite.
 
 ## Backfill mode
 

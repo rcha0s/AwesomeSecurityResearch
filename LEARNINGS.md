@@ -4,31 +4,31 @@
 
 ## 📈 Ranked findings
 
-### Phantom Squatting: attackers register the domains LLMs hallucinate · `76.9`
+### Phantom Squatting: attackers register the domains LLMs hallucinate · `72.8`
 - **Topic:** product-security / Supply Chain
 - **Takeaway:** LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
 - **Action (tool):** Enumerate & monitor your brand's hallucinated domains — Query LLMs for your brand's URLs/packages at scale, then pre-register or block-list the hallucinated ones and monitor for adversary registration.
 - **Source:** [Palo Alto Networks Unit 42](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/)
 
-### Better Models, Worse Tools: SOTA models regress on non-native tool schemas · `74.8`
+### Better Models, Worse Tools: SOTA models regress on non-native tool schemas · `71.75`
 - **Topic:** ai-research / Tooling & Infrastructure
 - **Takeaway:** Newer ≠ better for YOUR tools: match your harness's tool schemas to what the target model was trained on.
 - **Action (harness):** Offer model-matched edit tools — In a multi-model harness, provide the edit-tool format each model was trained on (Claude str-replace, OpenAI apply_patch) instead of one custom schema, and validate/repair malformed tool calls.
 - **Source:** [Simon Willison's Weblog](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything)
 
-### GigaWiper: modular destructive malware that fakes ransomware · `64.3`
+### GigaWiper: modular destructive malware that fakes ransomware · `65.75`
 - **Topic:** product-security / Malware & Wipers
 - **Takeaway:** Wiper malware is consolidating into modular platforms, and 'ransomware' may be undecryptable destruction in disguise — plan recovery accordingly.
 - **Action (takeaway):** Assume fake-ransomware; harden recovery — Treat ransomware incidents as potentially unrecoverable: prioritize offline/immutable backups and rapid detection of raw disk writes / partition-metadata tampering.
 - **Source:** [Microsoft Security Blog](https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware/)
 
-### OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface · `62.5`
+### OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface · `64.75`
 - **Topic:** ai-security / Harness & Agent Security
 - **Takeaway:** Agent skill marketplaces are a critical, largely-untrusted link in the software supply chain — marketplace scanning alone does not make them safe.
 - **Action (harness):** Vet and sandbox agent skills — Pin and review third-party agent skills from trusted publishers, sandbox their execution with least-privilege, and don't rely on marketplace scanning — add your own allow-list + runtime policy.
 - **Source:** [Palo Alto Networks Unit 42](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/)
 
-### Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor · `59.7`
+### Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor · `58.6`
 - **Topic:** ai-research / Meta-Harness
 - **Takeaway:** The 'meta-harness' is emerging as an abstraction layer above individual coding agents — orchestrate many, swap freely, enforce policy centrally.
 - **Action (harness):** Consider a meta-harness for multi-agent work — Evaluate an orchestration layer (like Omnigent) when running multiple coding agents, so policy/sandboxing/routing live in one place instead of per-agent.

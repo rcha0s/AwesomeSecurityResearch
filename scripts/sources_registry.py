@@ -95,6 +95,7 @@ def new_source(
     tier: str = "medium",
     signals: dict | None = None,
     notes: str | None = None,
+    strict: bool = False,
 ) -> dict:
     if stype not in SOURCE_TYPES:
         raise ValueError(f"unknown source type: {stype} (want one of {SOURCE_TYPES})")
@@ -107,6 +108,8 @@ def new_source(
         "topics": topics or [],
         # Legacy classifier domains (for aggregate.py's single-domain fallback).
         "domains": domains or [],
+        # High-volume feed: only stage items that keyword-match a topic (no fallback).
+        "strict": strict,
         "tier": (tier or "medium").lower(),
         "signals": signals or {},
         "stats": {"ingested": 0, "curated": 0},

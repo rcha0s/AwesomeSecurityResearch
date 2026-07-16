@@ -50,8 +50,10 @@ def run_gh(args: list[str], timeout: int = 60) -> str | None:
     return proc.stdout
 
 
-def search_repos(query: str, limit: int, created_after: str) -> list[dict]:
-    full_query = f"{query} created:>{created_after}"
+def search_repos(query: str, limit: int, active_after: str) -> list[dict]:
+    # `pushed:` (recently active) not `created:` — notable repos trend well after
+    # creation and rarely hit the star floor within a month of being created.
+    full_query = f"{query} pushed:>{active_after}"
     out = run_gh(
         [
             "search",
@@ -91,7 +93,9 @@ def repo_to_candidate(repo: dict, source: dict, fetch: bool, max_chars: int) -> 
     url = repo.get("url", "")
     stars = repo.get("stargazersCount", 0)
     desc = repo.get("description") or ""
-    created = repo.get("createdAt", "")
+    # Use the last-push date as the finding date (aligns with the pushed: search
+    # and the freshness window); fall back to creation.
+    active = repo.get("updatedAt") or repo.get("createdAt", "")
     cand_id = c.make_id(full_name, c.normalize_url(url))
     domains = source.get("domains") or []
     raw_path = None
@@ -109,8 +113,8 @@ def repo_to_candidate(repo: dict, source: dict, fetch: bool, max_chars: int) -> 
         "article_url": url,
         "tweet_url": None,
         "author": full_name.split("/")[0] if "/" in full_name else None,
-        "published": created[:10] if len(created) >= 10 else None,
-        "date": created[:7] if len(created) >= 7 else None,
+        "published": active[:10] if len(active) >= 10 else None,
+        "date": active[:7] if len(active) >= 7 else None,
         "excerpt": c.clean_summary(f"{desc} ({stars} stars)", 320),
         "raw_path": raw_path,
         "stars": stars,
@@ -142,13 +146,13 @@ def collect(cfg: dict, per_query: int | None, fetch: bool) -> list[dict]:
     limit = per_query or gh_cfg.get("per_query", 8)
     max_chars = conf.limits.get("article_chars", 20000)
     cutoff = datetime.now(UTC) - timedelta(days=conf.max_age_days)
-    created_after = cutoff.strftime("%Y-%m-%d")
+    active_after = cutoff.strftime("%Y-%m-%d")
 
     out: list[dict] = []
     for source in sources:
         query = query_for_source(source)
-        print(f"-> gh search: {query} (>= {min_stars} stars, created > {created_after})")
-        for repo in search_repos(query, limit, created_after):
+        print(f"-> gh search: {query} (>= {min_stars} stars, pushed > {active_after})")
+        for repo in search_repos(query, limit, active_after):
             if repo.get("stargazersCount", 0) < min_stars:
                 continue
             out.append(repo_to_candidate(repo, source, fetch, max_chars))

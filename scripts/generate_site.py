@@ -54,6 +54,7 @@ def entry_scores(entry: dict, conf: c.Config) -> dict:
         scores["newness"] = c.newness_score(entry.get("date") or "", conf.half_life_days)
     scores.setdefault("novelty", 0)
     scores.setdefault("relevance", 0)
+    scores.setdefault("credibility", c.credibility_of(entry))
     if "composite" not in scores:
         scores["composite"] = c.composite_score(scores, conf.weights)
     return scores
@@ -81,7 +82,8 @@ def entry_relpath(entry: dict) -> str:
 def score_line(scores: dict) -> str:
     return (
         f"**Scores:** 🆕 Newness {scores['newness']} · ✨ Novelty {scores['novelty']} · "
-        f"🎯 Relevance {scores['relevance']} · **Composite {scores['composite']}**"
+        f"🎯 Relevance {scores['relevance']} · 🏛️ Credibility {round(scores.get('credibility', 50))} · "
+        f"**Composite {scores['composite']}**"
     )
 
 
@@ -101,8 +103,7 @@ def render_actionable(entry: dict) -> list[str]:
     return out
 
 
-def render_entry_page(entry: dict, conf: c.Config) -> str:
-    scores = entry_scores(entry, conf)
+def _entry_meta(entry: dict, scores: dict) -> list[str]:
     src = entry.get("source_url", "")
     topic_name = c.TOPICS.get(entry.get("topic", ""), {}).get("name", entry.get("topic", ""))
     meta = [
@@ -117,35 +118,68 @@ def render_entry_page(entry: dict, conf: c.Config) -> str:
     ]
     if entry.get("tags"):
         meta.append("**Tags:** " + ", ".join(f"`{t}`" for t in entry["tags"]))
+    verified = entry.get("verified")
+    if verified is True:
+        line = "**Verification:** ✓ independently verified"
+        if entry.get("prior_art"):
+            line += f" · closest prior art: {entry['prior_art']}"
+        meta.append(line)
+    elif verified is False:
+        meta.append("> ⚠️ _Failed independent verification._")
     if entry.get("needs_review"):
         meta.append("> ⚠️ _Pending review — auto-analyzed, not yet human-verified._")
+    return meta
 
-    out = [f"# {entry.get('title','Untitled')}", "", "  \n".join(meta), ""]
+
+def _grounding_mark(les: dict) -> str:
+    grounded = les.get("grounded")
+    if grounded is True:
+        return " ✅"
+    if grounded is False:
+        return " ⚠️ _(excerpt not found in source)_"
+    return ""
+
+
+def _entry_lessons_md(entry: dict) -> list[str]:
+    lessons = entry.get("lessons") or []
+    if not lessons:
+        return []
+    out = ["## What to learn", ""]
+    for les in lessons:
+        if isinstance(les, dict):
+            line = f"- {les.get('point','')}"
+            if les.get("excerpt"):
+                line += f' — _"{les["excerpt"]}"_{_grounding_mark(les)}'
+            out.append(line)
+        else:
+            out.append(f"- {les}")
+    return out + [""]
+
+
+def _entry_tcm_md(entry: dict) -> list[str]:
+    if not any(entry.get(k) for k in ("threat", "conditions", "mitigations")):
+        return []
+    out = ["## Threat · Conditions · Mitigations", ""]
+    for label in ("threat", "conditions", "mitigations"):
+        if entry.get(label):
+            out.append(f"- **{label.title()} —** {entry[label].strip()}")
+    return out + [""]
+
+
+def render_entry_page(entry: dict, conf: c.Config) -> str:
+    src = entry.get("source_url", "")
+    out = [
+        f"# {entry.get('title','Untitled')}",
+        "",
+        "  \n".join(_entry_meta(entry, entry_scores(entry, conf))),
+        "",
+    ]
     if entry.get("takeaway"):
         out += [f"> **Takeaway —** {entry['takeaway']}", ""]
     if entry.get("summary"):
         out += ["## Summary", "", entry["summary"].strip(), ""]
-
-    lessons = entry.get("lessons") or []
-    if lessons:
-        out += ["## What to learn", ""]
-        for les in lessons:
-            if isinstance(les, dict):
-                line = f"- {les.get('point','')}"
-                if les.get("excerpt"):
-                    line += f' — _"{les["excerpt"]}"_'
-                out.append(line)
-            else:
-                out.append(f"- {les}")
-        out.append("")
-
-    if any(entry.get(k) for k in ("threat", "conditions", "mitigations")):
-        out += ["## Threat · Conditions · Mitigations", ""]
-        for label in ("threat", "conditions", "mitigations"):
-            if entry.get(label):
-                out.append(f"- **{label.title()} —** {entry[label].strip()}")
-        out.append("")
-
+    out += _entry_lessons_md(entry)
+    out += _entry_tcm_md(entry)
     out += render_actionable(entry)
     out += ["---", "", f"_Source: [{src}]({src})_  ·  [← back to index](../README.md)", ""]
     return "\n".join(out)
@@ -163,18 +197,8 @@ def render_index_block(entry: dict, conf: c.Config) -> str:
     )
 
 
-def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
-    base = c.ROOT / topic
-    all_entries = c.load_pool(topic)["entries"]
-    # Only VETTED findings are shown; the rest live in the REVIEW.md queue.
-    curated = [e for e in all_entries if c.is_curated(e, conf)]
-    held = len(all_entries) - len(curated)
-    by_domain: dict[str, list[dict]] = defaultdict(list)
-    for e in curated:
-        by_domain[e.get("domain") or "General"].append(e)
-
-    # Clear stale per-domain dirs, then write a page per curated entry.
-    if base.exists():
+def _write_entry_pages(base: c.Path, by_domain: dict[str, list[dict]], conf: c.Config) -> None:
+    if base.exists():  # clear stale per-domain pages first
         for old in base.glob("*/*.md"):
             old.unlink()
     for domain, items in by_domain.items():
@@ -183,6 +207,8 @@ def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
         for e in items:
             (dpath / entry_filename(e)).write_text(render_entry_page(e, conf), encoding="utf-8")
 
+
+def _topic_index_md(topic: str, by_domain: dict, curated: list, held: int, conf, now) -> str:
     meta = c.TOPICS[topic]
     held_note = f" · [{held} held for review](../REVIEW.md)" if held else ""
     out = [
@@ -196,61 +222,151 @@ def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
         "| Domain | Findings |",
         "| --- | --- |",
     ]
-    for domain in sorted(by_domain, key=lambda d: -len(by_domain[d])):
-        out.append(f"| {domain} | {len(by_domain[domain])} |")
-    out.append("")
-    for domain in sorted(by_domain, key=lambda d: -len(by_domain[d])):
-        items = rank(by_domain[domain], conf)
-        out += [f"## {domain}", ""]
-        out += [render_index_block(e, conf) for e in items]
-        out.append("")
+    order = sorted(by_domain, key=lambda d: -len(by_domain[d]))
+    out += [f"| {d} | {len(by_domain[d])} |" for d in order] + [""]
+    for domain in order:
+        out += (
+            [f"## {domain}", ""]
+            + [render_index_block(e, conf) for e in rank(by_domain[domain], conf)]
+            + [""]
+        )
     out += [
         "---",
         "",
-        "[← Home](../README.md) · [Newsletter](../NEWSLETTER.md) · "
-        "[Trends](../TRENDS.md) · [Review queue](../REVIEW.md) · [Learnings](../LEARNINGS.md)",
+        "[← Home](../README.md) · [Newsletter](../NEWSLETTER.md) · [Trends](../TRENDS.md) · "
+        "[Review queue](../REVIEW.md) · [Learnings](../LEARNINGS.md)",
         "",
     ]
+    return "\n".join(out)
+
+
+def write_topic(topic: str, conf: c.Config, now: str) -> list[dict]:
+    base = c.ROOT / topic
+    all_entries = c.load_pool(topic)["entries"]
+    # Only VETTED findings are shown; the rest live in the REVIEW.md queue.
+    curated = [e for e in all_entries if c.is_curated(e, conf)]
+    by_domain: dict[str, list[dict]] = defaultdict(list)
+    for e in curated:
+        by_domain[e.get("domain") or "General"].append(e)
+    _write_entry_pages(base, by_domain, conf)
     base.mkdir(parents=True, exist_ok=True)
-    (base / "README.md").write_text("\n".join(out), encoding="utf-8")
+    md = _topic_index_md(topic, by_domain, curated, len(all_entries) - len(curated), conf, now)
+    (base / "README.md").write_text(md, encoding="utf-8")
     return curated
 
 
 TOPIC_EMOJI = {"ai-security": "🤖🛡️", "product-security": "🛡️", "ai-research": "🧠"}
 
 
-def _landing_topic_lines(counts: dict[str, int]) -> list[str]:
-    lines = [
-        "Three rolling knowledge bases — plus a [📰 Newsletter](NEWSLETTER.md), "
-        "[📈 Trends](TRENDS.md), and [🔍 Review queue](REVIEW.md):",
+def _week_snapshot(curated_entries: list[dict], conf: c.Config) -> list[str]:
+    """This week's snapshot: curated findings published in the last snapshot_days,
+    each linking to both its writeup page and the original source article."""
+    fresh = [e for e in curated_entries if c.is_fresh(e, conf.snapshot_days)]
+    ranked = rank(fresh, conf)[:TOP_N_LANDING]
+    out = [
+        "## 📸 This week's snapshot",
+        "",
+        f"> The top curated findings published in the last {conf.snapshot_days} days — each links "
+        "to its writeup here **and** the original source. For the full digest see the "
+        "[📰 newsletter](NEWSLETTER.md).",
         "",
     ]
-    for t, meta in c.TOPICS.items():
-        lines.append(
-            f"- {TOPIC_EMOJI.get(t, '•')} **[{meta['name']}]({t}/README.md)** "
-            f"— {counts[t]} vetted findings. {meta['blurb']}"
-        )
-    lines.append("- 📓 **[Learnings digest](LEARNINGS.md)** — ranked takeaways + generated skills.")
-    return lines + [""]
-
-
-def _landing_top_findings(ranked: list[dict], conf: c.Config) -> list[str]:
-    out = ["## 🔝 Top findings right now", ""]
     if not ranked:
-        return out + ["_Run the `/research-scan` skill to populate the pools._"]
+        return out + [
+            "_No new curated findings this week. Browse the databases below or the "
+            "[latest newsletter](NEWSLETTER.md)._",
+            "",
+        ]
     for e in ranked:
         s = entry_scores(e, conf)
         take = e.get("takeaway") or e.get("summary") or e.get("threat") or ""
         tname = c.TOPICS.get(e.get("topic", ""), {}).get("name", e.get("topic", ""))
         out.append(
-            f"1. **[{e.get('title','')}]({e['topic']}/{entry_relpath(e)})** "
-            f"· {tname} · composite **{s['composite']}**  \n   {c.clean_summary(take, 180)}"
+            f"- **[{e.get('title','')}]({e['topic']}/{entry_relpath(e)})** · {tname} · "
+            f"{fmt_published(e)} · composite **{s['composite']}** · "
+            f"[source ↗]({e.get('source_url','')})  \n  {c.clean_summary(take, 180)}"
         )
-    return out
+    return out + [""]
 
 
-def render_landing(curated_entries: list[dict], conf: c.Config, now: str) -> str:
-    ranked = rank(curated_entries, conf)[:TOP_N_LANDING]
+def _databases_index(counts: dict[str, int]) -> list[str]:
+    lines = ["## 📚 The three databases", ""]
+    for t, meta in c.TOPICS.items():
+        lines.append(
+            f"- {TOPIC_EMOJI.get(t, '•')} **[{meta['name']}]({t}/README.md)** "
+            f"— {counts[t]} vetted findings. {meta['blurb']}"
+        )
+    lines += [
+        "",
+        "Also generated every run: [📰 Newsletter](NEWSLETTER.md) (daily snapshot) · "
+        "[📈 Trends](TRENDS.md) (emerging themes) · [🔍 Review queue](REVIEW.md) "
+        "(not-yet-vetted) · [📓 Learnings](LEARNINGS.md) (takeaways + generated skills).",
+        "",
+    ]
+    return lines
+
+
+def _how_it_works(conf: c.Config) -> list[str]:
+    return [
+        "## How it works",
+        "",
+        "```",
+        "X / GitHub / YouTube / LinkedIn / articles / RSS   (ranked source registry)",
+        "  └─ ingest + Jina Reader (clean text)      → data/candidates.json",
+        "     └─ analyze  (extract teachable lessons · score newness/novelty/relevance",
+        "                  · derive an actionable takeaway/skill/harness idea)",
+        "        └─ curate (vetted-only gate) → merge into the 3 topic pools → re-rank",
+        "           └─ render  README · topic pages · newsletter · trends · review · skills",
+        "```",
+        "",
+        f"- **Latest only.** Findings older than ~{conf.max_age_days} days age out to "
+        "[`data/archive.json`](data/archive.json); the *snapshot* above is the last "
+        f"{conf.snapshot_days} days.",
+        "- **Vetted-only.** A finding is shown only if it isn't flagged for review and clears the "
+        "composite floor; the rest wait in [REVIEW.md](REVIEW.md). Nothing is deleted.",
+        "- **Ranked sources.** Approved sources live in a registry and self-rank by how often they "
+        "yield *curated* findings (tier + reach + hit-rate).",
+        "- **Emerging trends.** Tagged findings are clustered over time to surface waves early "
+        "([TRENDS.md](TRENDS.md)).",
+        "",
+    ]
+
+
+def _how_to_use() -> list[str]:
+    return [
+        "## How to use this repo",
+        "",
+        "| I want to… | Do this |",
+        "| --- | --- |",
+        "| Read the latest, curated | Skim the snapshot above → open a topic database or "
+        "[the newsletter](NEWSLETTER.md) |",
+        "| Track a new source | `python scripts/add_source.py <type> <handle> --topics …` "
+        "(or the `/add-source` skill) — X user, blog, newsletter, GitHub user/query, YouTube |",
+        "| Capture one article now | `python scripts/add.py <url>` then the `/add-resource` skill "
+        "— returns summary + takeaway + action and files it |",
+        "| Run a full scan | the `/research-scan` skill (self-pace with `/loop 12h /research-scan`) |",
+        "| Regenerate the site | `rerank.py` → `generate_site.py` → `trends.py` → "
+        "`generate_newsletter.py` → `generate_review.py` → `generate_skills.py` |",
+        "",
+        "**Setup** (Agent Reach + burner X account in WSL2, one-time): see "
+        "[PUBLISH.md](PUBLISH.md). **Contributing / how findings are structured:** "
+        "[CONTRIBUTING.md](CONTRIBUTING.md). **Automation & dev workflow:** [AGENTS.md](AGENTS.md).",
+        "",
+        "## Repo layout",
+        "",
+        "```",
+        "data/{ai-security,product-security,ai-research}.json  the 3 rolling pools (source of truth)",
+        "data/archive.json · data/sources.json                 aged-out findings · ranked sources",
+        "scripts/                                               ingest · analyze-merge · rank · render",
+        ".claude/skills/                                        /research-scan /add-resource /add-source",
+        "ai-security/ product-security/ ai-research/            rendered per-topic pages (generated)",
+        "README.md NEWSLETTER.md TRENDS.md REVIEW.md LEARNINGS.md   generated — do not hand-edit",
+        "```",
+        "",
+    ]
+
+
+def render_readme(curated_entries: list[dict], conf: c.Config, now: str) -> str:
     counts = {
         t: sum(1 for e in c.load_pool(t)["entries"] if c.is_curated(e, conf)) for t in c.TOPICS
     }
@@ -260,39 +376,26 @@ def render_landing(curated_entries: list[dict], conf: c.Config, now: str) -> str
         "[![Awesome](https://cdn.jsdelivr.net/gh/sindresorhus/awesome@d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)",
         "",
         "> An auto-updating, source-cited tracker of the most **teachable** security and AI "
-        "research — scanned from X/Twitter, GitHub, YouTube, articles, and RSS, then extracted, "
-        "scored, and turned into actionable takeaways, skills, and harness improvements.",
-        "",
-        f"**Only the latest research:** every entry was published within the last "
-        f"~{conf.max_age_days} days. Older findings age out to "
-        "[`data/archive.json`](data/archive.json) automatically. Only **vetted** findings are "
-        "shown; borderline ones wait in the [review queue](REVIEW.md).",
+        "research. It scans a ranked set of sources (X, GitHub, YouTube, blogs, newsletters, RSS), "
+        "extracts the transferable lesson + a concrete action from each, curates hard, and files "
+        "it into three rolling databases — **AI Security**, **Product Security**, and "
+        "**AI Research** (practitioner).",
         "",
         f"![Updated](https://img.shields.io/badge/updated-{now.replace('-', '--')}-blue) "
         f"![Vetted findings](https://img.shields.io/badge/vetted-{total}-success) "
+        f"![Window](https://img.shields.io/badge/window-last_{conf.max_age_days}_days-orange) "
         "![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)",
         "",
     ]
-    out += _landing_topic_lines(counts)
-    out += _landing_top_findings(ranked, conf)
+    out += _week_snapshot(curated_entries, conf)
+    out += _databases_index(counts)
+    out += _how_it_works(conf)
+    out += _how_to_use()
     out += [
-        "",
-        "## How it works",
-        "",
-        "```",
-        "X / GitHub / YouTube / articles / RSS  → ingest + Jina Reader (clean text)",
-        "  → analyze (extract lessons · score newness/novelty/relevance · derive action)",
-        "  → merge into the 3 topic pools → rerank → render + newsletter + trends",
-        "```",
-        "",
-        "Add a single resource: `python scripts/add.py <url>` (`/add-resource`). Add a source "
-        "to track: `python scripts/add_source.py …` (`/add-source`). Batch-scan with "
-        "`/research-scan` (self-paced via `/loop`).",
-        "",
         "## License",
         "",
         "Curated content under [CC BY 4.0](LICENSE); scripts under MIT. Linked research remains "
-        "the property of its original authors — every finding cites its source.",
+        "the property of its original authors — every finding cites its original source.",
         "",
         f"<sub>Generated by <code>scripts/generate_site.py</code> on {now}. "
         "Edit the pools in <code>data/</code> and regenerate — do not hand-edit rendered files.</sub>",
@@ -307,8 +410,8 @@ def main() -> int:
     all_entries: list[dict] = []
     for topic in c.TOPICS:
         all_entries += write_topic(topic, conf, now)
-    (c.ROOT / "README.md").write_text(render_landing(all_entries, conf, now), encoding="utf-8")
-    print(f"Rendered README.md + {'/ '.join(c.TOPICS)}/ ({len(all_entries)} findings).")
+    (c.ROOT / "README.md").write_text(render_readme(all_entries, conf, now), encoding="utf-8")
+    print(f"Rendered README.md + {'/ '.join(c.TOPICS)}/ ({len(all_entries)} vetted findings).")
     return 0
 
 
