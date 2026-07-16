@@ -181,7 +181,16 @@ def render_entry_page(entry: dict, conf: c.Config) -> str:
     if entry.get("takeaway"):
         out += [f"> **Takeaway —** {entry['takeaway']}", ""]
     if entry.get("summary"):
-        out += ["## Summary", "", entry["summary"].strip(), ""]
+        out += [
+            "## TL;DR",
+            "",
+            "_The gist, not every detail — read the [full source](#) for the complete write-up._".replace(
+                "(#)", f"({entry.get('source_url', '')})"
+            ),
+            "",
+            entry["summary"].strip(),
+            "",
+        ]
     out += _entry_lessons_md(entry)
     out += _entry_tcm_md(entry)
     out += render_actionable(entry)
@@ -272,9 +281,10 @@ def _week_snapshot(curated_entries: list[dict], conf: c.Config) -> list[str]:
     out = [
         "## 📸 This week's snapshot",
         "",
-        f"> The top curated findings published in the last {conf.snapshot_days} days — each links "
-        "to its writeup here **and** the original source. For the full digest see the "
-        "[📰 newsletter](NEWSLETTER.md).",
+        f"> The top curated findings published in the last {conf.snapshot_days} days. Every entry is "
+        "a **TL;DR** — we track the gist (what's new + why it matters + what to do), and each links "
+        "to its writeup here **and** the original source for the full detail. For the full digest see "
+        "the [📰 newsletter](NEWSLETTER.md).",
         "",
     ]
     if not ranked:
@@ -351,6 +361,9 @@ def _how_to_use() -> list[str]:
         "| Capture one article now | `python scripts/add.py <url>` then the `/add-resource` skill "
         "— returns summary + takeaway + action and files it |",
         "| Run a full scan | the `/research-scan` skill (self-pace with `/loop 12h /research-scan`) |",
+        "| Run it daily on autopilot | `powershell -File scripts/install_daily_scan.ps1` — a Scheduled "
+        "Task ingests, runs Claude headless to analyze+verify, and opens a PR each day (never "
+        "auto-merges). Remove with `-Uninstall`. |",
         "| Regenerate the site | `rerank.py` → `generate_site.py` → `trends.py` → "
         "`generate_newsletter.py` → `generate_review.py` → `generate_skills.py` |",
         "",

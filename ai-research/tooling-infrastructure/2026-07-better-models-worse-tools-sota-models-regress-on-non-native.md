@@ -7,7 +7,9 @@
 
 > **Takeaway —** Newer ≠ better for YOUR tools: match your harness's tool schemas to what the target model was trained on.
 
-## Summary
+## TL;DR
+
+_The gist, not every detail — read the [full source](https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything) for the complete write-up._
 
 Armin (building the Pi harness) found newer Claude models (Opus 4.8, Sonnet 5) invent made-up fields when calling Pi's custom edit tool — worse than older models — likely because they're RL-trained on Claude Code's built-in edit tool. Third-party harnesses with their own tool schemas get degraded tool-calling from the very newest models.
 

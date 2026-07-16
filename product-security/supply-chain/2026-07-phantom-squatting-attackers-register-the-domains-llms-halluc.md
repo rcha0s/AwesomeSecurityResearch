@@ -7,7 +7,9 @@
 
 > **Takeaway —** LLM hallucinations are a predictable supply-chain attack surface: attackers pre-register the domains/packages models invent.
 
-## Summary
+## TL;DR
+
+_The gist, not every detail — read the [full source](https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/) for the complete write-up._
 
 Unit 42 documented 'phantom squatting': LLMs consistently hallucinate web domains for legitimate brands, and adversaries register those nonexistent domains to intercept AI-generated traffic. Across 913 brands and 685,339 queries they found 13,229 malicious URLs and ~250,000 still-unregistered hallucinated domains — and predicted adversary registrations 18–51 days ahead.
 

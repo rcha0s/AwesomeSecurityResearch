@@ -7,7 +7,9 @@
 
 > **Takeaway —** Agent skill marketplaces are a critical, largely-untrusted link in the software supply chain — marketplace scanning alone does not make them safe.
 
-## Summary
+## TL;DR
+
+_The gist, not every detail — read the [full source](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/) for the complete write-up._
 
 Unit 42 found five evasive malicious 'skills' persisting on ClawHub — the marketplace OpenClaw's agent pulls third-party, markdown-driven packages from with broad local system access — despite VirusTotal + ClawScan screening added after February's incidents. The five span infostealers (macOS, C2), scanner evasion (inflated file size to exceed thresholds), and two NOVEL agentic threats: runtime agentic affiliate injection and agentic front-running.
 

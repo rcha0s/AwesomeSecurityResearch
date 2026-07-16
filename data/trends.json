@@ -3,13 +3,25 @@
     {
       "topic": "ai-security",
       "tag": "agent-security",
-      "count": 5,
-      "recent": 1,
-      "sources": 5,
-      "momentum": 6.0,
+      "count": 7,
+      "recent": 3,
+      "sources": 7,
+      "momentum": 10.0,
       "first_seen": "2026-02",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-07-15",
       "members": [
+        {
+          "title": "ToolHive MCP SSRF: host-side discovery runs outside the sandbox it enforces",
+          "url": "https://github.com/advisories/GHSA-pr64-jmmf-jp54",
+          "date": "2026-07-15",
+          "fresh": true
+        },
+        {
+          "title": "Treat MCP tool descriptions as system prompts: silent re-trust poisoning",
+          "url": "https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/",
+          "date": "2026-06-30",
+          "fresh": true
+        },
         {
           "title": "OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface",
           "url": "https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/",
@@ -44,14 +56,50 @@
     },
     {
       "topic": "ai-security",
-      "tag": "prompt-injection",
+      "tag": "supply-chain",
       "count": 3,
-      "recent": 0,
+      "recent": 3,
       "sources": 3,
-      "momentum": 3.0,
-      "first_seen": "2026-02",
-      "last_seen": "2026-05-14",
+      "momentum": 6.0,
+      "first_seen": "2026-06-23",
+      "last_seen": "2026-07-16",
       "members": [
+        {
+          "title": "Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)",
+          "url": "https://arxiv.org/abs/2607.13987",
+          "date": "2026-07-16",
+          "fresh": true
+        },
+        {
+          "title": "Treat MCP tool descriptions as system prompts: silent re-trust poisoning",
+          "url": "https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/",
+          "date": "2026-06-30",
+          "fresh": true
+        },
+        {
+          "title": "OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface",
+          "url": "https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/",
+          "date": "2026-06-23",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "prompt-injection",
+      "count": 4,
+      "recent": 1,
+      "sources": 4,
+      "momentum": 5.0,
+      "first_seen": "2026-02",
+      "last_seen": "2026-06-30",
+      "members": [
+        {
+          "title": "Treat MCP tool descriptions as system prompts: silent re-trust poisoning",
+          "url": "https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/",
+          "date": "2026-06-30",
+          "fresh": true
+        },
         {
           "title": "MemoryTrap: persistent memory poisoning in AI coding agents (OWASP ASI06)",
           "url": "https://genai.owasp.org/2026/05/13/memory-is-a-feature-it-is-also-an-attack-surface/",
@@ -69,6 +117,60 @@
           "url": "https://github.com/praetorian-inc/augustus",
           "date": "2026-02",
           "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "mcp",
+      "count": 3,
+      "recent": 2,
+      "sources": 3,
+      "momentum": 5.0,
+      "first_seen": "2026-02",
+      "last_seen": "2026-07-15",
+      "members": [
+        {
+          "title": "ToolHive MCP SSRF: host-side discovery runs outside the sandbox it enforces",
+          "url": "https://github.com/advisories/GHSA-pr64-jmmf-jp54",
+          "date": "2026-07-15",
+          "fresh": true
+        },
+        {
+          "title": "Treat MCP tool descriptions as system prompts: silent re-trust poisoning",
+          "url": "https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/",
+          "date": "2026-06-30",
+          "fresh": true
+        },
+        {
+          "title": "Prismor: a runtime firewall that blocks rogue AI-agent tool calls",
+          "url": "https://github.com/PrismorSec/prismor",
+          "date": "2026-02",
+          "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "skill-scanning",
+      "count": 2,
+      "recent": 2,
+      "sources": 2,
+      "momentum": 4.0,
+      "first_seen": "2026-06-23",
+      "last_seen": "2026-07-16",
+      "members": [
+        {
+          "title": "Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)",
+          "url": "https://arxiv.org/abs/2607.13987",
+          "date": "2026-07-16",
+          "fresh": true
+        },
+        {
+          "title": "OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface",
+          "url": "https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/",
+          "date": "2026-06-23",
+          "fresh": true
         }
       ]
     },
@@ -100,6 +202,54 @@
   "product-security": [
     {
       "topic": "product-security",
+      "tag": "supply-chain",
+      "count": 2,
+      "recent": 2,
+      "sources": 2,
+      "momentum": 4.0,
+      "first_seen": "2026-06-30",
+      "last_seen": "2026-07-16",
+      "members": [
+        {
+          "title": "AsyncAPI npm compromise: import-time payload defeats --ignore-scripts",
+          "url": "https://www.microsoft.com/en-us/security/blog/2026/07/15/unpacking-asyncapi-npm-supply-chain-compromise-import-time-payload-delivery/",
+          "date": "2026-07-16",
+          "fresh": true
+        },
+        {
+          "title": "Phantom Squatting: attackers register the domains LLMs hallucinate",
+          "url": "https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/",
+          "date": "2026-06-30",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "product-security",
+      "tag": "memory-safety",
+      "count": 2,
+      "recent": 1,
+      "sources": 2,
+      "momentum": 3.0,
+      "first_seen": "2026-04",
+      "last_seen": "2026-06-29",
+      "members": [
+        {
+          "title": "Kemp LoadMaster pre-auth RCE: uninitialized heap + missing null byte (CVE-2026-8037)",
+          "url": "https://labs.watchtowr.com/enterprise-tech-in-shell-out-progress-kemp-loadmaster-uninitialized-heap-to-pre-auth-rce-cve-2026-8037/",
+          "date": "2026-06-29",
+          "fresh": true
+        },
+        {
+          "title": "Google brings Rust (memory safety) to the Pixel baseband",
+          "url": "http://security.googleblog.com/2026/04/bringing-rust-to-pixel-baseband.html",
+          "date": "2026-04",
+          "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "product-security",
       "tag": "android",
       "count": 2,
       "recent": 0,
@@ -127,10 +277,10 @@
     {
       "topic": "ai-research",
       "tag": "agents",
-      "count": 4,
-      "recent": 3,
-      "sources": 3,
-      "momentum": 7.0,
+      "count": 5,
+      "recent": 4,
+      "sources": 4,
+      "momentum": 9.0,
       "first_seen": "2026-05",
       "last_seen": "2026-07-09",
       "members": [
@@ -144,6 +294,12 @@
           "title": "Better Models, Worse Tools: SOTA models regress on non-native tool schemas",
           "url": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
           "date": "2026-07-04",
+          "fresh": true
+        },
+        {
+          "title": "Goal-persistent agents: a frontier model built a bespoke zlib fuzzing lab in a day",
+          "url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/",
+          "date": "2026-07-02",
           "fresh": true
         },
         {
@@ -198,6 +354,30 @@
           "title": "Better Models, Worse Tools: SOTA models regress on non-native tool schemas",
           "url": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
           "date": "2026-07-04",
+          "fresh": true
+        },
+        {
+          "title": "PawBench: benchmarking LLM x harness performance",
+          "url": "https://github.com/agentscope-ai/PawBench",
+          "date": "2026-05",
+          "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "ai-research",
+      "tag": "evals",
+      "count": 2,
+      "recent": 1,
+      "sources": 2,
+      "momentum": 3.0,
+      "first_seen": "2026-05",
+      "last_seen": "2026-07-02",
+      "members": [
+        {
+          "title": "Goal-persistent agents: a frontier model built a bespoke zlib fuzzing lab in a day",
+          "url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/",
+          "date": "2026-07-02",
           "fresh": true
         },
         {

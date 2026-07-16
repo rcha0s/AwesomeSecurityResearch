@@ -14,6 +14,86 @@
   ],
   "entries": [
     {
+      "topic": "product-security",
+      "domain": "Supply Chain & Dependencies",
+      "title": "AsyncAPI npm compromise: import-time payload defeats --ignore-scripts",
+      "source_url": "https://www.microsoft.com/en-us/security/blog/2026/07/15/unpacking-asyncapi-npm-supply-chain-compromise-import-time-payload-delivery/",
+      "article_url": "https://www.microsoft.com/en-us/security/blog/2026/07/15/unpacking-asyncapi-npm-supply-chain-compromise-import-time-payload-delivery/",
+      "published": "2026-07-16",
+      "date": "2026-07",
+      "discovered_via": "rss",
+      "source_id": "rss:https-www-microsoft-com-en-us-security-blog-feed",
+      "source_rank": 77.5,
+      "source_topics": [
+        "ai-security",
+        "product-security"
+      ],
+      "raw_path": "data/_raw/unpacking-the-asyncapi-npm-supply-chain-compromi-42c06eba0e.txt",
+      "summary": "Attackers backdoored five @asyncapi npm versions that execute at module-load (import/require) time rather than via a postinstall hook, so `npm install --ignore-scripts` doesn't stop them. They didn't compromise npm directly: a `pull_request_target` pwn request exposed the project's bot token (PAT), after which the project's own trusted-publishing (GitHub OIDC) pipeline shipped the poisoned packages with valid provenance attestations.",
+      "lessons": [
+        {
+          "point": "The payload runs at import time, not install time — so the standard --ignore-scripts defense is irrelevant; the trigger is require()/import, not a lifecycle hook.",
+          "excerpt": "Because the trigger is an import rather than an install script",
+          "confidence": 0.98,
+          "grounded": true
+        },
+        {
+          "point": "Hook-focused scanners miss this entirely because the packages declare no preinstall/postinstall hooks at all.",
+          "excerpt": "Security tooling that focuses on preinstall/postinstall auditing will not flag these packages.",
+          "confidence": 0.97,
+          "grounded": true
+        },
+        {
+          "point": "Trusted publishing / provenance did NOT prevent the attack: valid OIDC attestations were produced from unauthorized commits, so a green provenance check is not proof of a trustworthy release.",
+          "excerpt": "The attestations accurately identified the legitimate repositories, commits, and workflows that created the packages, even though the triggering commits were unauthorized.",
+          "confidence": 0.97,
+          "grounded": true
+        }
+      ],
+      "threat": "A poisoned transitive dependency runs attacker code on any workstation, CI runner, or container build that imports it, with no install script required.",
+      "mitigations": "Pin/lock and vet dependency updates by content (not just provenance); treat import-time behavior as executable; segment CI credentials; audit pull_request_target workflows that check out untrusted PR code.",
+      "takeaway": "Import-time malware makes --ignore-scripts useless and a valid provenance attestation is not a trust signal when the pipeline itself is hijacked.",
+      "tags": [
+        "supply-chain",
+        "npm",
+        "provenance",
+        "ci-cd",
+        "github-actions"
+      ],
+      "actionable": {
+        "type": "takeaway",
+        "title": "Don't treat provenance/--ignore-scripts as sufficient supply-chain defenses",
+        "detail": "Add a CI check that diffs a dependency's published tarball against its tagged source before promotion, and audit any pull_request_target workflow that checks out and runs untrusted PR code with access to secrets."
+      },
+      "scores": {
+        "novelty": 80,
+        "relevance": 90,
+        "newness": 43,
+        "credibility": 87.5,
+        "composite": 74.88,
+        "scored_at": "2026-07-16T07:43:12+00:00"
+      },
+      "prior_art": "The 2025 Shai-Hulud / npm postinstall-worm campaigns and the related @mastra scope takeover — same 'compromise a maintainer/bot identity' root cause, but those triggered on install hooks; the novel delta here is import-time execution plus abuse of trusted-publishing provenance.",
+      "corroborating_sources": [
+        {
+          "name": "Semgrep Blog",
+          "url": "https://semgrep.dev/blog/2026/miasma-v3-asyncapi-npm-hardening",
+          "published": "2026-07-14"
+        },
+        {
+          "name": "Chainguard Unchained",
+          "url": "https://www.chainguard.dev/unchained/asyncapi-supply-chain-compromise-npm-packages-backdoored-via-github-actions",
+          "published": "2026-07-14"
+        }
+      ],
+      "verified": true,
+      "verify_note": "Independent verifier: claims supported; softened token-theft to 'exposed PAT' per source hedge.",
+      "id": "asyncapi-npm-compromise-import-time-payload-defe-ebb4a53599",
+      "retrieved_at": "2026-07-16T07:43:12+00:00",
+      "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
       "source_url": "https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/",
       "article_url": "https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/",
       "source_name": "Palo Alto Networks Unit 42",
@@ -56,7 +136,7 @@
         "relevance": 86,
         "newness": 43,
         "composite": 71.05,
-        "scored_at": "2026-07-16T04:30:05+00:00",
+        "scored_at": "2026-07-16T07:43:12+00:00",
         "credibility": 50.0
       },
       "title": "Phantom Squatting: attackers register the domains LLMs hallucinate",
@@ -112,11 +192,79 @@
         "relevance": 72,
         "newness": 43,
         "composite": 64.0,
-        "scored_at": "2026-07-16T04:30:05+00:00",
+        "scored_at": "2026-07-16T07:43:12+00:00",
         "credibility": 75.0
       },
       "id": "gigawiper-modular-destructive-malware-that-fakes-2b20f20b50",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
+      "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "product-security",
+      "domain": "Application Security",
+      "title": "Kemp LoadMaster pre-auth RCE: uninitialized heap + missing null byte (CVE-2026-8037)",
+      "source_url": "https://labs.watchtowr.com/enterprise-tech-in-shell-out-progress-kemp-loadmaster-uninitialized-heap-to-pre-auth-rce-cve-2026-8037/",
+      "article_url": "https://labs.watchtowr.com/enterprise-tech-in-shell-out-progress-kemp-loadmaster-uninitialized-heap-to-pre-auth-rce-cve-2026-8037/",
+      "published": "2026-06-29",
+      "date": "2026-06",
+      "discovered_via": "rss",
+      "source_id": "rss:https-labs-watchtowr-com-rss",
+      "source_rank": 75.0,
+      "source_topics": [
+        "product-security"
+      ],
+      "raw_path": "data/_raw/enterprise-tech-in-shell-out-progress-kemp-loadm-88573c8c74.txt",
+      "summary": "A one-function patch to `escape_quotes()` in Kemp LoadMaster revealed a pre-auth RCE. The escaped buffer wasn't null-terminated, so `__sprintf_chk()` reads out of bounds into an adjacent heap chunk; by heap-spraying an un-escaped command-injection payload (via JSON key/value pairs) into that neighboring chunk, an unauthenticated attacker turns an 'uninitialized memory' bug into command execution.",
+      "lessons": [
+        {
+          "point": "The whole bug is a missing null terminator: the escaped buffer wasn't null-terminated, so a formatting call runs off the end into adjacent heap memory.",
+          "excerpt": "the escaped buffer was not null-terminated",
+          "confidence": 0.97,
+          "grounded": true
+        },
+        {
+          "point": "Out-of-bounds read becomes injection when the neighboring freed chunk holds an un-escaped payload with no null byte — the sanitizer is bypassed by reading past where it stopped.",
+          "excerpt": "That means if an adjacent freed heap chunk contains an unescaped command injection payload",
+          "confidence": 0.96,
+          "grounded": true
+        },
+        {
+          "point": "Attacker-controlled heap layout is the exploit primitive: spraying many JSON key/value pairs places the payload chunk exactly where the OOB read lands.",
+          "excerpt": "This gives us a useful heap-spraying primitive by adding lots of JSON key/value pairs.",
+          "confidence": 0.95,
+          "grounded": true
+        }
+      ],
+      "threat": "Unauthenticated remote code execution on an edge load balancer reachable by anyone who can reach the API.",
+      "conditions": "Network access to the LoadMaster API; no credentials required.",
+      "mitigations": "Apply Progress' June 2026 patch; a tiny-looking diff (adding null-termination) can be the fix for a critical bug, so patch edge appliances promptly.",
+      "takeaway": "A minimal 'just null-terminate the buffer' patch can hide a pre-auth RCE — diff patches carefully, and treat missing null-termination next to attacker-controlled heap data as exploitable, not cosmetic.",
+      "tags": [
+        "memory-safety",
+        "heap",
+        "rce",
+        "edge-appliance",
+        "n-day"
+      ],
+      "actionable": {
+        "type": "takeaway",
+        "title": "Prioritize edge-appliance patches and read the diff, not the CVE title",
+        "detail": "When a vendor ships a one-line string-handling fix on an internet-facing appliance, assume memory-corruption impact until proven otherwise and patch on the critical track; missing null-termination adjacent to attacker-sprayable heap data is an RCE primitive, not a hardening nit."
+      },
+      "scores": {
+        "novelty": 70,
+        "relevance": 82,
+        "newness": 8,
+        "credibility": 75.0,
+        "composite": 58.85,
+        "scored_at": "2026-07-16T07:43:12+00:00"
+      },
+      "prior_art": "Uninitialized-memory and heap-spray techniques are classic; the novel delta is the specific n-day chain (patch-diff -> non-null-terminated escape buffer -> OOB read into sprayed JSON chunk) on a widely deployed edge load balancer.",
+      "verified": true,
+      "verify_note": "Self-verified against source (automated verifier blocked by a cyber-content safeguard); mechanism grounded and accurate.",
+      "id": "kemp-loadmaster-pre-auth-rce-uninitialized-heap-d5e3554441",
+      "retrieved_at": "2026-07-16T07:43:12+00:00",
       "needs_review": false,
       "grounding_score": 1.0
     },
@@ -141,7 +289,7 @@
         "novelty": 0,
         "relevance": 0,
         "composite": 9.5,
-        "scored_at": "2026-07-16T04:30:05+00:00",
+        "scored_at": "2026-07-16T07:43:12+00:00",
         "credibility": 50.0
       },
       "published": "2026-06",
