@@ -68,10 +68,10 @@
       "scores": {
         "novelty": 80,
         "relevance": 90,
-        "newness": 43,
+        "newness": 32,
         "credibility": 87.5,
-        "composite": 74.88,
-        "scored_at": "2026-07-16T07:43:12+00:00"
+        "composite": 72.12,
+        "scored_at": "2026-07-21T07:37:44+00:00"
       },
       "prior_art": "The 2025 Shai-Hulud / npm postinstall-worm campaigns and the related @mastra scope takeover — same 'compromise a maintainer/bot identity' root cause, but those triggered on install hooks; the novel delta here is import-time execution plus abuse of trusted-publishing provenance.",
       "corroborating_sources": [
@@ -134,9 +134,9 @@
       "scores": {
         "novelty": 90,
         "relevance": 86,
-        "newness": 43,
-        "composite": 71.05,
-        "scored_at": "2026-07-16T07:43:12+00:00",
+        "newness": 32,
+        "composite": 68.3,
+        "scored_at": "2026-07-21T07:37:44+00:00",
         "credibility": 50.0
       },
       "title": "Phantom Squatting: attackers register the domains LLMs hallucinate",
@@ -190,14 +190,79 @@
       "scores": {
         "novelty": 68,
         "relevance": 72,
-        "newness": 43,
-        "composite": 64.0,
-        "scored_at": "2026-07-16T07:43:12+00:00",
+        "newness": 32,
+        "composite": 61.25,
+        "scored_at": "2026-07-21T07:37:44+00:00",
         "credibility": 75.0
       },
       "id": "gigawiper-modular-destructive-malware-that-fakes-2b20f20b50",
       "retrieved_at": "2026-07-13T04:19:32+00:00",
       "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "product-security",
+      "domain": "AI-Generated Code Risk",
+      "title": "38.9% of agent-generated PRs carry a security smell - but humans introduce most of the real leaked secrets",
+      "source_url": "https://arxiv.org/abs/2607.12428",
+      "article_url": "https://arxiv.org/abs/2607.12428",
+      "published": "2026-07-19",
+      "date": "2026-07",
+      "author": "A H M Nazmus Sakib et al.",
+      "discovered_via": "rss",
+      "source_rank": 57.5,
+      "raw_path": "data/_raw/trust-but-verify-uncovering-the-security-debt-of-7240fb0539.txt",
+      "summary": "A large-scale study of the AIDev dataset classified security smells across 16,112 file changes in 4,022 agent-generated pull requests. 38.9% of agent PRs contain at least one security smell and supply-chain integrity issues make up 82.3% of them - but the counterintuitive result is that human collaborators introduce 67.6% of the genuine leaked secrets in these agent-assisted workflows, and review catches almost none of them. All percentages are downstream of an LLM-as-a-judge classification pipeline plus manual review, so treat the precision of the figures accordingly.",
+      "lessons": [
+        {
+          "point": "Supply-chain integrity dominates the detected smell taxonomy (82.3%); the abstract does not enumerate the remaining categories, so everything else combined is a small residual - point provenance and dependency controls at agent output.",
+          "excerpt": "38.9% of agent-generated PRs contain at least one security smell, with supply chain integrity issues accounting for 82.3% of all detected security smells",
+          "confidence": 0.97,
+          "grounded": true
+        },
+        {
+          "point": "Blaming the agent misreads the data: humans introduced most genuine leaked secrets, which the authors describe only as suggesting a *potential* reduction in developer vigilance - an association, not a causal finding.",
+          "excerpt": "human collaborators are responsible for introducing 67.6% of genuine leaked secrets within these agent-assisted workflows",
+          "confidence": 0.96,
+          "grounded": true
+        },
+        {
+          "point": "Existing review is not a control here - automated and human review together missed 81.1% of these credentials before integration.",
+          "excerpt": "existing automated and human review processes fail to detect 81.1% of these credentials prior to integration",
+          "confidence": 0.96,
+          "grounded": true
+        }
+      ],
+      "threat": "Security debt accumulates in high-impact file paths faster than human review capacity, with hard-coded credentials making up 99.6% of critical-severity smells.",
+      "conditions": "Repositories that accept autonomous coding-agent pull requests through a conventional human review process.",
+      "mitigations": "Enforce secret scanning as a merge gate rather than a review step; apply provenance/dependency-integrity checks to agent PRs; add context-aware guardrails at the human-AI collaboration point rather than at final review.",
+      "takeaway": "Gate agent PRs with automated secret and dependency-integrity checks - human review demonstrably does not catch this class, and the humans are introducing most of it.",
+      "tags": [
+        "ai-generated-code",
+        "coding-agents",
+        "secrets",
+        "supply-chain",
+        "code-review"
+      ],
+      "actionable": {
+        "type": "harness",
+        "title": "Make secret + dependency-integrity scanning a blocking gate on agent PRs",
+        "detail": "Treat any PR authored or co-authored by a coding agent as untrusted input: require blocking secret detection (not advisory annotations), pin and verify dependency changes, and flag edits to high-impact paths for mandatory second review. Do not rely on reviewer attention - the measured miss rate is 81.1%."
+      },
+      "scores": {
+        "novelty": 57,
+        "relevance": 88,
+        "newness": 32,
+        "credibility": 57.5,
+        "composite": 60.12,
+        "scored_at": "2026-07-21T07:37:44+00:00"
+      },
+      "prior_art": "That LLM-generated code contains vulnerabilities is well documented (Copilot-era studies onward). The delta is scale and attribution on real agent PRs - the 67.6% human-origin secrets finding inverts the 'the agent is the risk' framing. Methodologically it applies an existing technique (LLM-as-judge + manual coding) to a new dataset rather than introducing a new method. Accepted at the KDD 2026 AgenticSE workshop.",
+      "verified": true,
+      "verify_note": "Independent verifier: removed invented contrast categories (injection/logic bugs); restored the authors' 'potential' hedge on developer vigilance; surfaced that all figures come from an LLM-as-a-judge pipeline; novelty 68->57.",
+      "id": "38-9-of-agent-generated-prs-carry-a-security-sme-7eccb412c1",
+      "retrieved_at": "2026-07-21T07:37:44+00:00",
+      "needs_review": true,
       "grounding_score": 1.0
     },
     {
@@ -255,10 +320,10 @@
       "scores": {
         "novelty": 70,
         "relevance": 82,
-        "newness": 8,
+        "newness": 6,
         "credibility": 75.0,
-        "composite": 58.85,
-        "scored_at": "2026-07-16T07:43:12+00:00"
+        "composite": 58.35,
+        "scored_at": "2026-07-21T07:37:44+00:00"
       },
       "prior_art": "Uninitialized-memory and heap-spray techniques are classic; the novel delta is the specific n-day chain (patch-diff -> non-null-terminated escape buffer -> OOB read into sprayed JSON chunk) on a widely deployed edge load balancer.",
       "verified": true,
@@ -266,6 +331,67 @@
       "id": "kemp-loadmaster-pre-auth-rce-uninitialized-heap-d5e3554441",
       "retrieved_at": "2026-07-16T07:43:12+00:00",
       "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "product-security",
+      "domain": "Application Security",
+      "title": "A working taxonomy of open-source AI code-security harnesses: exploitgen, skill-boosting, SAST+LLM",
+      "source_url": "https://semgrep.dev/blog/2026/comparing-open-source-ai-code-security-harnesses",
+      "article_url": "https://semgrep.dev/blog/2026/comparing-open-source-ai-code-security-harnesses",
+      "published": "2026-07-20",
+      "date": "2026-07",
+      "discovered_via": "rss",
+      "source_rank": 55.0,
+      "raw_path": "data/_raw/comparing-open-source-ai-code-security-harnesses-35be179da6.txt",
+      "summary": "A survey of open-source tools that point an LLM at a codebase, sorted into three categories: LLM-led exploitgen, LLM-skill-boosting, and SAST+LLM hybrids, with constraint-based selection guidance. Disclosure: published by Semgrep, a commercial SAST vendor that competes in this market, maintains its own fork of one compared tool, is used as a component by others in the list, and teases an unreleased competing product - weigh the 'ideal use case' rankings accordingly.",
+      "lessons": [
+        {
+          "point": "The space sorts into three categories with different operational demands - pick by your constraint (local-only, hunting, maintainer, appsec program), not by star count.",
+          "excerpt": "We find three complementary categories in the new world of harnesses: LLM-led exploitgen, LLM-skill-boosting, and SAST+LLM hybrids.",
+          "confidence": 0.95,
+          "grounded": true
+        },
+        {
+          "point": "Exploitgen harnesses are the hardest to actually run because model guardrails block exploit generation unless you hold trusted access - the same guardrail friction defenders hit during incident response.",
+          "excerpt": "These have been the hardest harnesses to use in practice as model guardrails prevent LLMs from generating exploits, so you'll need to be part of the inner circle of trusted access/cyber verification.",
+          "confidence": 0.94,
+          "grounded": true
+        },
+        {
+          "point": "Maintenance risk is real: the author flags overlap and that not all of these will stay maintained - including Anthropic's own harness, already noted as unmaintained.",
+          "excerpt": "There's a lot of overlap between these harnesses, and it's not clear that all of them will continue to be maintained.",
+          "confidence": 0.93,
+          "grounded": true
+        }
+      ],
+      "takeaway": "Choose an AI code-security harness by category and operating constraint, check maintenance status - and note the comparison is authored by a competing vendor.",
+      "tags": [
+        "ai-code-security",
+        "sast",
+        "harnesses",
+        "tooling",
+        "open-source"
+      ],
+      "actionable": {
+        "type": "tool",
+        "title": "Pick a harness category before picking a tool",
+        "detail": "Map your constraint to a category first: fully local/offline -> ai-deep-sast; vulnerability hunting -> raptor or google/mantis; C/C++ with verified patches -> defending-code-harness; appsec program optimizing time-to-reviewed-fix -> VVAH. Verify recent commit activity before adopting any of them."
+      },
+      "scores": {
+        "novelty": 30,
+        "relevance": 80,
+        "newness": 32,
+        "credibility": 55.0,
+        "composite": 49.25,
+        "scored_at": "2026-07-21T07:37:44+00:00"
+      },
+      "prior_art": "Tool round-ups are a common genre and every tool listed is publicly known; there is no new technique or tool. The contribution is the three-category taxonomy and constraint-based selection guidance. Vendor content rather than research: Semgrep competes in the category it ranks and has an unannounced product in it.",
+      "verified": true,
+      "verify_note": "Independent verifier: all four tool mappings confirmed against source, but flagged inadequate COI disclosure (Semgrep competes, forks a listed tool, teases an unreleased rival) and that 52 was inconsistent with scoring actual research lower; novelty 52->30.",
+      "id": "a-working-taxonomy-of-open-source-ai-code-securi-41b13f54e0",
+      "retrieved_at": "2026-07-21T07:37:44+00:00",
+      "needs_review": true,
       "grounding_score": 1.0
     },
     {
@@ -285,11 +411,11 @@
       "discovered_via": "manual",
       "article_url": "https://access.redhat.com/security/vulnerabilities/RHSB-2026-006",
       "scores": {
-        "newness": 8,
+        "newness": 6,
         "novelty": 0,
         "relevance": 0,
-        "composite": 9.5,
-        "scored_at": "2026-07-16T07:43:12+00:00",
+        "composite": 9.0,
+        "scored_at": "2026-07-21T07:37:44+00:00",
         "credibility": 50.0
       },
       "published": "2026-06",

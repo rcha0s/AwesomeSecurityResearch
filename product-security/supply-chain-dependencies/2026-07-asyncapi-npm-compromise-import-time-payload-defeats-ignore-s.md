@@ -2,7 +2,7 @@
 
 **Topic:** Product Security  ·  **Domain:** Supply Chain & Dependencies  
 **Source:** [source](https://www.microsoft.com/en-us/security/blog/2026/07/15/unpacking-asyncapi-npm-supply-chain-compromise-import-time-payload-delivery/)  ·  **Published:** Jul 16, 2026  ·  **Retrieved:** 2026-07-16  
-**Scores:** 🆕 Newness 43 · ✨ Novelty 80 · 🎯 Relevance 90 · 🏛️ Credibility 88 · **Composite 74.88**  
+**Scores:** 🆕 Newness 32 · ✨ Novelty 80 · 🎯 Relevance 90 · 🏛️ Credibility 88 · **Composite 72.12**  
 **Tags:** `supply-chain`, `npm`, `provenance`, `ci-cd`, `github-actions`  
 **Also reported by:** [Semgrep Blog](https://semgrep.dev/blog/2026/miasma-v3-asyncapi-npm-hardening), [Chainguard Unchained](https://www.chainguard.dev/unchained/asyncapi-supply-chain-compromise-npm-packages-backdoored-via-github-actions) _(+2 corroborating)_  
 **Verification:** ✓ independently verified · closest prior art: The 2025 Shai-Hulud / npm postinstall-worm campaigns and the related @mastra scope takeover — same 'compromise a maintainer/bot identity' root cause, but those triggered on install hooks; the novel delta here is import-time execution plus abuse of trusted-publishing provenance.

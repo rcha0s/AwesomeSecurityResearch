@@ -9,6 +9,7 @@ Supports the five source shapes the analyzer harvests recurringly:
   github_user    a GitHub user's new work          (handle: username)
   github_query   a GitHub search query             (handle: "query string")
   youtube        a YouTube channel                 (handle: channel URL / @handle / id)
+  conference     a conference proceedings/accepted-papers index (handle: index URL)
 
 Ranking is hybrid (tier + reach signals + hit-rate); see sources_registry.py.
 Signals: GitHub-user followers are fetched automatically; others may be passed
@@ -106,6 +107,14 @@ def resolve(args: argparse.Namespace) -> tuple[str, str, str | None]:
         return "github_user", handle, f"https://github.com/{handle}"
     if stype == "github_query":
         return "github_query", handle, None
+    if stype == "conference":
+        # Proceedings/accepted-papers index; harvested by the conference ingestor,
+        # which resolves each title to a FREE full text (no paywalled fetches).
+        return "conference", handle, handle
+    if stype == "research_index":
+        # A lab's research listing that publishes no feed (JS-rendered index).
+        # Same harvest path as `conference`: scrape the index, resolve free text.
+        return "research_index", handle, handle
     if stype == "youtube":
         return "youtube", handle, handle if handle.startswith("http") else None
     sys.exit(f"unknown type: {stype}")
@@ -130,7 +139,10 @@ def collect_signals(args: argparse.Namespace, stored_type: str, handle: str) -> 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("type", help="x_account|rss|blog|newsletter|github_user|github_query|youtube")
+    ap.add_argument(
+        "type",
+        help="x_account|rss|blog|newsletter|github_user|github_query|youtube|conference",
+    )
     ap.add_argument("handle", help="@user | feed/site URL | username | query | channel URL")
     ap.add_argument("--name", help="display name")
     ap.add_argument("--topics", help="comma list: ai-security,product-security,ai-research")

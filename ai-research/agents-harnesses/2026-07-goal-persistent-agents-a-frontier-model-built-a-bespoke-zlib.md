@@ -2,7 +2,7 @@
 
 **Topic:** AI Research  ·  **Domain:** Agents & Harnesses  
 **Source:** [source](https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/)  ·  **Published:** Jul 2, 2026  ·  **Retrieved:** 2026-07-16  
-**Scores:** 🆕 Newness 43 · ✨ Novelty 60 · 🎯 Relevance 88 · 🏛️ Credibility 75 · **Composite 66.4**  
+**Scores:** 🆕 Newness 32 · ✨ Novelty 60 · 🎯 Relevance 88 · 🏛️ Credibility 75 · **Composite 63.65**  
 **Tags:** `agents`, `goal-persistence`, `fuzzing`, `evals`, `ai-for-security`  
 **Verification:** ✓ independently verified · closest prior art: LLM-driven vuln discovery (Google's Big Sleep / OSS-Fuzz-gen, XBOW) is prior work; the novel practitioner delta is the emphasis on goal-persistence-across-compaction plus baked-in reportability rules as the mechanism that makes the loop high-signal.
 

@@ -30,6 +30,8 @@ SOURCE_TYPES = (
     "github_query",
     "youtube",
     "newsletter",
+    "conference",
+    "research_index",
 )
 
 # The three tracked topics (Pass 2 restructures the pools to match these).

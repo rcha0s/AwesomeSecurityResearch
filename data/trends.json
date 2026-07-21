@@ -3,13 +3,25 @@
     {
       "topic": "ai-security",
       "tag": "agent-security",
-      "count": 7,
-      "recent": 3,
-      "sources": 7,
-      "momentum": 10.0,
+      "count": 9,
+      "recent": 5,
+      "sources": 9,
+      "momentum": 14.0,
       "first_seen": "2026-02",
-      "last_seen": "2026-07-15",
+      "last_seen": "2026-07-20",
       "members": [
+        {
+          "title": "Self-state attacks: corrupting an agent's own memory and config uses legitimate syscalls",
+          "url": "https://arxiv.org/abs/2607.17986",
+          "date": "2026-07-20",
+          "fresh": true
+        },
+        {
+          "title": "Provider safety guardrails blocked incident response during the Hugging Face agentic intrusion",
+          "url": "https://embracethered.com/blog/posts/2026/ai-intrusion-are-now-real/",
+          "date": "2026-07-19",
+          "fresh": true
+        },
         {
           "title": "ToolHive MCP SSRF: host-side discovery runs outside the sandbox it enforces",
           "url": "https://github.com/advisories/GHSA-pr64-jmmf-jp54",
@@ -57,13 +69,19 @@
     {
       "topic": "ai-security",
       "tag": "supply-chain",
-      "count": 3,
-      "recent": 3,
-      "sources": 3,
-      "momentum": 6.0,
+      "count": 4,
+      "recent": 4,
+      "sources": 4,
+      "momentum": 8.0,
       "first_seen": "2026-06-23",
-      "last_seen": "2026-07-16",
+      "last_seen": "2026-07-19",
       "members": [
+        {
+          "title": "Provider safety guardrails blocked incident response during the Hugging Face agentic intrusion",
+          "url": "https://embracethered.com/blog/posts/2026/ai-intrusion-are-now-real/",
+          "date": "2026-07-19",
+          "fresh": true
+        },
         {
           "title": "Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)",
           "url": "https://arxiv.org/abs/2607.13987",
@@ -87,13 +105,19 @@
     {
       "topic": "ai-security",
       "tag": "prompt-injection",
-      "count": 4,
-      "recent": 1,
-      "sources": 4,
-      "momentum": 5.0,
+      "count": 5,
+      "recent": 2,
+      "sources": 5,
+      "momentum": 7.0,
       "first_seen": "2026-02",
-      "last_seen": "2026-06-30",
+      "last_seen": "2026-07-16",
       "members": [
+        {
+          "title": "Apple fixed the macOS Terminal ANSI DNS-exfiltration sink used to chain prompt injection",
+          "url": "https://embracethered.com/blog/posts/2026/macos-terminal-dillma-dns-exfil-ansi-escape-code-fix/",
+          "date": "2026-07-16",
+          "fresh": true
+        },
         {
           "title": "Treat MCP tool descriptions as system prompts: silent re-trust poisoning",
           "url": "https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/",
@@ -152,6 +176,36 @@
     },
     {
       "topic": "ai-security",
+      "tag": "memory-poisoning",
+      "count": 3,
+      "recent": 2,
+      "sources": 3,
+      "momentum": 5.0,
+      "first_seen": "2026-05-14",
+      "last_seen": "2026-07-20",
+      "members": [
+        {
+          "title": "Insecure coding preferences persist in LLM long-term memory and resist normal correction",
+          "url": "https://arxiv.org/abs/2607.17619",
+          "date": "2026-07-20",
+          "fresh": true
+        },
+        {
+          "title": "Self-state attacks: corrupting an agent's own memory and config uses legitimate syscalls",
+          "url": "https://arxiv.org/abs/2607.17986",
+          "date": "2026-07-20",
+          "fresh": true
+        },
+        {
+          "title": "MemoryTrap: persistent memory poisoning in AI coding agents (OWASP ASI06)",
+          "url": "https://genai.owasp.org/2026/05/13/memory-is-a-feature-it-is-also-an-attack-surface/",
+          "date": "2026-05-14",
+          "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
       "tag": "skill-scanning",
       "count": 2,
       "recent": 2,
@@ -171,6 +225,54 @@
           "url": "https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/",
           "date": "2026-06-23",
           "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "threat-modeling",
+      "count": 2,
+      "recent": 2,
+      "sources": 2,
+      "momentum": 4.0,
+      "first_seen": "2026-07-16",
+      "last_seen": "2026-07-20",
+      "members": [
+        {
+          "title": "Self-state attacks: corrupting an agent's own memory and config uses legitimate syscalls",
+          "url": "https://arxiv.org/abs/2607.17986",
+          "date": "2026-07-20",
+          "fresh": true
+        },
+        {
+          "title": "Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)",
+          "url": "https://arxiv.org/abs/2607.13987",
+          "date": "2026-07-16",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "llm-security",
+      "count": 2,
+      "recent": 1,
+      "sources": 2,
+      "momentum": 3.0,
+      "first_seen": "2026-02",
+      "last_seen": "2026-07-20",
+      "members": [
+        {
+          "title": "Insecure coding preferences persist in LLM long-term memory and resist normal correction",
+          "url": "https://arxiv.org/abs/2607.17619",
+          "date": "2026-07-20",
+          "fresh": true
+        },
+        {
+          "title": "Augustus: a production LLM vulnerability scanner (210+ probes)",
+          "url": "https://github.com/praetorian-inc/augustus",
+          "date": "2026-02",
+          "fresh": false
         }
       ]
     },
@@ -203,13 +305,19 @@
     {
       "topic": "product-security",
       "tag": "supply-chain",
-      "count": 2,
-      "recent": 2,
-      "sources": 2,
-      "momentum": 4.0,
+      "count": 3,
+      "recent": 3,
+      "sources": 3,
+      "momentum": 6.0,
       "first_seen": "2026-06-30",
-      "last_seen": "2026-07-16",
+      "last_seen": "2026-07-19",
       "members": [
+        {
+          "title": "38.9% of agent-generated PRs carry a security smell - but humans introduce most of the real leaked secrets",
+          "url": "https://arxiv.org/abs/2607.12428",
+          "date": "2026-07-19",
+          "fresh": true
+        },
         {
           "title": "AsyncAPI npm compromise: import-time payload defeats --ignore-scripts",
           "url": "https://www.microsoft.com/en-us/security/blog/2026/07/15/unpacking-asyncapi-npm-supply-chain-compromise-import-time-payload-delivery/",
@@ -318,6 +426,36 @@
     },
     {
       "topic": "ai-research",
+      "tag": "evals",
+      "count": 3,
+      "recent": 2,
+      "sources": 3,
+      "momentum": 5.0,
+      "first_seen": "2026-05",
+      "last_seen": "2026-07-17",
+      "members": [
+        {
+          "title": "Auditing a cyber benchmark for groundedness: models reason, but 70% of real IDORs are missed by everyone",
+          "url": "https://semgrep.dev/blog/2026/grounded-or-gamed-we-audited-our-own-cyber-benchmark",
+          "date": "2026-07-17",
+          "fresh": true
+        },
+        {
+          "title": "Goal-persistent agents: a frontier model built a bespoke zlib fuzzing lab in a day",
+          "url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/",
+          "date": "2026-07-02",
+          "fresh": true
+        },
+        {
+          "title": "PawBench: benchmarking LLM x harness performance",
+          "url": "https://github.com/agentscope-ai/PawBench",
+          "date": "2026-05",
+          "fresh": false
+        }
+      ]
+    },
+    {
+      "topic": "ai-research",
       "tag": "claude-code",
       "count": 2,
       "recent": 2,
@@ -342,6 +480,30 @@
     },
     {
       "topic": "ai-research",
+      "tag": "benchmarks",
+      "count": 2,
+      "recent": 2,
+      "sources": 2,
+      "momentum": 4.0,
+      "first_seen": "2026-07-09",
+      "last_seen": "2026-07-17",
+      "members": [
+        {
+          "title": "Auditing a cyber benchmark for groundedness: models reason, but 70% of real IDORs are missed by everyone",
+          "url": "https://semgrep.dev/blog/2026/grounded-or-gamed-we-audited-our-own-cyber-benchmark",
+          "date": "2026-07-17",
+          "fresh": true
+        },
+        {
+          "title": "GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims",
+          "url": "https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything",
+          "date": "2026-07-09",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-research",
       "tag": "harness",
       "count": 2,
       "recent": 1,
@@ -354,30 +516,6 @@
           "title": "Better Models, Worse Tools: SOTA models regress on non-native tool schemas",
           "url": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
           "date": "2026-07-04",
-          "fresh": true
-        },
-        {
-          "title": "PawBench: benchmarking LLM x harness performance",
-          "url": "https://github.com/agentscope-ai/PawBench",
-          "date": "2026-05",
-          "fresh": false
-        }
-      ]
-    },
-    {
-      "topic": "ai-research",
-      "tag": "evals",
-      "count": 2,
-      "recent": 1,
-      "sources": 2,
-      "momentum": 3.0,
-      "first_seen": "2026-05",
-      "last_seen": "2026-07-02",
-      "members": [
-        {
-          "title": "Goal-persistent agents: a frontier model built a bespoke zlib fuzzing lab in a day",
-          "url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/",
-          "date": "2026-07-02",
           "fresh": true
         },
         {

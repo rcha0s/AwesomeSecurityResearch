@@ -55,9 +55,9 @@
       "scores": {
         "novelty": 80,
         "relevance": 90,
-        "newness": 43,
-        "composite": 70.0,
-        "scored_at": "2026-07-16T07:43:12+00:00",
+        "newness": 32,
+        "composite": 67.25,
+        "scored_at": "2026-07-21T07:37:44+00:00",
         "credibility": 55.0
       },
       "id": "better-models-worse-tools-sota-models-regress-on-23a5b69b6f",
@@ -119,10 +119,10 @@
       "scores": {
         "novelty": 60,
         "relevance": 88,
-        "newness": 43,
+        "newness": 32,
         "credibility": 75.0,
-        "composite": 66.4,
-        "scored_at": "2026-07-16T07:43:12+00:00"
+        "composite": 63.65,
+        "scored_at": "2026-07-21T07:37:44+00:00"
       },
       "prior_art": "LLM-driven vuln discovery (Google's Big Sleep / OSS-Fuzz-gen, XBOW) is prior work; the novel practitioner delta is the emphasis on goal-persistence-across-compaction plus baked-in reportability rules as the mechanism that makes the loop high-signal.",
       "verified": true,
@@ -130,6 +130,68 @@
       "id": "goal-persistent-agents-a-frontier-model-built-a-759122f879",
       "retrieved_at": "2026-07-16T07:43:12+00:00",
       "needs_review": false,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "ai-research",
+      "domain": "Evaluation",
+      "title": "Auditing a cyber benchmark for groundedness: models reason, but 70% of real IDORs are missed by everyone",
+      "source_url": "https://semgrep.dev/blog/2026/grounded-or-gamed-we-audited-our-own-cyber-benchmark",
+      "article_url": "https://semgrep.dev/blog/2026/grounded-or-gamed-we-audited-our-own-cyber-benchmark",
+      "published": "2026-07-17",
+      "date": "2026-07",
+      "discovered_via": "rss",
+      "source_rank": 55.0,
+      "raw_path": "data/_raw/grounded-or-gamed-we-audited-our-own-cyber-bench-f2b66934db.txt",
+      "summary": "Semgrep audited its own IDOR-detection benchmark with four groundedness metrics (counterfactual, metamorphic, selectivity, stability) to test whether models reason or pattern-match. On the findings models do surface, grounding holds - but recall is the wall: of 27 real IDORs, every model missed 19, and pooling five models buys exactly one extra finding. Caveat the numbers heavily: one deliberately hardest repository, n=5 runs, a per-model harness that is not a clean control, and Semgrep's own scanner is in the leaderboard.",
+      "lessons": [
+        {
+          "point": "F1 alone can't tell you whether a detector generalizes - add counterfactual (patched vulns should disappear) and metamorphic (renamed identifiers should still surface) checks to see if the model reasoned or matched a shape.",
+          "excerpt": "knowing _what_ a model detected does not guarantee it will detect the same vulnerabilities again",
+          "confidence": 0.96,
+          "grounded": true
+        },
+        {
+          "point": "Model blind spots are correlated, not complementary - ensembling rescues neither the deep cross-request-path authorization bugs nor the structurally-familiar-but-differently-named IDORs.",
+          "excerpt": "These aren’t complementary blind spots you can ensemble your way out of; everyone is blind to the same 19.",
+          "confidence": 0.97,
+          "grounded": true
+        },
+        {
+          "point": "Coverage-minus-recall is a flakiness signal: a model that finds a bug in only 1-2 of 5 runs is not production-trustworthy even when its union coverage looks good.",
+          "excerpt": "A gap between coverage and recall also denotes _flakiness_, which means models do not find the same findings on each subsequent scan, making it less trustworthy in production.",
+          "confidence": 0.94,
+          "grounded": true
+        }
+      ],
+      "takeaway": "Score AI security scanners on groundedness and run-to-run stability, not just F1 - and don't expect stacking models to fix deep-authorization recall. Vendor-run, single-repo result: directionally useful, not a general benchmark.",
+      "tags": [
+        "evals",
+        "benchmarks",
+        "idor",
+        "groundedness",
+        "ai-code-security"
+      ],
+      "actionable": {
+        "type": "harness",
+        "title": "Add counterfactual + metamorphic checks to any LLM detection eval",
+        "detail": "For each true positive, auto-generate (a) a minimal gated patch that removes the vulnerability - a grounded finding must disappear on rescan; and (b) a semantics-preserving identifier rename - a grounded finding must persist. Report per-scan recall across n>=5 runs alongside union coverage; treat the gap as a flakiness metric.",
+        "skill_slug": "groundedness-metrics-for-detection-evals"
+      },
+      "scores": {
+        "novelty": 55,
+        "relevance": 88,
+        "newness": 32,
+        "credibility": 55.0,
+        "composite": 59.15,
+        "scored_at": "2026-07-21T07:37:44+00:00"
+      },
+      "prior_art": "Counterfactual and metamorphic testing are established ML-evaluation techniques and benchmark-gaming concerns are widespread. The contribution is applying them to a security-detection benchmark and publishing a negative result - notably that five-model union recall (29.6%) barely exceeds the best single model (26%). Single-vendor, single-repo, self-evaluated: the source itself says to treat these as the hardest case, not a general result.",
+      "verified": true,
+      "verify_note": "Independent verifier: added the vendor-evaluates-own-product COI plus single-hardest-repo / n=5 / non-uniform-harness caveats the entry omitted; narrowed the ensembling claim to cover both depth and familiarity misses; novelty 72->55.",
+      "id": "auditing-a-cyber-benchmark-for-groundedness-mode-bfc4099549",
+      "retrieved_at": "2026-07-21T07:37:44+00:00",
+      "needs_review": true,
       "grounding_score": 1.0
     },
     {
@@ -172,9 +234,9 @@
       "scores": {
         "novelty": 78,
         "relevance": 84,
-        "newness": 8,
-        "composite": 58.1,
-        "scored_at": "2026-07-16T07:43:12+00:00",
+        "newness": 6,
+        "composite": 57.6,
+        "scored_at": "2026-07-21T07:37:44+00:00",
         "credibility": 50.0
       },
       "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
@@ -221,9 +283,9 @@
       "scores": {
         "novelty": 55,
         "relevance": 75,
-        "newness": 43,
-        "composite": 58.0,
-        "scored_at": "2026-07-16T07:43:12+00:00",
+        "newness": 32,
+        "composite": 55.25,
+        "scored_at": "2026-07-21T07:37:44+00:00",
         "credibility": 55.0
       },
       "id": "gpt-5-6-luna-terra-sol-three-tiers-1m-context-ag-c37d1d22d0",
