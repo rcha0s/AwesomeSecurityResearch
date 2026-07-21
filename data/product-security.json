@@ -71,7 +71,7 @@
         "newness": 32,
         "credibility": 87.5,
         "composite": 72.12,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "The 2025 Shai-Hulud / npm postinstall-worm campaigns and the related @mastra scope takeover — same 'compromise a maintainer/bot identity' root cause, but those triggered on install hooks; the novel delta here is import-time execution plus abuse of trusted-publishing provenance.",
       "corroborating_sources": [
@@ -136,7 +136,7 @@
         "relevance": 86,
         "newness": 32,
         "composite": 68.3,
-        "scored_at": "2026-07-21T07:37:44+00:00",
+        "scored_at": "2026-07-21T14:42:55+00:00",
         "credibility": 50.0
       },
       "title": "Phantom Squatting: attackers register the domains LLMs hallucinate",
@@ -192,7 +192,7 @@
         "relevance": 72,
         "newness": 32,
         "composite": 61.25,
-        "scored_at": "2026-07-21T07:37:44+00:00",
+        "scored_at": "2026-07-21T14:42:55+00:00",
         "credibility": 75.0
       },
       "id": "gigawiper-modular-destructive-malware-that-fakes-2b20f20b50",
@@ -255,7 +255,7 @@
         "newness": 32,
         "credibility": 57.5,
         "composite": 60.12,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "That LLM-generated code contains vulnerabilities is well documented (Copilot-era studies onward). The delta is scale and attribution on real agent PRs - the 67.6% human-origin secrets finding inverts the 'the agent is the risk' framing. Methodologically it applies an existing technique (LLM-as-judge + manual coding) to a new dataset rather than introducing a new method. Accepted at the KDD 2026 AgenticSE workshop.",
       "verified": true,
@@ -323,7 +323,7 @@
         "newness": 6,
         "credibility": 75.0,
         "composite": 58.35,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Uninitialized-memory and heap-spray techniques are classic; the novel delta is the specific n-day chain (patch-diff -> non-null-terminated escape buffer -> OOB read into sprayed JSON chunk) on a widely deployed edge load balancer.",
       "verified": true,
@@ -384,7 +384,7 @@
         "newness": 32,
         "credibility": 55.0,
         "composite": 49.25,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Tool round-ups are a common genre and every tool listed is publicly known; there is no new technique or tool. The contribution is the three-category taxonomy and constraint-based selection guidance. Vendor content rather than research: Semgrep competes in the category it ranks and has an unannounced product in it.",
       "verified": true,
@@ -415,7 +415,7 @@
         "novelty": 0,
         "relevance": 0,
         "composite": 9.0,
-        "scored_at": "2026-07-21T07:37:44+00:00",
+        "scored_at": "2026-07-21T14:42:55+00:00",
         "credibility": 50.0
       },
       "published": "2026-06",

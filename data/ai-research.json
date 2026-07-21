@@ -57,7 +57,7 @@
         "relevance": 90,
         "newness": 32,
         "composite": 67.25,
-        "scored_at": "2026-07-21T07:37:44+00:00",
+        "scored_at": "2026-07-21T14:42:55+00:00",
         "credibility": 55.0
       },
       "id": "better-models-worse-tools-sota-models-regress-on-23a5b69b6f",
@@ -122,7 +122,7 @@
         "newness": 32,
         "credibility": 75.0,
         "composite": 63.65,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "LLM-driven vuln discovery (Google's Big Sleep / OSS-Fuzz-gen, XBOW) is prior work; the novel practitioner delta is the emphasis on goal-persistence-across-compaction plus baked-in reportability rules as the mechanism that makes the loop high-signal.",
       "verified": true,
@@ -184,7 +184,7 @@
         "newness": 32,
         "credibility": 55.0,
         "composite": 59.15,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Counterfactual and metamorphic testing are established ML-evaluation techniques and benchmark-gaming concerns are widespread. The contribution is applying them to a security-detection benchmark and publishing a negative result - notably that five-model union recall (29.6%) barely exceeds the best single model (26%). Single-vendor, single-repo, self-evaluated: the source itself says to treat these as the hardest case, not a general result.",
       "verified": true,
@@ -236,7 +236,7 @@
         "relevance": 84,
         "newness": 6,
         "composite": 57.6,
-        "scored_at": "2026-07-21T07:37:44+00:00",
+        "scored_at": "2026-07-21T14:42:55+00:00",
         "credibility": 50.0
       },
       "title": "Omnigent: an open-source meta-harness over Claude Code, Codex, Cursor",
@@ -285,7 +285,7 @@
         "relevance": 75,
         "newness": 32,
         "composite": 55.25,
-        "scored_at": "2026-07-21T07:37:44+00:00",
+        "scored_at": "2026-07-21T14:42:55+00:00",
         "credibility": 55.0
       },
       "id": "gpt-5-6-luna-terra-sol-three-tiers-1m-context-ag-c37d1d22d0",

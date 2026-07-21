@@ -2,7 +2,7 @@
 
 > A daily-refreshed digest of the most teachable, **vetted** security and AI research from the last 31 days, curated and source-cited. Three tracks: AI Security, Product Security, AI Research.
 
-21 vetted findings in window · [← home](README.md) · [full trends](TRENDS.md) · [all learnings](LEARNINGS.md)
+24 vetted findings in window · [← home](README.md) · [full trends](TRENDS.md) · [all learnings](LEARNINGS.md)
 
 ---
 
@@ -24,12 +24,18 @@ _Securing AI systems: harness & agent security, MCP, skill scanning, prompt inje
 - **[Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)](https://arxiv.org/abs/2607.13987)** · _source_ · composite 61.85
   When you scan or admit agent skills, cover the whole lifecycle (admission, retrieval, planner selection, evolution) — a runtime-only check misses where most of the risk actually lives.
   → **Do:** (tool) Lifecycle-aware skill scanning
+- **[A malicious federated-learning aggregator can backdoor a QA model without ever seeing client data](https://arxiv.org/abs/2606.27511)** · _source_ · composite 54.3
+  In federated training the aggregator is a trust boundary, not a neutral party - protect gradients and test the global model for triggers.
+  → **Do:** (takeaway) Treat the FL aggregator as untrusted
+- **[QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize](https://arxiv.org/abs/2606.29239)** · _source_ · composite 53.7
+  Audit models at deployment precision, not the precision you were handed - some backdoors only exist after you quantize.
+  → **Do:** (takeaway) Treat quantization as part of the model supply chain
 
 **📈 Emerging trends**
 
 - **agent-security** (🔺 rising) — 9 findings from 9 sources since 2026-02.
 - **supply-chain** (🔺 rising) — 4 findings from 4 sources since 2026-06-23.
-- **prompt-injection** (🔺 rising) — 5 findings from 5 sources since 2026-02.
+- **model-supply-chain** (🔺 rising) — 4 findings from 4 sources since 2026-06-25.
 
 [→ Full AI Security database](ai-security/README.md)
 

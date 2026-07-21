@@ -22,6 +22,14 @@ _First seen 2026-06-23 · latest 2026-07-19._
 - [Treat MCP tool descriptions as system prompts: silent re-trust poisoning](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/) (2026-06-30) · _latest_
 - [OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/) (2026-06-23) · _latest_
 
+### 🔺 model-supply-chain  ·  4 findings (4 recent) · 4 sources · momentum 8.0
+_First seen 2026-06-25 · latest 2026-07-20._
+
+- [ShadowPickle: pickle-VM import tricks evade ten model scanners and four model hubs](https://arxiv.org/abs/2607.17503) (2026-07-20) · _latest_
+- [Over 970,000 AI-Apps on model hubs measured: thousands leak credentials, some carry embedded backdoors](https://arxiv.org/abs/2606.30373) (2026-06-29) · _latest_
+- [QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize](https://arxiv.org/abs/2606.29239) (2026-06-28) · _latest_
+- [A malicious federated-learning aggregator can backdoor a QA model without ever seeing client data](https://arxiv.org/abs/2606.27511) (2026-06-25) · _latest_
+
 ### 🔺 prompt-injection  ·  5 findings (2 recent) · 5 sources · momentum 7.0
 _First seen 2026-02 · latest 2026-07-16._
 
@@ -51,11 +59,29 @@ _First seen 2026-06-23 · latest 2026-07-16._
 - [Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)](https://arxiv.org/abs/2607.13987) (2026-07-16) · _latest_
 - [OpenClaw's ClawHub skill marketplace: an agentic supply-chain attack surface](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/) (2026-06-23) · _latest_
 
+### 🔺 huggingface  ·  2 findings (2 recent) · 2 sources · momentum 4.0
+_First seen 2026-06-29 · latest 2026-07-20._
+
+- [ShadowPickle: pickle-VM import tricks evade ten model scanners and four model hubs](https://arxiv.org/abs/2607.17503) (2026-07-20) · _latest_
+- [Over 970,000 AI-Apps on model hubs measured: thousands leak credentials, some carry embedded backdoors](https://arxiv.org/abs/2606.30373) (2026-06-29) · _latest_
+
 ### 🔺 threat-modeling  ·  2 findings (2 recent) · 2 sources · momentum 4.0
 _First seen 2026-07-16 · latest 2026-07-20._
 
 - [Self-state attacks: corrupting an agent's own memory and config uses legitimate syscalls](https://arxiv.org/abs/2607.17986) (2026-07-20) · _latest_
 - [Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)](https://arxiv.org/abs/2607.13987) (2026-07-16) · _latest_
+
+### 🔺 defenses  ·  2 findings (2 recent) · 2 sources · momentum 4.0
+_First seen 2026-06-28 · latest 2026-07-20._
+
+- [Insecure coding preferences persist in LLM long-term memory and resist normal correction](https://arxiv.org/abs/2607.17619) (2026-07-20) · _latest_
+- [QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize](https://arxiv.org/abs/2606.29239) (2026-06-28) · _latest_
+
+### 🔺 backdoor  ·  2 findings (2 recent) · 2 sources · momentum 4.0
+_First seen 2026-06-25 · latest 2026-06-28._
+
+- [QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize](https://arxiv.org/abs/2606.29239) (2026-06-28) · _latest_
+- [A malicious federated-learning aggregator can backdoor a QA model without ever seeing client data](https://arxiv.org/abs/2606.27511) (2026-06-25) · _latest_
 
 ### 🔺 llm-security  ·  2 findings (1 recent) · 2 sources · momentum 3.0
 _First seen 2026-02 · latest 2026-07-20._

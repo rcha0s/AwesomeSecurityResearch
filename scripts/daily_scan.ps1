@@ -38,7 +38,8 @@ foreach ($step in @(
     @("aggregate.py", @()),
     @("ingest_github.py", @("--max", "5")),
     @("ingest_ghsa.py",   @("--max", "25")),
-    @("ingest_hn.py",     @("--max", "6"))
+    @("ingest_hn.py",     @("--max", "6")),
+    @("ingest_conferences.py", @("--max", "20"))
 )) {
     $script = $step[0]; $argv = $step[1]
     try { & $py "scripts\$script" @argv 2>&1 | Tee-Object -FilePath $log -Append; Log "ingest ok: $script" }

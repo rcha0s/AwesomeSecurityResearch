@@ -104,6 +104,42 @@
     },
     {
       "topic": "ai-security",
+      "tag": "model-supply-chain",
+      "count": 4,
+      "recent": 4,
+      "sources": 4,
+      "momentum": 8.0,
+      "first_seen": "2026-06-25",
+      "last_seen": "2026-07-20",
+      "members": [
+        {
+          "title": "ShadowPickle: pickle-VM import tricks evade ten model scanners and four model hubs",
+          "url": "https://arxiv.org/abs/2607.17503",
+          "date": "2026-07-20",
+          "fresh": true
+        },
+        {
+          "title": "Over 970,000 AI-Apps on model hubs measured: thousands leak credentials, some carry embedded backdoors",
+          "url": "https://arxiv.org/abs/2606.30373",
+          "date": "2026-06-29",
+          "fresh": true
+        },
+        {
+          "title": "QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize",
+          "url": "https://arxiv.org/abs/2606.29239",
+          "date": "2026-06-28",
+          "fresh": true
+        },
+        {
+          "title": "A malicious federated-learning aggregator can backdoor a QA model without ever seeing client data",
+          "url": "https://arxiv.org/abs/2606.27511",
+          "date": "2026-06-25",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
       "tag": "prompt-injection",
       "count": 5,
       "recent": 2,
@@ -230,6 +266,30 @@
     },
     {
       "topic": "ai-security",
+      "tag": "huggingface",
+      "count": 2,
+      "recent": 2,
+      "sources": 2,
+      "momentum": 4.0,
+      "first_seen": "2026-06-29",
+      "last_seen": "2026-07-20",
+      "members": [
+        {
+          "title": "ShadowPickle: pickle-VM import tricks evade ten model scanners and four model hubs",
+          "url": "https://arxiv.org/abs/2607.17503",
+          "date": "2026-07-20",
+          "fresh": true
+        },
+        {
+          "title": "Over 970,000 AI-Apps on model hubs measured: thousands leak credentials, some carry embedded backdoors",
+          "url": "https://arxiv.org/abs/2606.30373",
+          "date": "2026-06-29",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
       "tag": "threat-modeling",
       "count": 2,
       "recent": 2,
@@ -248,6 +308,54 @@
           "title": "Agent skill security is a lifecycle problem, not just a runtime one (SkillSec-Eval)",
           "url": "https://arxiv.org/abs/2607.13987",
           "date": "2026-07-16",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "defenses",
+      "count": 2,
+      "recent": 2,
+      "sources": 2,
+      "momentum": 4.0,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-07-20",
+      "members": [
+        {
+          "title": "Insecure coding preferences persist in LLM long-term memory and resist normal correction",
+          "url": "https://arxiv.org/abs/2607.17619",
+          "date": "2026-07-20",
+          "fresh": true
+        },
+        {
+          "title": "QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize",
+          "url": "https://arxiv.org/abs/2606.29239",
+          "date": "2026-06-28",
+          "fresh": true
+        }
+      ]
+    },
+    {
+      "topic": "ai-security",
+      "tag": "backdoor",
+      "count": 2,
+      "recent": 2,
+      "sources": 2,
+      "momentum": 4.0,
+      "first_seen": "2026-06-25",
+      "last_seen": "2026-06-28",
+      "members": [
+        {
+          "title": "QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize",
+          "url": "https://arxiv.org/abs/2606.29239",
+          "date": "2026-06-28",
+          "fresh": true
+        },
+        {
+          "title": "A malicious federated-learning aggregator can backdoor a QA model without ever seeing client data",
+          "url": "https://arxiv.org/abs/2606.27511",
+          "date": "2026-06-25",
           "fresh": true
         }
       ]

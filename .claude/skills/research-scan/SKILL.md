@@ -29,6 +29,8 @@ Run everything from the repo root. Twitter ingestion needs Agent Reach in WSL2.
    python scripts/ingest_github.py   # trending/novel repos (needs `gh` authed)
    python scripts/ingest_ghsa.py     # reviewed supply-chain advisories (needs `gh` authed)
    python scripts/ingest_hn.py       # Hacker News velocity signal (keyless, network)
+   python scripts/ingest_conferences.py  # accepted papers at USENIX/NDSS/SaTML/AISec/CCS
+                                         # (+security-gated NeurIPS/ICML/ISSTA) via arXiv
    ```
    If Twitter ingest reports Agent Reach unhealthy, the cookies likely expired — refresh the
    burner's `auth_token`+`ct0` into `~/.agent-reach/twitter.env` — and continue with the rest.

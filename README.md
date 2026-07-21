@@ -2,7 +2,7 @@
 
 > An auto-updating, source-cited tracker of the most **teachable** security and AI research. It scans a ranked set of sources (X, GitHub, YouTube, blogs, newsletters, RSS), extracts the transferable lesson + a concrete action from each, curates hard, and files it into three rolling databases — **AI Security**, **Product Security**, and **AI Research** (practitioner).
 
-![Updated](https://img.shields.io/badge/updated-2026--07--21-blue) ![Vetted findings](https://img.shields.io/badge/vetted-11-success) ![Window](https://img.shields.io/badge/window-last_31_days-orange) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
+![Updated](https://img.shields.io/badge/updated-2026--07--21-blue) ![Vetted findings](https://img.shields.io/badge/vetted-13-success) ![Window](https://img.shields.io/badge/window-last_31_days-orange) ![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
 
 ## 📸 This week's snapshot
 
@@ -19,7 +19,7 @@
 
 ## 📚 The three databases
 
-- 🤖🛡️ **[AI Security](ai-security/README.md)** — 4 vetted findings. Securing AI systems: harness & agent security, MCP, skill scanning, prompt injection, memory poisoning, model supply chain, LLM red-teaming.
+- 🤖🛡️ **[AI Security](ai-security/README.md)** — 6 vetted findings. Securing AI systems: harness & agent security, MCP, skill scanning, prompt injection, memory poisoning, model supply chain, LLM red-teaming.
 - 🛡️ **[Product Security](product-security/README.md)** — 4 vetted findings. Securing products: application security, supply chain, cloud & infra, identity, mobile, plus red teaming and threat modeling (AI-assisted or not).
 - 🧠 **[AI Research](ai-research/README.md)** — 3 vetted findings. Practitioner AI: improving your harness, understanding, and architecture for using LLMs/agents on real tasks. Not model internals or ML-research.
 
