@@ -374,30 +374,6 @@
     "strict": false
   },
   {
-    "id": "rss:https-www-anthropic-com-rss-xml",
-    "type": "rss",
-    "handle": "https://www.anthropic.com/rss.xml",
-    "name": "Anthropic News",
-    "url": "https://www.anthropic.com/rss.xml",
-    "topics": [
-      "ai-research"
-    ],
-    "domains": [
-      "Models & Capabilities"
-    ],
-    "tier": "high",
-    "signals": {},
-    "stats": {
-      "ingested": 0,
-      "curated": 0
-    },
-    "rank": 75.0,
-    "added": "2026-07-13",
-    "active": true,
-    "notes": "Model lab",
-    "strict": false
-  },
-  {
     "id": "x_account:kunchenguid",
     "type": "x_account",
     "handle": "kunchenguid",
@@ -901,5 +877,258 @@
     "added": "2026-07-16",
     "active": true,
     "notes": "Offensive tooling research"
+  },
+  {
+    "id": "rss:https-www-ndss-symposium-org-feed",
+    "type": "rss",
+    "handle": "https://www.ndss-symposium.org/feed/",
+    "name": "NDSS Symposium",
+    "url": "https://www.ndss-symposium.org/feed/",
+    "topics": [
+      "ai-security",
+      "product-security"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Open-access proceedings; carries LLM/ML-security papers. Weakest topical fit of the conference set."
+  },
+  {
+    "id": "conference:https-www-usenix-org-conferences-byname-108",
+    "type": "conference",
+    "handle": "https://www.usenix.org/conferences/byname/108",
+    "name": "USENIX Security (+WOOT)",
+    "url": "https://www.usenix.org/conferences/byname/108",
+    "topics": [
+      "ai-security",
+      "product-security",
+      "ai-research"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Fully open access, artifact-evaluated. Growing LLM/ML-security track."
+  },
+  {
+    "id": "conference:https-proceedings-neurips-cc",
+    "type": "conference",
+    "handle": "https://proceedings.neurips.cc/",
+    "name": "NeurIPS Proceedings (open access)",
+    "url": "https://proceedings.neurips.cc/",
+    "topics": [
+      "ai-research",
+      "ai-security"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Open proceedings mirror. Adversarial ML / jailbreak / LLM-safety volume. NOTE: OpenReview notes API is challenge-gated (403) - use this mirror + arXiv for ICLR."
+  },
+  {
+    "id": "conference:https-proceedings-mlr-press",
+    "type": "conference",
+    "handle": "https://proceedings.mlr.press/",
+    "name": "PMLR (ICML and friends)",
+    "url": "https://proceedings.mlr.press/",
+    "topics": [
+      "ai-research",
+      "ai-security"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Open access proceedings for ICML/AISTATS etc."
+  },
+  {
+    "id": "conference:https-satml-org",
+    "type": "conference",
+    "handle": "https://satml.org/",
+    "name": "IEEE SaTML",
+    "url": "https://satml.org/",
+    "topics": [
+      "ai-security",
+      "ai-research"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Dedicated secure/trustworthy-ML venue; publishes DEFENSES. Free accepted list + arXiv preprints + free talk videos."
+  },
+  {
+    "id": "conference:https-www-blackhat-com-html-archives-html",
+    "type": "conference",
+    "handle": "https://www.blackhat.com/html/archives.html",
+    "name": "Black Hat (AI Summit + AI/ML briefings)",
+    "url": "https://www.blackhat.com/html/archives.html",
+    "topics": [
+      "ai-security",
+      "product-security"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Free whitepaper/slides archive. Real-world attacks on deployed AI products."
+  },
+  {
+    "id": "conference:https-aisec-cc",
+    "type": "conference",
+    "handle": "https://aisec.cc/",
+    "name": "ACM AISec workshop",
+    "url": "https://aisec.cc/",
+    "topics": [
+      "ai-security",
+      "ai-research"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Canonical adversarial-ML security workshop since 2008. Free accepted list -> arXiv preprints."
+  },
+  {
+    "id": "conference:https-media-defcon-org",
+    "type": "conference",
+    "handle": "https://media.defcon.org/",
+    "name": "DEF CON AI Village + AppSec Village",
+    "url": "https://media.defcon.org/",
+    "topics": [
+      "ai-security",
+      "product-security"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "medium",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 55.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "SCOPED to AI Village and AppSec Village only - exclude hardware/RE/tradecraft tracks (off-thesis)."
+  },
+  {
+    "id": "research_index:https-www-anthropic-com-research",
+    "type": "research_index",
+    "handle": "https://www.anthropic.com/research",
+    "name": "Anthropic Research",
+    "url": "https://www.anthropic.com/research",
+    "topics": [
+      "ai-research",
+      "ai-security"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Replaces dead anthropic.com/rss.xml (404). JS-rendered index - needs scrape + free-text resolution."
+  },
+  {
+    "id": "research_index:https-alignment-anthropic-com",
+    "type": "research_index",
+    "handle": "https://alignment.anthropic.com/",
+    "name": "Anthropic Alignment Science Blog",
+    "url": "https://alignment.anthropic.com/",
+    "topics": [
+      "ai-research",
+      "ai-security"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Alignment/safety research incl. sabotage + eval work. SPA, no real feed (/feed.xml serves app HTML)."
+  },
+  {
+    "id": "research_index:https-red-anthropic-com",
+    "type": "research_index",
+    "handle": "https://red.anthropic.com/",
+    "name": "Anthropic Red Team (red.anthropic.com)",
+    "url": "https://red.anthropic.com/",
+    "topics": [
+      "ai-security"
+    ],
+    "domains": [],
+    "strict": false,
+    "tier": "high",
+    "signals": {},
+    "stats": {
+      "ingested": 0,
+      "curated": 0
+    },
+    "rank": 75.0,
+    "added": "2026-07-21",
+    "active": true,
+    "notes": "Adversarial/red-team findings on deployed models - squarely on-thesis."
   }
 ]

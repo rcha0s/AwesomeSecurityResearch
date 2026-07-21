@@ -2,7 +2,7 @@
 
 **Topic:** AI Security  ·  **Domain:** MCP & Tools  
 **Source:** [source](https://github.com/advisories/GHSA-pr64-jmmf-jp54)  ·  **Published:** Jul 15, 2026  ·  **Retrieved:** 2026-07-16  
-**Scores:** 🆕 Newness 43 · ✨ Novelty 78 · 🎯 Relevance 85 · 🏛️ Credibility 70 · **Composite 70.15**  
+**Scores:** 🆕 Newness 32 · ✨ Novelty 78 · 🎯 Relevance 85 · 🏛️ Credibility 70 · **Composite 67.4**  
 **Tags:** `mcp`, `ssrf`, `agent-security`, `cloud-metadata`, `sandbox-escape`  
 **Verification:** ✓ independently verified · closest prior art: Classic cloud-metadata SSRF (169.254.169.254) is well known; the novel delta is the MCP-specific vector — a control running host-side, outside the very container sandbox the tool advertises, reached purely through a server's auth-discovery response.
 

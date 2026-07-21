@@ -2,7 +2,7 @@
 
 **Topic:** AI Security  ·  **Domain:** Harness & Agent Security  
 **Source:** [Palo Alto Networks Unit 42](https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/)  ·  **Published:** Jun 23, 2026  ·  **Retrieved:** 2026-07-13  
-**Scores:** 🆕 Newness 8 · ✨ Novelty 82 · 🎯 Relevance 88 · 🏛️ Credibility 75 · **Composite 64.25**  
+**Scores:** 🆕 Newness 6 · ✨ Novelty 82 · 🎯 Relevance 88 · 🏛️ Credibility 75 · **Composite 63.75**  
 **Tags:** `agent-security`, `skill-scanning`, `supply-chain`, `agentic-threats`, `unit42`
 
 > **Takeaway —** Agent skill marketplaces are a critical, largely-untrusted link in the software supply chain — marketplace scanning alone does not make them safe.

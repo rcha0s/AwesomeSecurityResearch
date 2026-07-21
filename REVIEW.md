@@ -2,23 +2,37 @@
 
 > Findings in the last 31 days that are **not yet vetted** — held out of the topic pages and newsletter. Flagged for low confidence/novelty/relevance, or below the composite floor (20). Nothing here is deleted; promote an item by raising its scores or clearing `needs_review`, then regenerate.
 
-_Updated 2026-07-16._
+_Updated 2026-07-21._
 
-## AI Security (1)
+## AI Security (5)
 
-- **[Treat MCP tool descriptions as system prompts: silent re-trust poisoning](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)** · composite 53.45 · _flagged needs_review (low confidence / novelty / relevance)_
+- **[Provider safety guardrails blocked incident response during the Hugging Face agentic intrusion](https://embracethered.com/blog/posts/2026/ai-intrusion-are-now-real/)** · composite 59.75 · _flagged needs_review (low confidence / novelty / relevance)_
+  Assume your commercial AI provider may refuse to help you during a breach - pre-stage a local open-weight forensic model the same way you pre-stage backups.
+- **[Insecure coding preferences persist in LLM long-term memory and resist normal correction](https://arxiv.org/abs/2607.17619)** · composite 57.42 · _flagged needs_review (low confidence / novelty / relevance)_
+  Validate what goes into LLM memory - a poisoned preference outlives the conversation and can't be argued away.
+- **[Apple fixed the macOS Terminal ANSI DNS-exfiltration sink used to chain prompt injection](https://embracethered.com/blog/posts/2026/macos-terminal-dillma-dns-exfil-ansi-escape-code-fix/)** · composite 54.65 · _flagged needs_review (low confidence / novelty / relevance)_
+  Sanitize model output at the rendering boundary - both the terminal emulator and your CLI's own output path are execution surfaces, and only the former got patched.
+- **[Self-state attacks: corrupting an agent's own memory and config uses legitimate syscalls](https://arxiv.org/abs/2607.17986)** · composite 54.12 · _flagged needs_review (low confidence / novelty / relevance)_
+  Treat an agent's memory and config files as protected assets with their own access-control and backup policy - once an attacker can write them, the corruption step itself looks…
+- **[Treat MCP tool descriptions as system prompts: silent re-trust poisoning](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)** · composite 52.95 · _flagged needs_review (low confidence / novelty / relevance)_
   Version and change-review every MCP tool description as if it were a system prompt, and force re-approval whenever tool metadata changes.
 
-## Product Security (1)
+## Product Security (3)
 
-- **[@redhat-cloud-services npm namespace compromise (32+ packages)](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)** · composite 9.5 · _not yet scored (no novelty/relevance — needs analysis)_
+- **[38.9% of agent-generated PRs carry a security smell - but humans introduce most of the real leaked secrets](https://arxiv.org/abs/2607.12428)** · composite 60.12 · _flagged needs_review (low confidence / novelty / relevance)_
+  Gate agent PRs with automated secret and dependency-integrity checks - human review demonstrably does not catch this class, and the humans are introducing most of it.
+- **[A working taxonomy of open-source AI code-security harnesses: exploitgen, skill-boosting, SAST+LLM](https://semgrep.dev/blog/2026/comparing-open-source-ai-code-security-harnesses)** · composite 49.25 · _flagged needs_review (low confidence / novelty / relevance)_
+  Choose an AI code-security harness by category and operating constraint, check maintenance status - and note the comparison is authored by a competing vendor.
+- **[@redhat-cloud-services npm namespace compromise (32+ packages)](https://access.redhat.com/security/vulnerabilities/RHSB-2026-006)** · composite 9.0 · _not yet scored (no novelty/relevance — needs analysis)_
   Attackers compromised at least 32 packages under the @redhat-cloud-services scope, bypassing code review to push a payload dubbed Miasma.
 
-## AI Research (1)
+## AI Research (2)
 
-- **[GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims](https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything)** · composite 58.0 · _flagged needs_review (low confidence / novelty / relevance)_
+- **[Auditing a cyber benchmark for groundedness: models reason, but 70% of real IDORs are missed by everyone](https://semgrep.dev/blog/2026/grounded-or-gamed-we-audited-our-own-cyber-benchmark)** · composite 59.15 · _flagged needs_review (low confidence / novelty / relevance)_
+  Score AI security scanners on groundedness and run-to-run stability, not just F1 - and don't expect stacking models to fix deep-authorization recall. Vendor-run, single-repo…
+- **[GPT-5.6 (Luna/Terra/Sol): three tiers, 1M context, agentic benchmark claims](https://simonwillison.net/2026/Jul/9/gpt-5-6/#atom-everything)** · composite 55.25 · _flagged needs_review (low confidence / novelty / relevance)_
   Evaluate the tiers on your own agentic task — per-token price means less now that reasoning-token counts dominate cost.
 
 ---
 
-<sub>Generated by scripts/generate_review.py on 2026-07-16. 3 item(s) awaiting review.</sub>
+<sub>Generated by scripts/generate_review.py on 2026-07-21. 10 item(s) awaiting review.</sub>

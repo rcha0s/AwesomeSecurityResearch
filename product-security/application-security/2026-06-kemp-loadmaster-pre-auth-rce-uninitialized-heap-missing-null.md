@@ -2,7 +2,7 @@
 
 **Topic:** Product Security  ·  **Domain:** Application Security  
 **Source:** [source](https://labs.watchtowr.com/enterprise-tech-in-shell-out-progress-kemp-loadmaster-uninitialized-heap-to-pre-auth-rce-cve-2026-8037/)  ·  **Published:** Jun 29, 2026  ·  **Retrieved:** 2026-07-16  
-**Scores:** 🆕 Newness 8 · ✨ Novelty 70 · 🎯 Relevance 82 · 🏛️ Credibility 75 · **Composite 58.85**  
+**Scores:** 🆕 Newness 6 · ✨ Novelty 70 · 🎯 Relevance 82 · 🏛️ Credibility 75 · **Composite 58.35**  
 **Tags:** `memory-safety`, `heap`, `rce`, `edge-appliance`, `n-day`  
 **Verification:** ✓ independently verified · closest prior art: Uninitialized-memory and heap-spray techniques are classic; the novel delta is the specific n-day chain (patch-diff -> non-null-terminated escape buffer -> OOB read into sprayed JSON chunk) on a widely deployed edge load balancer.
 
