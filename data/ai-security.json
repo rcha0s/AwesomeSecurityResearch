@@ -69,7 +69,7 @@
         "newness": 32,
         "credibility": 70.0,
         "composite": 67.4,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Classic cloud-metadata SSRF (169.254.169.254) is well known; the novel delta is the MCP-specific vector — a control running host-side, outside the very container sandbox the tool advertises, reached purely through a server's auth-discovery response.",
       "verified": true,
@@ -131,7 +131,7 @@
         "relevance": 88,
         "newness": 6,
         "composite": 63.75,
-        "scored_at": "2026-07-21T07:37:44+00:00",
+        "scored_at": "2026-07-21T14:42:55+00:00",
         "credibility": 75.0
       },
       "id": "openclaw-s-clawhub-skill-marketplace-an-agentic-798f5a7e0b",
@@ -194,7 +194,7 @@
         "newness": 32,
         "credibility": 57.5,
         "composite": 62.22,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Malicious pickles in ML model hubs are a well-established attack class (pickle RCE documented since at least 2022, incl. Rehberger's ML Attack Series). The delta is the specific external-module-import evasion primitive plus a measured evasion rate across ten scanners and an injectable benchmark, rather than a new concept.",
       "verified": true,
@@ -260,7 +260,7 @@
         "newness": 32,
         "credibility": 55.0,
         "composite": 61.85,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "OpenClaw/ClawHub agentic supply-chain and MCP tool-poisoning work cover parts of this; the novel delta is the explicit lifecycle taxonomy (five stages) plus an empirical study over 327 real skills rather than a single attack demo.",
       "verified": true,
@@ -326,7 +326,7 @@
         "newness": 32,
         "credibility": 75.0,
         "composite": 59.75,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Guardrails obstructing legitimate security and malware analysis is a long-running, frequently-reported community complaint, and the intrusion TTPs themselves are conventional. The delta is a fresh, concrete, named instance - a vendor pivoting to a self-hosted open-weight model mid-incident - not a new phenomenon.",
       "verified": true,
@@ -392,13 +392,78 @@
         "newness": 32,
         "credibility": 57.5,
         "composite": 57.42,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Memory and context poisoning is an active area and RAG poisoning is well studied; this extends known memory-poisoning concepts rather than introducing a new primitive. The delta is a quantified measurement specific to stored *coding preferences* plus the risk-warning gap and the memory-vs-prompt mitigation comparison. The authors describe it as the first systematic study of this - their own characterization, not independently verified. Accepted to ISSTA 2026.",
       "verified": true,
       "verify_note": "Independent verifier: dropped the unsupported 'agent' framing (source is LLM code generation with memory); scoped the 100% detection rate to the authors' own evaluated entries; attributed the 'first study' claim; novelty 76->50.",
       "id": "insecure-coding-preferences-persist-in-llm-long-1b637b5adc",
       "retrieved_at": "2026-07-21T07:37:44+00:00",
+      "needs_review": true,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "ai-security",
+      "domain": "Model Supply Chain",
+      "title": "Over 970,000 AI-Apps on model hubs measured: thousands leak credentials, some carry embedded backdoors",
+      "source_url": "https://arxiv.org/abs/2606.30373",
+      "article_url": "https://arxiv.org/abs/2606.30373",
+      "published": "2026-06-29",
+      "date": "2026-06",
+      "author": "Yacong Gu et al.",
+      "discovered_via": "rss",
+      "source_rank": 72.0,
+      "raw_path": "data/_raw/your-space-is-my-zone-demystifying-the-security-52934588df.txt",
+      "summary": "AI-Apps - the hosted inference and fine-tuning apps on model hubs like Hugging Face - are often built by untrusted parties with weak isolation, and the authors describe this CCS 2026 paper as the first systematic security analysis of them across three platforms. Applying their Insightor framework to over 970,000 public AI-Apps, they report thousands leaking credentials, hundreds with input-injection flaws allowing arbitrary code execution, and tens carrying embedded backdoors, which the paper says indicates active exploitation. It also claims three novel architectural vulnerabilities inherent to platform design, alongside the familiar appsec failures.",
+      "lessons": [
+        {
+          "point": "The hosted-app layer on a model hub is a distinct attack surface from the model artifacts themselves - built by untrusted third parties with weak isolation and misconfigured security settings.",
+          "excerpt": "these platforms introduce an unexplored attack surface, as AI-Apps are often developed by untrusted parties with weak isolation and misconfigured security settings",
+          "confidence": 0.96,
+          "grounded": true
+        },
+        {
+          "point": "The paper reports both common appsec failures at scale (broken access control, insufficient input validation, sensitive data exposure) AND three novel architectural vulnerabilities specific to the hosting model - while platform design amplifies mundane issues like world-readable logs into ecosystem-wide exposure.",
+          "excerpt": "demonstrate how traditional issues (e.g., world-readable logs) are uniquely amplified in this ecosystem",
+          "confidence": 0.95,
+          "grounded": true
+        },
+        {
+          "point": "At this scale the tail is not hypothetical: thousands leak credentials and tens carry embedded backdoors, which the paper says indicates active exploitation - though the abstract does not define what evidence 'active' rests on.",
+          "excerpt": "we find thousands of apps leaking credentials, hundreds containing input injection vulnerabilities that allow arbitrary code execution, and tens harboring embedded backdoors",
+          "confidence": 0.95,
+          "grounded": true
+        }
+      ],
+      "threat": "A malicious or compromised AI-App on a public model hub leaks its owner's credentials, executes attacker-supplied input, or ships a backdoor to everyone who runs it.",
+      "conditions": "Using or forking third-party hosted AI-Apps (inference/fine-tuning spaces) on public model hubs.",
+      "mitigations": "The paper is a measurement and disclosure study and proposes no mitigations - the authors state only that they responsibly disclosed to affected platforms. The following is our own recommendation, not the paper's: treat a hub-hosted AI-App as untrusted third-party code, scope and rotate any token it touches, and review app source before forking.",
+      "takeaway": "The app layer on model hubs is third-party code with your credentials in it - scope tokens per app and read the source before you fork.",
+      "tags": [
+        "model-supply-chain",
+        "huggingface",
+        "credential-leak",
+        "access-control",
+        "appsec"
+      ],
+      "actionable": {
+        "type": "takeaway",
+        "title": "Scope and rotate credentials given to hub-hosted AI-Apps",
+        "detail": "Our recommendation, not the paper's (it proposes no defenses): inventory every hub AI-App your team runs or forked, issue per-app least-privilege tokens rather than account-wide ones, rotate anything previously pasted into a Space, and check for world-readable logs in apps you publish."
+      },
+      "scores": {
+        "novelty": 58,
+        "relevance": 88,
+        "newness": 6,
+        "credibility": 72.0,
+        "composite": 56.1,
+        "scored_at": "2026-07-21T14:42:55+00:00"
+      },
+      "prior_art": "Malicious models on hubs are well studied (pickle RCE, scanner evasion); this examines the *application* layer around them, which the authors describe as unexplored - a self-reported priority claim. The real contribution is scale (970k+ apps, three platforms) plus three newly-named architectural vulnerability classes; the bulk of the named categories are established appsec territory, so this is a strong measurement study rather than a new attack technique. Accepted at ACM CCS 2026.",
+      "verified": true,
+      "verify_note": "Independent verifier: restored 'over' 970,000; attributed the authors' 'first systematic analysis' claim rather than asserting it; removed an unsupported 'most findings are ordinary appsec' claim that buried the paper's three novel architectural vulnerabilities; relabelled mitigations as ours since the paper proposes none. Novelty 72->58.",
+      "id": "over-970-000-ai-apps-on-model-hubs-measured-thou-6bac2eb552",
+      "retrieved_at": "2026-07-21T14:42:54+00:00",
       "needs_review": true,
       "grounding_score": 1.0
     },
@@ -458,7 +523,7 @@
         "newness": 32,
         "credibility": 75.0,
         "composite": 54.65,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Every primitive was already established: the ANSI-DNS behavior by David Leadbeater (2023), LLMs emitting ANSI escapes by Leon Derczynski, and the author's own Terminal DiLLMa research (2024). This is disclosure-closure - the marginal contribution is the full chained PoC and the resulting Apple fix, not a new technique.",
       "verified": true,
@@ -466,6 +531,71 @@
       "id": "apple-fixed-the-macos-terminal-ansi-dns-exfiltra-23f6fdd39e",
       "retrieved_at": "2026-07-21T07:37:44+00:00",
       "needs_review": true,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "ai-security",
+      "domain": "Model Supply Chain",
+      "title": "A malicious federated-learning aggregator can backdoor a QA model without ever seeing client data",
+      "source_url": "https://arxiv.org/abs/2606.27511",
+      "article_url": "https://arxiv.org/abs/2606.27511",
+      "published": "2026-06-25",
+      "date": "2026-06",
+      "author": "Chenqing Zhu et al.",
+      "discovered_via": "rss",
+      "source_rank": 72.0,
+      "raw_path": "data/_raw/when-the-aggregator-cheats-data-free-backdoors-i-175cf3b218.txt",
+      "summary": "Federated learning is adopted precisely so the server never sees raw client data - but this USENIX Security 2026 paper shows the aggregator itself can be the attacker. It inverts the gradients clients upload into representative training samples, builds a poisoning set from them, and implants advertisement-type backdoors into the global model. It reports near-100% attack success with negligible clean-task degradation as its headline result, and separately that reconstructing only 5-20% of gradients suffices for a reliable attack; whether the reduced setting reaches the same rate is not stated. Experiments are on representative QA datasets and LLM families, not live deployments.",
+      "lessons": [
+        {
+          "point": "The federated threat model usually watches malicious clients; here the trusted aggregator is the adversary, and 'never sharing raw data' does not make it a trust boundary.",
+          "excerpt": "we explore the potential vulnerability where a malicious aggregator, who may collude with a third-party vendor, stealthily implants advertisement-type backdoors into federated QA models, without ever accessing client data",
+          "confidence": 0.96,
+          "grounded": true
+        },
+        {
+          "point": "Uploaded gradients are the leak: they can be inverted into representative training samples, which is what makes data-free poisoning possible.",
+          "excerpt": "recover representative training samples from client gradients, and (2) construct poisoning datasets utilizing recovered samples and trigger phrases to inject backdoors into the global model",
+          "confidence": 0.95,
+          "grounded": true
+        },
+        {
+          "point": "The attack is cheap enough to be practical - the paper reports 5-20% of gradients suffices for a reliable attack - and clean-task behavior is preserved, so the model passes normal quality checks.",
+          "excerpt": "reconstructing only 5-20% of gradients suffices to mount a reliable attack, exposing a practical blind spot in the pipeline of federated training of QA LLMs",
+          "confidence": 0.95,
+          "grounded": true
+        }
+      ],
+      "threat": "The central aggregator in a federated LLM training run implants a triggered backdoor emitting target advertising content while behaving normally on non-triggered queries. Only advertisement injection is demonstrated; generalization to more harmful payloads is not tested.",
+      "conditions": "Federated fine-tuning of a QA LLM (full fine-tune or LoRA) where a third party operates the aggregation server and clients upload gradients. Evaluated in a controlled experimental setting, not a production deployment.",
+      "mitigations": "The paper proposes no defenses. Our own recommendation: treat the aggregator as untrusted - apply secure aggregation or differential privacy to uploaded gradients and evaluate the global model for triggered behavior rather than clean-task accuracy alone. Neither defense is evaluated against this attack in the paper.",
+      "takeaway": "In federated training the aggregator is a trust boundary, not a neutral party - protect gradients and test the global model for triggers.",
+      "tags": [
+        "federated-learning",
+        "backdoor",
+        "gradient-inversion",
+        "model-supply-chain",
+        "llm-training"
+      ],
+      "actionable": {
+        "type": "takeaway",
+        "title": "Treat the FL aggregator as untrusted",
+        "detail": "If you participate in federated fine-tuning you do not operate, assume uploaded gradients are recoverable into training samples. Our recommendation, not the paper's: require secure aggregation or DP noise as a condition of participation, and test the returned global model for triggered behavior, since clean-task accuracy is explicitly preserved by this attack."
+      },
+      "scores": {
+        "novelty": 68,
+        "relevance": 72,
+        "newness": 6,
+        "credibility": 72.0,
+        "composite": 54.3,
+        "scored_at": "2026-07-21T14:42:55+00:00"
+      },
+      "prior_art": "Gradient inversion and federated backdoors are each established literatures. The delta is a genuinely novel threat model - the *aggregator* mounting a data-free backdoor by reconstructing samples specifically to build the poisoning set - validated across datasets, LLM families, and both full fine-tuning and LoRA. Held below 70 because the demonstrated payload is narrowly advertisement injection. Accepted at the 35th USENIX Security Symposium (2026).",
+      "verified": true,
+      "verify_note": "Independent verifier: un-fused two separate results (near-100% ASR and the 5-20% gradient figure are not stated to be the same condition); flagged experiments as controlled rather than live deployments; scoped the payload to advertisement injection only; relabelled mitigations as ours. Novelty raised 60->68 - the verifier judged the aggregator-as-adversary threat model more novel than I did.",
+      "id": "a-malicious-federated-learning-aggregator-can-ba-926ac18741",
+      "retrieved_at": "2026-07-21T14:42:54+00:00",
+      "needs_review": false,
       "grounding_score": 1.0
     },
     {
@@ -523,7 +653,7 @@
         "newness": 32,
         "credibility": 57.5,
         "composite": 54.12,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Agent memory poisoning and config tampering have been discussed piecemeal. The contribution is systematizing the space (four-axis, 23-cell matrix) and measuring which cells OS defenses cover - not a new attack capability, since it presumes existing local write access. 'Self-state attacks' is the authors' own coinage in this paper. Preprint, not peer-reviewed.",
       "verified": true,
@@ -531,6 +661,71 @@
       "id": "self-state-attacks-corrupting-an-agent-s-own-mem-497dc1cdff",
       "retrieved_at": "2026-07-21T07:37:44+00:00",
       "needs_review": true,
+      "grounding_score": 1.0
+    },
+    {
+      "topic": "ai-security",
+      "domain": "Model Supply Chain",
+      "title": "QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize",
+      "source_url": "https://arxiv.org/abs/2606.29239",
+      "article_url": "https://arxiv.org/abs/2606.29239",
+      "published": "2026-06-28",
+      "date": "2026-06",
+      "author": "Aoying Zheng et al.",
+      "discovered_via": "rss",
+      "source_rank": 72.0,
+      "raw_path": "data/_raw/breaking-the-rounding-trap-securing-llms-against-fa9164bb9d.txt",
+      "summary": "Quantization-conditioned backdoors stay dormant in the full-precision model and activate only once you quantize for deployment - so they pass the audit you run on the weights you were given. QuantGuard is a proactive pre-quantization defense using differentiable rounding-control variables, optimized against rounding-reversal, output-consistency and weight-distance constraints, to break the attacker's alignment with quantization boundaries. It needs only a small calibration set and no change to your quantization algorithm.",
+      "lessons": [
+        {
+          "point": "Auditing the full-precision model is not sufficient: a quantization-conditioned backdoor is dormant exactly when you inspect it and activates only after deployment quantization.",
+          "excerpt": "malicious behaviors remain dormant in the full-precision stage and are activated only after quantized deployment, thereby bypassing conventional security auditing and detection mechanisms",
+          "confidence": 0.96,
+          "grounded": true
+        },
+        {
+          "point": "The attack depends on precise alignment between crafted weights and quantization boundaries, so the defense is a targeted optimization over rounding-control variables - not noise injection - and needs no retraining.",
+          "excerpt": "This design breaks the precise alignment between attacker-crafted weight patterns and quantization boundaries, effectively suppressing the post-quantization backdoor activation pathway",
+          "confidence": 0.95,
+          "grounded": true
+        },
+        {
+          "point": "Deployability is the point: it needs only a small calibration dataset and leaves the existing quantization pipeline untouched.",
+          "excerpt": "QuantGuard utilizes only a small calibration dataset and does not modify existing quantization algorithms",
+          "confidence": 0.95,
+          "grounded": true
+        }
+      ],
+      "threat": "An attacker ships a model that is clean under inspection but exhibits vulnerable code generation, content injection, or over-refusal once the victim quantizes it to INT8/FP4/NF4.",
+      "conditions": "Deploying a third-party or fine-tuned LLM through a quantization step, where auditing happens on the full-precision weights.",
+      "mitigations": "Apply a proactive pre-quantization defense such as QuantGuard. Note the paper's premise is that conventional auditing and detection are bypassed by this attack class, so post-hoc evaluation of the quantized model is not established as a sufficient substitute.",
+      "takeaway": "Audit models at deployment precision, not the precision you were handed - some backdoors only exist after you quantize.",
+      "tags": [
+        "model-supply-chain",
+        "backdoor",
+        "quantization",
+        "defenses",
+        "llm-deployment"
+      ],
+      "actionable": {
+        "type": "takeaway",
+        "title": "Treat quantization as part of the model supply chain",
+        "detail": "Where a third-party model passes through quantization on the way to production, recognise that auditing the full-precision artifact does not cover this attack class. The paper's position is that reactive detection is unreliable and a proactive pre-quantization defense is required - post-hoc behavioural evals would also need the attacker's trigger to surface anything, so do not treat them as the control. Whether post-quantization evaluation detects QCB at all would need the full paper's detection baselines."
+      },
+      "scores": {
+        "novelty": 60,
+        "relevance": 78,
+        "newness": 6,
+        "credibility": 72.0,
+        "composite": 53.7,
+        "scored_at": "2026-07-21T14:42:55+00:00"
+      },
+      "prior_art": "The paper attributes quantization-conditioned backdoor attacks to prior work ('recent studies'), so the attack class is not new here; the contribution is the defense, and it is technically incremental (control variables plus regularization) rather than a new attack surface. Empirical breadth is solid: six LLMs, three precisions, three scenarios. Defenses remain systematically under-covered relative to attacks. Accepted at ACM CCS 2026.",
+      "verified": true,
+      "verify_note": "Independent verifier: struck an actionable that contradicted the paper's own premise - it recommended post-quantization evaluation, but the paper's position is that conventional auditing is bypassed and a proactive pre-quantization defense is required. Mechanism corrected from 'perturbs' to a targeted optimization over rounding-control variables. Novelty 62->60.",
+      "id": "quantguard-a-pre-quantization-defense-against-ba-29adf96f8b",
+      "retrieved_at": "2026-07-21T14:42:54+00:00",
+      "needs_review": false,
       "grounding_score": 1.0
     },
     {
@@ -591,7 +786,7 @@
         "newness": 6,
         "credibility": 75.0,
         "composite": 52.95,
-        "scored_at": "2026-07-21T07:37:44+00:00"
+        "scored_at": "2026-07-21T14:42:55+00:00"
       },
       "prior_art": "Invariant Labs' April 2025 MCP tool-poisoning disclosure and OWASP's ASI02/ASI04 categories; this piece is a practical defender playbook on that known class, with the 'silent re-trust' on dynamic metadata as the sharpest incremental point.",
       "verified": true,

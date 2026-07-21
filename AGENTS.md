@@ -64,7 +64,27 @@ python scripts/generate_skills.py
 python scripts/ingest_github.py --max 5
 python scripts/ingest_ghsa.py --max 25    # reviewed supply-chain advisories (gh)
 python scripts/ingest_hn.py --max 6       # Hacker News velocity signal
+python scripts/ingest_conferences.py --max 20  # peer-reviewed venues via arXiv
 ```
+
+### Conference ingestion
+
+The approved venues (USENIX Security, NDSS, IEEE SaTML, ACM AISec, CCS, plus
+security-gated NeurIPS/ICML/ISSTA) publish no usable feed, and some proceedings
+are paywalled — which we never fetch. Authors record acceptance in the arXiv
+`comments` field, so `ingest_conferences.py` searches that (`co:"<venue>"`) via
+the free keyless arXiv API and always lands on a free full text. Two gates:
+
+- **Acceptance, not submission** — `"Submitted to NeurIPS"` is an unreviewed
+  preprint wearing a venue's name and is filtered out. This is the peer-review
+  signal raw arXiv `cs.CR` cannot provide.
+- **On-thesis only** — broad ML/SE venues (`broad_venues` in `sources.yaml`)
+  must additionally match a `security_terms` keyword, so venue acceptance alone
+  can't drag the whole ML firehose into scope.
+
+Black Hat and DEF CON are **not** covered — they aren't on arXiv and still need
+an archive scraper. `research_index` sources (Anthropic) are registered but
+likewise unharvested.
 
 ## Daily automation (unattended scan -> PR)
 

@@ -61,6 +61,58 @@ hackernews:
     - "npm malware"
 
 # ---------------------------------------------------------------------------
+# Peer-reviewed conference discovery (via the free, keyless arXiv API).
+# These venues publish no usable feed and some sit behind paywalls we never
+# touch; authors record acceptance in the arXiv `comments` field, so we search
+# that instead and always land on a free full text. Only ACCEPTED work is
+# staged ("submitted to X" is filtered out) and each item must still classify
+# on-topic, so venue acceptance alone can't drag in the whole ML firehose.
+# Black Hat and DEF CON are NOT here - they are not on arXiv and still need
+# their own archive scraper.
+conferences:
+  per_venue: 20         # top-N newest per venue before the freshness cut
+  # Dedicated security venues: everything accepted here is in scope.
+  venues:
+    - "USENIX Security"
+    - "NDSS"
+    - "SaTML"
+    - "AISec"
+    - "CCS"
+  # General ML/SE venues. These are firehoses that publish mostly off-thesis
+  # work, so an item must ALSO match a `security_terms` keyword to be staged -
+  # that keeps the adversarial-ML papers and drops the object-detection ones.
+  broad_venues:
+    - "NeurIPS"
+    - "ICML"
+    - "ISSTA"
+  security_terms:
+    - adversarial
+    - jailbreak
+    - backdoor
+    - poisoning
+    - prompt injection
+    - membership inference
+    - model extraction
+    - model stealing
+    - watermark
+    - unlearning
+    - privacy attack
+    - data leakage
+    - exfiltration
+    - malicious
+    - vulnerability
+    - exploit
+    - insecure
+    - security
+    - attack
+    - threat
+    - defense
+    - robustness
+    - red team
+    - guardrail
+    - safety alignment
+
+# ---------------------------------------------------------------------------
 # GitHub Advisory Database (GHSA) discovery (via authed `gh api /advisories`).
 # Human-reviewed supply-chain disclosures — the dependency/package attack
 # surface an appsec reader must track. Runs on Windows or WSL (needs `gh`).

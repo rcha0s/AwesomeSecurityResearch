@@ -70,6 +70,18 @@
 - **Action (harness):** Consider a meta-harness for multi-agent work — Evaluate an orchestration layer (like Omnigent) when running multiple coding agents, so policy/sandboxing/routing live in one place instead of per-agent.
 - **Source:** [omnigent-ai/omnigent](https://github.com/omnigent-ai/omnigent)
 
+### A malicious federated-learning aggregator can backdoor a QA model without ever seeing client data · `54.3`
+- **Topic:** ai-security / Model Supply Chain
+- **Takeaway:** In federated training the aggregator is a trust boundary, not a neutral party - protect gradients and test the global model for triggers.
+- **Action (takeaway):** Treat the FL aggregator as untrusted — If you participate in federated fine-tuning you do not operate, assume uploaded gradients are recoverable into training samples. Our recommendation, not the paper's: require secure aggregation or DP noise as a condition of participation, and test the returned global model for triggered behavior, since clean-task accuracy is explicitly preserved by this attack.
+- **Source:** [source](https://arxiv.org/abs/2606.27511)
+
+### QuantGuard: a pre-quantization defense against backdoors that only wake up after you quantize · `53.7`
+- **Topic:** ai-security / Model Supply Chain
+- **Takeaway:** Audit models at deployment precision, not the precision you were handed - some backdoors only exist after you quantize.
+- **Action (takeaway):** Treat quantization as part of the model supply chain — Where a third-party model passes through quantization on the way to production, recognise that auditing the full-precision artifact does not cover this attack class. The paper's position is that reactive detection is unreliable and a proactive pre-quantization defense is required - post-hoc behavioural evals would also need the attacker's trigger to surface anything, so do not treat them as the control. Whether post-quantization evaluation detects QCB at all would need the full paper's detection baselines.
+- **Source:** [source](https://arxiv.org/abs/2606.29239)
+
 
 ---
 

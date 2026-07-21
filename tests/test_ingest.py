@@ -7,6 +7,7 @@ import argparse
 import add
 import aggregate
 import common as c
+import ingest_conferences as ic
 import ingest_twitter as it
 import pytest
 
@@ -208,3 +209,58 @@ def test_fetch_readable_mocked(monkeypatch):
 
     monkeypatch.setattr(requests, "get", lambda *a, **k: Resp())
     assert c.fetch_readable("https://x/y") == "clean article text"
+
+
+# --- ingest_conferences: acceptance filter + security gate ------------------
+
+
+def test_is_accepted_distinguishes_acceptance_from_submission():
+    accept = [
+        "To appear in the 35th USENIX Security Symposium (USENIX Security 2026)",
+        "Published at ISOC NDSS 2026",
+        "Accepted to AISec'25 co-located with the 32nd ACM CCS",
+        "camera-ready, ICML 2026",
+        "In Proceedings of CCS 2026",
+    ]
+    reject = [
+        "Submitted to NeurIPS 2026",
+        "Under review at ICML",
+        "9 pages, 6 figures",
+        "",
+    ]
+    for comment in accept:
+        assert ic.is_accepted(comment) is True, comment
+    for comment in reject:
+        assert ic.is_accepted(comment) is False, comment
+
+
+def test_entry_to_candidate_requires_acceptance():
+    rules = c.load_yaml(c.SOURCES_FILE)["classification"]
+    item = {
+        "title": "Backdoor attacks on LLM agents",
+        "summary": "prompt injection and backdoor poisoning of agent tool use",
+        "published": "2026-07-20T00:00:00Z",
+        "link": "https://arxiv.org/abs/2607.00001",
+        "comment": "Submitted to NeurIPS 2026",
+    }
+    assert ic.entry_to_candidate(item, "NeurIPS", rules) is None  # unreviewed
+    item["comment"] = "Accepted at NeurIPS 2026"
+    cand = ic.entry_to_candidate(item, "NeurIPS", rules)
+    assert cand and cand["venue"] == "NeurIPS"
+    assert cand["source_rank"] == ic.CONFERENCE_SOURCE_RANK
+
+
+def test_entry_to_candidate_security_gate_filters_broad_venues():
+    rules = c.load_yaml(c.SOURCES_FILE)["classification"]
+    terms = ("backdoor", "adversarial", "prompt injection")
+    off_thesis = {
+        "title": "Symbiosis-Inspired Knowledge Distillation for Object Detection",
+        "summary": "incremental object detection distillation",
+        "published": "2026-07-20T00:00:00Z",
+        "link": "https://arxiv.org/abs/2607.00002",
+        "comment": "Accepted to ICML 2026",
+    }
+    # Gated (broad venue) -> dropped; ungated (security venue) -> judged on topic only.
+    assert ic.entry_to_candidate(off_thesis, "ICML", rules, terms) is None
+    on_thesis = {**off_thesis, "title": "Backdoor attacks via adversarial prompt injection"}
+    assert ic.entry_to_candidate(on_thesis, "ICML", rules, terms) is not None
